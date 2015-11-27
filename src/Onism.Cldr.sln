@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Onism.Cldr", "Onism.Cldr\Onism.Cldr.csproj", "{E7F266DD-BCEC-4652-8E99-73C1E7E60D1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Onism.Cldr.Test", "Onism.Cldr.Test\Onism.Cldr.Test.csproj", "{29BB5B21-B2AB-4232-95EC-BE0DA0019EAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Onism.Cldr.TestConsole", "Onism.Cldr.TestConsole\Onism.Cldr.TestConsole.csproj", "{CC29C701-1668-4E48-842A-C17A2A4FC7C4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E7F266DD-BCEC-4652-8E99-73C1E7E60D1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7F266DD-BCEC-4652-8E99-73C1E7E60D1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7F266DD-BCEC-4652-8E99-73C1E7E60D1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7F266DD-BCEC-4652-8E99-73C1E7E60D1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29BB5B21-B2AB-4232-95EC-BE0DA0019EAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29BB5B21-B2AB-4232-95EC-BE0DA0019EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29BB5B21-B2AB-4232-95EC-BE0DA0019EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29BB5B21-B2AB-4232-95EC-BE0DA0019EAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC29C701-1668-4E48-842A-C17A2A4FC7C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC29C701-1668-4E48-842A-C17A2A4FC7C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC29C701-1668-4E48-842A-C17A2A4FC7C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC29C701-1668-4E48-842A-C17A2A4FC7C4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
