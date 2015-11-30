@@ -53,7 +53,7 @@ namespace Onism.Cldr.Test
             var cjs = new CldrJson[] { fromObject, fromString };
             foreach (var cj in cjs)
             {
-                cj.Locale.LocaleCode.Should().Be("en-GB");
+                cj.Locale.Code.Should().Be("en-GB");
                 cj.Locale.Language.Should().Be("en");
                 cj.Locale.Territory.Should().Be("GB");
                 cj.Locale.Script.Should().BeNull();

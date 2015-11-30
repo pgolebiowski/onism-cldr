@@ -78,7 +78,6 @@ namespace Onism.Cldr
             // extract the information
             var identity = JsonConvert.DeserializeObject<CldrLocale>(locale["identity"].ToString());
             var data = locale.Properties().First(x => x.Name != "identity");
-            identity.LocaleCode = localeCode;
 
             return new CldrJson(identity, data);
         }
