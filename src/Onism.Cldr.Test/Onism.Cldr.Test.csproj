@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="CldrJsonTest.cs" />
     <Compile Include="CldrLocaleTest.cs" />
+    <Compile Include="CldrPackageTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
