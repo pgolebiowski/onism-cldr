@@ -46,9 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CldrPackagePathExtractor.cs" />
     <Compile Include="CldrJson.cs" />
     <Compile Include="CldrLocale.cs" />
     <Compile Include="CldrPackage.cs" />
+    <Compile Include="CldrTree.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\JTokenExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
