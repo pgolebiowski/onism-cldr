@@ -8,6 +8,7 @@ namespace Onism.Cldr.Test
     [TestFixture]
     public class CldrPackageTest
     {
+        /*
         [Test]
         public void Packages_ShouldContainExactlyTheirSet()
         {
@@ -22,5 +23,6 @@ namespace Onism.Cldr.Test
             a.All(x => b.Contains(x)).Should().BeTrue();
             b.All(x => a.Contains(x)).Should().BeTrue();
         }
+        */
     }
 }

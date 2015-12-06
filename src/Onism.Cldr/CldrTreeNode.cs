@@ -125,5 +125,39 @@ namespace Onism.Cldr
             // seek deeper
             child.Add(locale, remainingNodes.Skip(1).ToArray(), value);
         }
+
+        /*
+
+                public int FindMaxDepth(int currentMax)
+        {
+            if (Children.IsNotEmpty())
+                return Children.Select(x => x.FindMaxDepth(currentMax + 1)).Max();
+
+            return currentMax;
+        }
+
+
+        public IEnumerable<CldrTreeNode> FindVertices()
+        {
+            var vertices = new List<CldrTreeNode>() { this };
+
+            if (Children.IsNotEmpty())
+                vertices.AddRange(Children.SelectMany(x => x.FindVertices()));
+
+            return vertices;
+        }
+
+        public IEnumerable<CldrTreeNode> FindValues()
+        {
+            var leaves = new List<CldrTreeNode>();
+
+            if (Children.IsEmpty())
+                leaves.Add(this);
+            else
+                leaves.AddRange(Children.SelectMany(x => x.FindValues()));
+
+            return leaves;
+        }
+    */
     }
 }
