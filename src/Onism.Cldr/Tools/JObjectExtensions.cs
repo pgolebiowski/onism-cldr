@@ -67,9 +67,12 @@ namespace Onism.Cldr.Tools
         /// <summary>
         /// Ensures this JObject consists exclusively of supported types.
         /// </summary>
-        private static void CheckSupportedTypes(JObject obj)
+        public static void CheckSupportedTypes(JObject obj)
         {
-            var unsupportedTypes = obj.GetAllTypes().Except(supportedTokenTypes);
+            if (obj == null)
+                throw new ArgumentNullException(nameof(obj));
+
+            var unsupportedTypes = obj.GetAllTypes().Except(supportedTokenTypes).ToArray();
 
             if (unsupportedTypes.IsNotEmpty())
                 throw new FormatException($"Unsupported JTokenTypes used in JSON: {string.Join(", ", unsupportedTypes)}.");
