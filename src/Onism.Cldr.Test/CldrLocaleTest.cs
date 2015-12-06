@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using FluentAssertions;
 
@@ -22,12 +18,12 @@ namespace Onism.Cldr.Test
             };
         }
 
-        private static CldrLocale enGB => Arrange("en", "GB", null, null);
+        private static CldrLocale EnGb => Arrange("en", "GB", null, null);
 
         [Test]
         public void Equals_InstanceAndNull_False()
         {
-            var l = enGB;
+            var l = EnGb;
 
             Equals(l, null).Should().BeFalse();
             Equals(null, l).Should().BeFalse();
@@ -39,8 +35,8 @@ namespace Onism.Cldr.Test
         [Test]
         public void Equals_SameValues_True()
         {
-            var l1 = enGB;
-            var l2 = enGB;
+            var l1 = EnGb;
+            var l2 = EnGb;
 
             l1.Should().Be(l2);
             l2.Should().Be(l1);
@@ -52,7 +48,7 @@ namespace Onism.Cldr.Test
         [Test]
         public void Equals_SameReferences_True()
         {
-            var l1 = enGB;
+            var l1 = EnGb;
             var l2 = l1;
 
             l1.Should().Be(l2);
@@ -61,15 +57,15 @@ namespace Onism.Cldr.Test
             (l1 == l2).Should().BeTrue();
             (l2 == l1).Should().BeTrue();
 
-            Action a = (() => enGB.GetHashCode());
+            Action a = () => EnGb.GetHashCode();
             a.ShouldNotThrow();
         }
 
         [Test]
         public void Equals_DifferentTypes_False()
         {
-            object l1 = enGB;
-            object l2 = "enGB";
+            object l1 = EnGb;
+            object l2 = "EnGb";
 
             l1.Should().NotBe(l2);
             l2.Should().NotBe(l1);
@@ -81,8 +77,8 @@ namespace Onism.Cldr.Test
         [Test]
         public void Equals_SameButBoxed_True()
         {
-            object l1 = enGB;
-            object l2 = enGB;
+            object l1 = EnGb;
+            object l2 = EnGb;
 
             l1.Should().Be(l2);
             l2.Should().Be(l1);
