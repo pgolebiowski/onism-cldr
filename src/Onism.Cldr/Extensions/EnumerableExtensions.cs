@@ -17,5 +17,10 @@ namespace Onism.Cldr.Extensions
         {
             return source.Any();
         }
+
+        public static string JoinStrings(this IEnumerable<string> source, string separator)
+        {
+            return string.Join(separator, source);
+        }
     }
 }

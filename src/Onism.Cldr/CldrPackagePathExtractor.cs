@@ -10,17 +10,17 @@ using Onism.Cldr.Extensions;
 //  Thus, each CLDR package (in practice, a GitHub repository) contains one bower.json file in its
 //  main directory. What kind of information does it provide? The name of the package, its version, dependencies, certain
 //  files to be ignored, and - most importantly - the "main" property, which lists "the primary acting files
-//  necessary to use the package". Therefore this code seeks for such bower.json files to get to that information.
+//  necessary to use the package". Therefore Onism seeks for such bower.json files to get to that information.
 //  Once they are all discovered, paths to the relevant files can be resolved.
 // 
 //  The paths described by the "main" property in a bower.json file use certain patterns. As for 4/12/2015,
 //  the CLDR JSON data uses only these paths:
 //
-//  - main/**/*.json
-//  - availableLocales.json
-//  - defaultContent.json
-//  - supplemental/*.json
-//  - segments/**/*.json
+//      - main/**/*.json
+//      - segments/**/*.json
+//      - availableLocales.json
+//      - defaultContent.json
+//      - supplemental/*.json
 //   
 //  The specification of Bower does not define what kind of patterns are used in this specific property. It is hard
 //  to guess if those files will introduce new patterns in the future and what exactly will be delivered by Unicode.
@@ -40,7 +40,7 @@ namespace Onism.Cldr
         /// Extracts relevant file paths from the specified directory.
         /// </summary>
         /// <param name="path">The path to the directory to search.</param>
-        public static IEnumerable<string> ExtractFiles(string path)
+        public static IEnumerable<string> ExtractPaths(string path)
         {
             var bowerFiles = GetBowerFiles(path);
             var extracted = new List<string>();
@@ -67,7 +67,7 @@ namespace Onism.Cldr
         /// Returns the paths to Bower files found in the current directory and its subdirectories.
         /// </summary>
         /// <param name="path">The path to the directory to search.</param>
-        private static List<string> GetBowerFiles(string path)
+        private static IEnumerable<string> GetBowerFiles(string path)
         {
             var bowerFiles = new List<string>();
             var bowerFile = Path.Combine(path, "bower.json");

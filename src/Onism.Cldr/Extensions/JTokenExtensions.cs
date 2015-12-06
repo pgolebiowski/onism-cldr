@@ -23,12 +23,13 @@ namespace Onism.Cldr.Extensions
 
         public static IEnumerable<JToken> FindLeaves(this JToken token)
         {
-            var children = token.Children();
+            var leaves = new List<JToken>();
 
-            if (children.IsNotEmpty())
-                return children.SelectMany(x => x.FindLeaves());
-            else
-                return token;
+            if (token is JValue)
+                leaves.Add(token);
+
+            leaves.AddRange(token.SelectMany(x => x.FindLeaves()));
+            return leaves;
         }
     }
 }
