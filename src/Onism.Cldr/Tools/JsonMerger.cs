@@ -3,7 +3,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using Onism.Cldr.Extensions;
 
-namespace Onism.Cldr
+namespace Onism.Cldr.Tools
 {
     public class JsonMerger
     {
