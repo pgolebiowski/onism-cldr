@@ -16,6 +16,7 @@ namespace Onism.Cldr
     /// since no locale extensions are being used. However, this might be changed in future CLDR releases.
     /// See the Core Specification (http://cldr.unicode.org/core-spec) for definitions.
     /// </remarks>
+    [JsonObject(MemberSerialization.OptIn)]
     public class CldrLocale
     {
         /// <summary>
@@ -57,7 +58,7 @@ namespace Onism.Cldr
         /// <summary>
         /// Gets the hyphen-separated code of this <see cref="CldrLocale"/>.
         /// </summary>
-        public string Code => JoinNotNull("-", Language, Territory, Script, Variant);
+        public string Code => JoinNotNull("-", Language, Script, Territory, Variant);
 
         private string JoinNotNull(string separator, params string[] values)
         {
@@ -94,7 +95,7 @@ namespace Onism.Cldr
 
         public override int GetHashCode()
         {
-            return (new string[] { Language, Territory, Script, Variant })
+            return (new [] { Language, Script, Territory, Variant })
                 .Select(x => x == null ? 0 : x.GetHashCode())
                 .Aggregate((a, b) => a ^ b);
         }

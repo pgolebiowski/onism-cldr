@@ -1,18 +1,28 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net;
+using Newtonsoft.Json;
+using ProtoBuf;
 
 namespace Onism.Cldr
 {
     /// <summary>
     /// Represents one of the packages the CLDR data has been grouped into. This is a "smart enum" type.
     /// </summary>
+    [JsonObject(MemberSerialization.OptIn)]
     public abstract class CldrPackage
     {
         /// <summary>
         /// Gets or sets the name of this package.
         /// </summary>
+        [JsonProperty]
         public string Name { get; protected set; }
+
+        internal abstract string Extension { get; }
 
         protected CldrPackage(string name)
         {
@@ -27,14 +37,41 @@ namespace Onism.Cldr
         {
             using (var client = new WebClient())
             {
-                var zipPath = Path.Combine(destinationDirectoryName, $"{Name}.zip");
-                var extractPath = Path.Combine(destinationDirectoryName, $"{Name}");
+                var tempPath = Path.GetTempPath();
+                var zipPath = Path.Combine(tempPath, $"{Name}.zip");
+                var extractPath = Path.Combine(tempPath, $"{Name}");
                 var uri = $"https://github.com/unicode-cldr/{Name}/archive/master.zip";
 
                 client.DownloadFile(uri, zipPath);
                 ZipFile.ExtractToDirectory(zipPath, extractPath);
                 File.Delete(zipPath);
+
+                TryParsePackage(extractPath);
+                Directory.Delete(extractPath, true);
+
+                var resultPath = Path.Combine(destinationDirectoryName, Name + Extension);
+                File.WriteAllText(resultPath, Serialize());
             }
+        }
+
+        internal abstract void TryParsePackage(string directoryPath);
+
+        internal abstract string Serialize();
+
+        public static CldrPackage LoadFromFile(string path)
+        {
+            var file = File.ReadAllText(path);
+
+            if (path.EndsWith(".cldrstd"))
+                return JsonConvert.DeserializeObject<CldrStandardPackage>(file);
+
+            if (path.EndsWith(".cldrsup"))
+                return JsonConvert.DeserializeObject<CldrSupplementalPackage>(file);
+
+            if (path.EndsWith(".cldrseg"))
+                return JsonConvert.DeserializeObject<CldrSegmentsPackage>(file);
+
+            throw new ArgumentException("not supported extension");
         }
 
         /// <summary>

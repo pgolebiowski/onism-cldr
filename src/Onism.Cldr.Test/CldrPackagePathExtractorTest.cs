@@ -62,8 +62,8 @@ namespace Onism.Cldr.Test
                 .Replace('\\', '/');
         }
 
-        private string[] ExtractFiles() => CldrPackagePathExtractor
-            .ExtractFiles(_tempFolder)
+        private string[] ExtractPaths() => CldrPackagePathExtractor
+            .ExtractPaths(_tempFolder)
             .ToArray();
 
         #endregion
@@ -88,7 +88,7 @@ namespace Onism.Cldr.Test
             var oneFile = CreateFile(_tempFolder, "defaultContent");
             CreateBower(_tempFolder, "defaultContent.json");
 
-            var found = ExtractFiles();
+            var found = ExtractPaths();
             found.Should().HaveCount(1);
             found.First().Should().Be(oneFile);
         }
@@ -101,7 +101,7 @@ namespace Onism.Cldr.Test
             var mainContent = files.Select(x => MakeRelative(x, _tempFolder));
             CreateBower(_tempFolder, mainContent);
 
-            ExtractFiles().Should().BeEquivalentTo(files);
+            ExtractPaths().Should().BeEquivalentTo(files);
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace Onism.Cldr.Test
             var mainContent = files.Select(x => MakeRelative(x, _tempFolder));
             CreateBower(_tempFolder, mainContent);
 
-            ExtractFiles().Should().BeEquivalentTo(files);
+            ExtractPaths().Should().BeEquivalentTo(files);
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace Onism.Cldr.Test
             var mainContent = subset.Select(x => MakeRelative(x, _tempFolder));
             CreateBower(_tempFolder, mainContent);
 
-            ExtractFiles().Should().BeEquivalentTo(subset);
+            ExtractPaths().Should().BeEquivalentTo(subset);
         }
 
         [Test]
@@ -172,7 +172,7 @@ namespace Onism.Cldr.Test
             var mainContent = wildcardPaths.Select(x => MakeRelative(x, _tempFolder));
             CreateBower(_tempFolder, mainContent);
 
-            ExtractFiles().Should().BeEquivalentTo(files);
+            ExtractPaths().Should().BeEquivalentTo(files);
         }
 
         [Test]
@@ -247,7 +247,7 @@ namespace Onism.Cldr.Test
 
             // check it
             var allDistinct = wildcardFiles.Concat(explicitFiles).Distinct();
-            ExtractFiles().Should().BeEquivalentTo(allDistinct);
+            ExtractPaths().Should().BeEquivalentTo(allDistinct);
         }
 
         [Test]
@@ -272,7 +272,7 @@ namespace Onism.Cldr.Test
             };
             CreateBower(_tempFolder, mainContent);
             var allFiles = lvl1Files.Concat(lvl2Files).Concat(lvl3Files);
-            ExtractFiles().Should().BeEquivalentTo(allFiles);
+            ExtractPaths().Should().BeEquivalentTo(allFiles);
 
             // selective
             mainContent = new[]
@@ -282,7 +282,7 @@ namespace Onism.Cldr.Test
             };
             CreateBower(_tempFolder, mainContent);
             allFiles = lvl1Files.Concat(lvl3Files);
-            ExtractFiles().Should().BeEquivalentTo(allFiles);
+            ExtractPaths().Should().BeEquivalentTo(allFiles);
         }
     }
 }
