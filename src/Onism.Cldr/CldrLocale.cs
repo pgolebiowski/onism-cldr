@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Newtonsoft.Json;
 
 namespace Onism.Cldr
@@ -17,8 +13,10 @@ namespace Onism.Cldr
     /// See the Core Specification (http://cldr.unicode.org/core-spec) for definitions.
     /// </remarks>
     [JsonObject(MemberSerialization.OptIn)]
-    public class CldrLocale
+    public sealed class CldrLocale
     {
+        public static readonly CldrLocale None = new CldrLocale { Language = "none" };
+
         /// <summary>
         /// Unicode language subtag (also known as a Unicode base language code).
         /// </summary>
@@ -26,16 +24,16 @@ namespace Onism.Cldr
         public string Language { get; set; }
 
         /// <summary>
-        /// Unicode region subtag (also known as a Unicode region code, or a Unicode territory code).
-        /// </summary>
-        [JsonProperty(PropertyName = "territory")]
-        public string Territory { get; set; }
-
-        /// <summary>
         /// Unicode script subtag (also known as a Unicode script code).
         /// </summary>
         [JsonProperty(PropertyName = "script")]
         public string Script { get; set; }
+
+        /// <summary>
+        /// Unicode region subtag (also known as a Unicode region code, or a Unicode territory code).
+        /// </summary>
+        [JsonProperty(PropertyName = "territory")]
+        public string Territory { get; set; }
 
         /// <summary>
         /// Unicode variant subtag (also known as a Unicode language variant code)
@@ -67,37 +65,17 @@ namespace Onism.Cldr
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            var other = obj as CldrLocale;
+
+            if (other == null)
                 return false;
 
-            if (ReferenceEquals(this, obj))
-                return true;
-
-            if (obj.GetType() != typeof(CldrLocale))
-                return false;
-
-            return Equals((CldrLocale)obj);
-        }
-
-        public bool Equals(CldrLocale other)
-        {
-            if (ReferenceEquals(null, other))
-                return false;
-
-            if (ReferenceEquals(this, other))
-                return true;
-
-            return Language == other.Language
-                && Territory == other.Territory
-                && Script == other.Script
-                && Variant == other.Variant;
+            return Code == other.Code;
         }
 
         public override int GetHashCode()
         {
-            return (new [] { Language, Script, Territory, Variant })
-                .Select(x => x == null ? 0 : x.GetHashCode())
-                .Aggregate((a, b) => a ^ b);
+            return Code.GetHashCode();
         }
 
         public static bool operator ==(CldrLocale left, CldrLocale right)

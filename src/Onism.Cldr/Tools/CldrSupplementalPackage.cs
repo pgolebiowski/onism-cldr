@@ -1,23 +1,15 @@
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Onism.Cldr.Extensions;
 
-namespace Onism.Cldr
+namespace Onism.Cldr.Tools
 {
     /// <summary>
     /// Represents a package containing supplementary information about locales.
     /// </summary>
-    [JsonObject(MemberSerialization.OptIn)]
     public sealed class CldrSupplementalPackage : CldrPackage
     {
-        [JsonProperty]
-        private JObject _json;
-
-        internal static string BaseExtension => ".cldrsup";
-
-        internal override string Extension => BaseExtension;
-
         internal CldrSupplementalPackage(string name)
             : base(name)
         {
@@ -26,10 +18,15 @@ namespace Onism.Cldr
 
         internal override void TryParsePackage(string directoryPath)
         {
-            _json = CldrPackagePathExtractor
+            var merged = CldrPackagePathExtractor
                 .ExtractPaths(directoryPath)
                 .Select(FormatFile)
-                .Aggregate(JsonMerger.SafeMerge);
+                .ToArray()
+                .HierarchicalAggregate(JsonMerger.SafeMerge);
+
+            Data = new CldrJson(CldrLocale.None, merged)
+                .Yield()
+                .ToArray();
         }
 
         private static JObject FormatFile(string path)
@@ -39,7 +36,8 @@ namespace Onism.Cldr
             // root
             var o = JObject.Parse(json)
                 .PropertiesCountShouldBe(1);
-
+            
+            // files left as they are
             if (o.Property("availableLocales") != null || o.Property("defaultContent") != null)
                 return o;
 
@@ -53,11 +51,6 @@ namespace Onism.Cldr
             supplemental.Property("version").Remove();
 
             return o;
-        }
-
-        internal override string Serialize()
-        {
-            return JsonConvert.SerializeObject(this);
         }
     }
 }

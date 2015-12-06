@@ -50,21 +50,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CldrPackagePathExtractor.cs" />
-    <Compile Include="CldrJson.cs" />
     <Compile Include="CldrLocale.cs" />
-    <Compile Include="CldrPackage.cs" />
-    <Compile Include="CldrSegmentsPackage.cs" />
-    <Compile Include="CldrStandardPackage.cs" />
-    <Compile Include="CldrSupplementalPackage.cs" />
     <Compile Include="CldrTree.cs" />
     <Compile Include="CldrTreeNode.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\JTokenExtensions.cs" />
     <Compile Include="Extensions\ReadOnlyListExtensions.cs" />
-    <Compile Include="JsonMerger.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\CldrJson.cs" />
+    <Compile Include="Tools\CldrPackage.cs" />
+    <Compile Include="Tools\CldrPackageInstances.cs" />
+    <Compile Include="Tools\CldrPackagePathExtractor.cs" />
+    <Compile Include="Tools\CldrSegmentsPackage.cs" />
+    <Compile Include="Tools\CldrStandardPackage.cs" />
+    <Compile Include="Tools\CldrSupplementalPackage.cs" />
+    <Compile Include="Tools\JObjectExtensions.cs" />
+    <Compile Include="Tools\JsonMerger.cs" />
+    <Compile Include="Tools\JsonUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
