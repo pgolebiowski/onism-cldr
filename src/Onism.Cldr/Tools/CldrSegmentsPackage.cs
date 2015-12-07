@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
@@ -19,9 +20,9 @@ namespace Onism.Cldr.Tools
         /// Validates files discovered in this package and creates a temporary
         /// representation of the data to be later consumed while building a <see cref="CldrTree"/>.
         /// </summary>
-        internal override void TryParsePackage(string directoryPath)
+        internal override IEnumerable<CldrJson> TryParsePackage(string directoryPath)
         {
-            Data = (from path in CldrPackagePathExtractor.ExtractPaths(directoryPath)
+            return (from path in CldrPackagePathExtractor.ExtractPaths(directoryPath)
 
                     let localeCode = Path.GetFileName(Path.GetDirectoryName(path))
                     let json = File.ReadAllText(path)
@@ -44,7 +45,7 @@ namespace Onism.Cldr.Tools
 
                     let segmentations = new JObject(segments.Property("segmentations"))
 
-                    select new CldrJson(identity, segmentations))
+                    select new CldrJson(GetType(), identity, segmentations))
                 .ToArray();
         }
     }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using Newtonsoft.Json.Linq;
 
 namespace Onism.Cldr.Tools
 {
@@ -7,6 +8,11 @@ namespace Onism.Cldr.Tools
     /// </summary>
     internal sealed class CldrJson
     {
+        /// <summary>
+        /// Gets the type of the package this file was extracted from.
+        /// </summary>
+        public Type Package { get; }
+
         /// <summary>
         /// Gets the locale this file is associated with.
         /// </summary>
@@ -17,8 +23,9 @@ namespace Onism.Cldr.Tools
         /// </summary>
         public JObject Data { get; }
 
-        public CldrJson(CldrLocale locale, JObject data)
+        public CldrJson(Type package, CldrLocale locale, JObject data)
         {
+            Package = package;
             Locale = locale;
             Data = data;
         }

@@ -1,7 +1,7 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using Onism.Cldr.Extensions;
 
 namespace Onism.Cldr.Tools
 {
@@ -16,16 +16,11 @@ namespace Onism.Cldr.Tools
             
         }
 
-        internal override void TryParsePackage(string directoryPath)
+        internal override IEnumerable<CldrJson> TryParsePackage(string directoryPath)
         {
-            var merged = CldrPackagePathExtractor
+            return CldrPackagePathExtractor
                 .ExtractPaths(directoryPath)
-                .Select(FormatFile)
-                .ToArray()
-                .HierarchicalAggregate(JsonMerger.SafeMerge);
-
-            Data = new CldrJson(CldrLocale.None, merged)
-                .Yield()
+                .Select(x => new CldrJson(GetType(), CldrLocale.None, FormatFile(x)))
                 .ToArray();
         }
 
@@ -47,8 +42,6 @@ namespace Onism.Cldr.Tools
             var supplemental = ((JObject) o["supplemental"])
                 .PropertiesCountShouldBe(2)
                 .PropertiesShouldContain("version", JTokenType.Object);
-
-            supplemental.Property("version").Remove();
 
             return o;
         }

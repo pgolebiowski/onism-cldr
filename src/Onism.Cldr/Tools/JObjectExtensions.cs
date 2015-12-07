@@ -57,7 +57,7 @@ namespace Onism.Cldr.Tools
         /// JSON files are assumed to consist exclusiely of the specified types.
         /// If any other <see cref="JTokenType"/> is found, a file is considered invalid.
         /// </summary>
-        private static HashSet<JTokenType> supportedTokenTypes = new HashSet<JTokenType>
+        private static readonly HashSet<JTokenType> SupportedTokenTypes = new HashSet<JTokenType>
         {
             JTokenType.Object,
             JTokenType.Property,
@@ -72,7 +72,7 @@ namespace Onism.Cldr.Tools
             if (obj == null)
                 throw new ArgumentNullException(nameof(obj));
 
-            var unsupportedTypes = obj.GetAllTypes().Except(supportedTokenTypes).ToArray();
+            var unsupportedTypes = obj.GetAllTypes().Except(SupportedTokenTypes).ToArray();
 
             if (unsupportedTypes.IsNotEmpty())
                 throw new FormatException($"Unsupported JTokenTypes used in JSON: {string.Join(", ", unsupportedTypes)}.");
