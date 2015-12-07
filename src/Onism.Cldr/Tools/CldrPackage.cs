@@ -13,18 +13,19 @@ namespace Onism.Cldr.Tools
     /// </summary>
     public abstract partial class CldrPackage
     {
+        private const string Extension = ".cldrpkg";
+
         /// <summary>
         /// Gets or sets the name of this package.
         /// </summary>
         public string Name { get; protected set; }
-        internal CldrJson[] Data;
 
         protected CldrPackage(string name)
         {
             Name = $"cldr-{name}";
         }
 
-        internal abstract void TryParsePackage(string directoryPath);
+        internal abstract IEnumerable<CldrJson> TryParsePackage(string directoryPath);
 
         /// <summary>
         /// Downloads this CLDR package from GitHub to a local directory.
@@ -43,37 +44,14 @@ namespace Onism.Cldr.Tools
                 ZipFile.ExtractToDirectory(zipPath, extractPath);
                 File.Delete(zipPath);
 
-                TryParsePackage(extractPath);
+                var cldrJsons = TryParsePackage(extractPath);
                 Directory.Delete(extractPath, true);
 
                 var resultPath = Path.Combine(destinationDirectoryName, Name + Extension);
-                File.WriteAllText(resultPath, Serialize());
+                var result = JsonConvert.SerializeObject(cldrJsons, Formatting.Indented);
+
+                File.WriteAllText(resultPath, result);
             }
-        }
-
-        private string Serialize()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
-
-        private string Extension => Extensions[GetType()];
-
-        private static readonly Dictionary<Type, string> Extensions = new Dictionary<Type, string>
-        {
-            { typeof(CldrStandardPackage), ".cldrstd" },
-            { typeof(CldrSupplementalPackage), ".cldrsup" },
-            { typeof(CldrSegmentsPackage), ".cldrseg" }
-        };
-
-        public static CldrPackage LoadFromFile(string path)
-        {
-            var json = File.ReadAllText(path);
-
-            var type = Extensions
-                .First(x => path.EndsWith(x.Value))
-                .Key;
-
-            return (CldrPackage) JsonConvert.DeserializeObject(json, type);
         }
     }
 }

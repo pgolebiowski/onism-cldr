@@ -67,7 +67,6 @@
     <Compile Include="Tools\CldrStandardPackage.cs" />
     <Compile Include="Tools\CldrSupplementalPackage.cs" />
     <Compile Include="Tools\JObjectExtensions.cs" />
-    <Compile Include="Tools\JsonMerger.cs" />
     <Compile Include="Tools\JsonUtils.cs" />
   </ItemGroup>
   <ItemGroup>
