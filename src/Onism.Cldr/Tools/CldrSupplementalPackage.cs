@@ -24,16 +24,20 @@ namespace Onism.Cldr.Tools
                 .PropertiesCountShouldBe(1);
 
             // files left as they are
-            if (o.Property("availableLocales") == null && o.Property("defaultContent") == null)
-            {
-                // supplemental
-                o.PropertiesShouldContain("supplemental", JTokenType.Object);
+            if (o.Property("availableLocales") != null || o.Property("defaultContent") != null)
+                return new CldrJson(GetType(), CldrLocale.None, o);
+            
+            // supplemental
+            o.PropertiesShouldContain("supplemental", JTokenType.Object);
 
-                ((JObject) o["supplemental"])
-                    .PropertiesCountShouldBe(2)
-                    .PropertiesShouldContain("version", JTokenType.Object);
-            }
+            var supplemental = ((JObject) o["supplemental"])
+                .PropertiesCountShouldBe(2)
+                .PropertiesShouldContain("version", JTokenType.Object);
 
+            supplemental
+                .Property("version")
+                .Remove();
+                
             return new CldrJson(GetType(), CldrLocale.None, o);
         }
     }

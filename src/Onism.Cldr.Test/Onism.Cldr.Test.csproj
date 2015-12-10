@@ -76,6 +76,7 @@
     <Compile Include="CldrPackagePathExtractorTest.cs" />
     <Compile Include="CldrPackageTest.cs" />
     <Compile Include="CldrStandardPackageTest.cs" />
+    <Compile Include="CldrSupplementalPackageTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
