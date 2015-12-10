@@ -1,4 +1,3 @@
-using System.IO;
 using Newtonsoft.Json.Linq;
 
 namespace Onism.Cldr.Tools
@@ -20,10 +19,8 @@ namespace Onism.Cldr.Tools
         /// </summary>
         internal override CldrJson TryParseFile(string path)
         {
-            var json = File.ReadAllText(path);
-
             // root
-            var o = JObject.Parse(json)
+            var o = JsonUtils.LoadFromFile(path)
                 .PropertiesCountShouldBe(1);
 
             // files left as they are
@@ -32,7 +29,7 @@ namespace Onism.Cldr.Tools
                 // supplemental
                 o.PropertiesShouldContain("supplemental", JTokenType.Object);
 
-                var supplemental = ((JObject) o["supplemental"])
+                ((JObject) o["supplemental"])
                     .PropertiesCountShouldBe(2)
                     .PropertiesShouldContain("version", JTokenType.Object);
             }

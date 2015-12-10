@@ -55,7 +55,7 @@
     <Compile Include="CldrTreeNode.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Extensions\JTokenExtensions.cs" />
+    <Compile Include="Extensions\JObjectExtensions.cs" />
     <Compile Include="Extensions\ReadOnlyListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,7 +66,7 @@
     <Compile Include="Tools\CldrSegmentsPackage.cs" />
     <Compile Include="Tools\CldrStandardPackage.cs" />
     <Compile Include="Tools\CldrSupplementalPackage.cs" />
-    <Compile Include="Tools\JObjectExtensions.cs" />
+    <Compile Include="Tools\FluentValidationUtils.cs" />
     <Compile Include="Tools\JsonUtils.cs" />
   </ItemGroup>
   <ItemGroup>
