@@ -11,8 +11,7 @@ namespace Onism.Cldr.Extensions
     {
         public static HashSet<JTokenType> GetAllTypes(this JToken token)
         {
-            var types = new HashSet<JTokenType>();
-            types.Add(token.Type);
+            var types = new HashSet<JTokenType> {token.Type};
 
             foreach (var child in token.Children())
                 foreach (var type in child.GetAllTypes())

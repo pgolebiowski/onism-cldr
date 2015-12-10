@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
@@ -15,46 +14,40 @@ namespace Onism.Cldr.Tools
         {
             Name = $"{Name}-full";
         }
-
-        /// <summary>
-        /// Validates files discovered in this package and creates a temporary
-        /// representation of the data to be later consumed while building a <see cref="CldrTree"/>.
-        /// </summary>
-        internal override IEnumerable<CldrJson> TryParsePackage(string directoryPath)
+        
+        internal override CldrJson TryParseFile(string path)
         {
-            return (from path in CldrPackagePathExtractor.ExtractPaths(directoryPath)
+            var localeCode = Path.GetFileName(Path.GetDirectoryName(path));
+            var json = File.ReadAllText(path);
 
-                    let localeCode = Path.GetFileName(Path.GetDirectoryName(path))
-                    let json = File.ReadAllText(path)
+            // root
+            var o = JObject.Parse(json)
+                .DescendantTypesShouldOnlyBe(JTokenType.Object, JTokenType.Property, JTokenType.String)
+                .PropertiesCountShouldBe(1)
+                .PropertiesShouldContain("main", JTokenType.Object);
 
-                    // root
-                    let o = JObject.Parse(json)
-                        .PropertiesCountShouldBe(1)
-                        .PropertiesShouldContain("main", JTokenType.Object)
+            // main
+            var main = ((JObject) o["main"])
+                .PropertiesCountShouldBe(1)
+                .PropertiesShouldContain(localeCode, JTokenType.Object);
 
-                    // main
-                    let main = ((JObject)o["main"])
-                        .PropertiesCountShouldBe(1)
-                        .PropertiesShouldContain(localeCode, JTokenType.Object)
+            // en-GB
+            var locale = ((JObject) main[localeCode])
+                .PropertiesCountShouldBe(2)
+                .PropertiesShouldContain("identity", JTokenType.Object);
 
-                    // en-GB
-                    let locale = ((JObject)main[localeCode])
-                        .PropertiesCountShouldBe(2)
-                        .PropertiesShouldContain("identity", JTokenType.Object)
+            // extract the information
+            var identity = locale["identity"]
+                .ToObject<CldrLocale>()
+                .LocaleCodeShouldBe(localeCode);
 
-                    // extract the information
-                    let identity = locale["identity"]
-                        .ToObject<CldrLocale>()
-                        .LocaleCodeShouldBe(localeCode)
+            var someProperty = locale
+                .Properties()
+                .First(x => x.Name != "identity");
 
-                    let someProperty = locale
-                        .Properties()
-                        .First(x => x.Name != "identity")
+            var someData = new JObject(someProperty);
 
-                    let someData = new JObject(someProperty)
-
-                    select new CldrJson(GetType(), identity, someData))
-                .ToArray();
+            return new CldrJson(GetType(), identity, someData);
         }
 
         /// <summary>
