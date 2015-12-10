@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
@@ -25,6 +23,10 @@ namespace Onism.Cldr.Tools
             Name = $"cldr-{name}";
         }
 
+        /// <summary>
+        /// Validates a file extracted from this package and creates a temporary representation
+        /// of the data to be later consumed while building a <see cref="CldrTree"/>.
+        /// </summary>
         internal abstract CldrJson TryParseFile(string path);
 
         /// <summary>
@@ -35,13 +37,12 @@ namespace Onism.Cldr.Tools
         {
             using (var client = new WebClient())
             {
-                // download the information (zip)
-                // and extract the data
                 var uri = $"https://github.com/unicode-cldr/{Name}/archive/master.zip";
                 var tempPath = Path.GetTempPath();
                 var zipPath = Path.Combine(tempPath, $"{Name}.zip");
                 var packageDirectoryName = Path.Combine(tempPath, $"{Name}");
 
+                // download the package as a zip and unpack it
                 client.DownloadFile(uri, zipPath);
                 ZipFile.ExtractToDirectory(zipPath, packageDirectoryName);
                 File.Delete(zipPath);
@@ -52,8 +53,10 @@ namespace Onism.Cldr.Tools
                     .Select(TryParseFile)
                     .ToArray();
 
-                // cleanup and serialization
+                // cleanup
                 Directory.Delete(packageDirectoryName, true);
+
+                // serialize the collection of CldrJsons
                 var resultPath = Path.Combine(destinationDirectoryName, Name + Extension);
                 var result = JsonConvert.SerializeObject(cldrJsons, Formatting.Indented);
                 File.WriteAllText(resultPath, result);

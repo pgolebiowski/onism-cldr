@@ -56,7 +56,7 @@ namespace Onism.Cldr.Tools
         /// <summary>
         /// Ensures this JObject consists exclusively of supported types.
         /// </summary>
-        public static JObject DescendantTypesShouldOnlyBe(this JObject obj, params JTokenType[] supportedTokenTypes)
+        public static JObject DescendantsTypesShouldOnlyBe(this JObject obj, params JTokenType[] supportedTokenTypes)
         {
             var unsupportedTypes = obj.GetAllTypes().Except(supportedTokenTypes).ToArray();
 

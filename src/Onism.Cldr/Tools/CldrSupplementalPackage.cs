@@ -14,6 +14,10 @@ namespace Onism.Cldr.Tools
             
         }
 
+        /// <summary>
+        /// Validates a file extracted from this package and creates a temporary representation
+        /// of the data to be later consumed while building a <see cref="CldrTree"/>.
+        /// </summary>
         internal override CldrJson TryParseFile(string path)
         {
             var json = File.ReadAllText(path);

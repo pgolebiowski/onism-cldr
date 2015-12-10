@@ -13,7 +13,7 @@ using Onism.Cldr.Extensions;
 //  necessary to use the package". Therefore Onism seeks for such bower.json files to get to that information.
 //  Once they are all discovered, paths to the relevant files can be resolved.
 // 
-//  The paths described by the "main" property in a bower.json file use certain patterns. As for 4/12/2015,
+//  The paths described by the "main" property in a bower.json file use certain patterns. As for December 2015,
 //  the CLDR JSON data uses only these paths:
 //
 //      - main/**/*.json
@@ -25,7 +25,7 @@ using Onism.Cldr.Extensions;
 //  The specification of Bower does not define what kind of patterns are used in this specific property. It is hard
 //  to guess if those files will introduce new patterns in the future and what exactly will be delivered by Unicode.
 //  The code below simply splits such paths into separate components, treating each of them as a valid search pattern
-//  to be consumed directly by Directory.GetFiles() and Directory.GetDirectories(). According to the specification,
+//  to be consumed directly by Directory.GetFiles() and Directory.GetDirectories(). According to the specification of those methods,
 //  such pattern can be a combination of literal and wildcard characters, but doesn't support regular expressions.
 //  The only allowed wildcard characters are '*' and '?'. Characters other than the wildcard are literal characters.
 
@@ -89,22 +89,22 @@ namespace Onism.Cldr.Tools
 
         private static IEnumerable<string> ResolvePattern(string path, string pattern)
         {
-            var paths = new[] { path };
+            // at each level all the paths will be enhanced
+            // starting from the input path, which is the directory with bower.json
+            var paths = path.Yield().ToArray();
             var patternSegments = pattern.Split('/');
+            var steps = patternSegments.Length;
 
-            return ResolvePattern(paths, patternSegments);
-        }
+            // all the segments except the last one
+            var segments = patternSegments.Take(steps - 1).ToArray();
+            var lastSegment = patternSegments.Last();
 
-        private static IEnumerable<string> ResolvePattern(string[] paths, string[] patternSegments)
-        {
-            var frontSegment = patternSegments.First();
-            var remainingSegments = patternSegments.Skip(1).ToArray();
+            // go deeper
+            foreach (var segment in segments)
+                paths = paths.SelectMany(x => Directory.GetDirectories(x, segment)).ToArray();
 
-            if (remainingSegments.IsEmpty())
-                return paths.SelectMany(x => Directory.GetFiles(x, frontSegment));
-
-            paths = paths.SelectMany(x => Directory.GetDirectories(x, frontSegment)).ToArray();
-            return ResolvePattern(paths, remainingSegments);
+            // no more subdirectories to visit, files are here
+            return paths.SelectMany(x => Directory.GetFiles(x, lastSegment));
         }
     }
 }
