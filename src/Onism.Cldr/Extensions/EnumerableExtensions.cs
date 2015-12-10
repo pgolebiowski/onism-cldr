@@ -1,23 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Onism.Cldr.Extensions
 {
-    public static class IEnumerableExtensions
+    public static class EnumerableExtensions
     {
+        /// <summary>
+        /// Gets a flag indicating whether the collection is empty.
+        /// </summary>
         public static bool IsEmpty<T>(this IEnumerable<T> source)
         {
             return !source.Any();
         }
 
+        /// <summary>
+        /// Gets a flag indicating whether the collection contains any elements.
+        /// </summary>
         public static bool IsNotEmpty<T>(this IEnumerable<T> source)
         {
             return source.Any();
         }
 
+        /// <summary>
+        /// Concatenates the members of a collection, using the specified separator between each member.
+        /// </summary>
         public static string JoinStrings(this IEnumerable<string> source, string separator)
         {
             return string.Join(separator, source);

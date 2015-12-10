@@ -21,10 +21,9 @@ namespace Onism.Cldr.Tools
         internal override CldrJson TryParseFile(string path)
         {
             var localeCode = Path.GetFileName(Path.GetDirectoryName(path));
-            var json = File.ReadAllText(path);
 
             // root
-            var o = JObject.Parse(json)
+            var o = JsonUtils.LoadFromFile(path)
                 .PropertiesCountShouldBe(1)
                 .PropertiesShouldContain("segments", JTokenType.Object);
 

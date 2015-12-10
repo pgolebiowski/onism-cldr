@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Onism.Cldr.Extensions;
 
@@ -22,31 +20,26 @@ namespace Onism.Cldr.Tools
         }
 
         /// <summary>
-        /// 
+        /// Safely merges two JSON objects. If any original value is missing from the
+        /// resulting object (due to overwriting), an exception is thrown.
         /// </summary>
-        /// <param name="array">The string representation of a char array.</param>
-        public static char[] ParseCharArray(string array)
-        {
-            return array
-                .Trim('[', ']')
-                .Where(c => !char.IsWhiteSpace(c))
-                .ToArray();
-        }
-
         public static JObject SafeMerge(JObject o1, JObject o2)
         {
-            var leaves1 = o1.FindLeaves().ToDictionary(x => x.Path, x => (string)x);
-            var leaves2 = o2.FindLeaves().ToDictionary(x => x.Path, x => (string)x);
+            var originalLeaves = new HashSet<string>(o1
+                .Leaves()
+                .Concat(o2.Leaves())
+                .Select(x => x.Path + (string) x)
+                .Distinct());
 
             o1.Merge(o2);
 
-            var leavesMerged = o1.FindLeaves().ToDictionary(x => x.Path, x => (string)x);
+            var newLeaves = new HashSet<string>(o1
+                .Leaves()
+                .Select(x => x.Path + (string) x)
+                .Distinct());
 
             // now assert
-            var allExist = leaves1.All(x => leavesMerged[x.Key] == x.Value)
-                           && leaves2.All(x => leavesMerged[x.Key] == x.Value);
-
-            if (allExist == false)
+            if (originalLeaves.Any(x => newLeaves.Contains(x) == false))
                 throw new Exception();
 
             return o1;
