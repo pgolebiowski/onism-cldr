@@ -72,7 +72,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CldrJsonTest.cs" />
     <Compile Include="CldrLocaleTest.cs" />
     <Compile Include="CldrPackagePathExtractorTest.cs" />
     <Compile Include="CldrPackageTest.cs" />

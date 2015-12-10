@@ -14,7 +14,11 @@ namespace Onism.Cldr.Tools
         {
             Name = $"{Name}-full";
         }
-        
+
+        /// <summary>
+        /// Validates a file extracted from this package and creates a temporary representation
+        /// of the data to be later consumed while building a <see cref="CldrTree"/>.
+        /// </summary>
         internal override CldrJson TryParseFile(string path)
         {
             var localeCode = Path.GetFileName(Path.GetDirectoryName(path));
@@ -22,7 +26,7 @@ namespace Onism.Cldr.Tools
 
             // root
             var o = JObject.Parse(json)
-                .DescendantTypesShouldOnlyBe(JTokenType.Object, JTokenType.Property, JTokenType.String)
+                .DescendantsTypesShouldOnlyBe(JTokenType.Object, JTokenType.Property, JTokenType.String)
                 .PropertiesCountShouldBe(1)
                 .PropertiesShouldContain("main", JTokenType.Object);
 
