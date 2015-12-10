@@ -5,7 +5,7 @@
         /// <summary>
         /// Gets all available packages.
         /// </summary>
-        public static CldrPackage[] GetPackages => new CldrPackage[]
+        public static CldrPackage[] GetPackages() => new CldrPackage[]
         {
             Core,
             CalendarBuddhist,

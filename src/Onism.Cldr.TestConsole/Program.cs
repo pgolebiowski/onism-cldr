@@ -7,8 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Onism.Cldr.Extensions;
 using Onism.Cldr.Tools;
 
@@ -23,7 +21,7 @@ namespace Onism.Cldr.TestConsole
 
 
             var path = @"\\Mac\Home\Desktop\";
-            CldrPackage.Core.Download(path);
+            //CldrPackage.Core.Download(path);
 
 
             Console.WriteLine();

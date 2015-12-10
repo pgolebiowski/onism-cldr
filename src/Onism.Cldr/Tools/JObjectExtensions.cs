@@ -48,34 +48,22 @@ namespace Onism.Cldr.Tools
         public static JToken TokenTypeShouldBe(this JToken token, JTokenType type)
         {
             if (token.Type != type)
-                throw new FormatException($"Expcted {type} type, but found {token.Type}.");
+                throw new FormatException($"Expected {type} type, but found {token.Type}.");
 
             return token;
         }
 
         /// <summary>
-        /// JSON files are assumed to consist exclusiely of the specified types.
-        /// If any other <see cref="JTokenType"/> is found, a file is considered invalid.
-        /// </summary>
-        private static readonly HashSet<JTokenType> SupportedTokenTypes = new HashSet<JTokenType>
-        {
-            JTokenType.Object,
-            JTokenType.Property,
-            JTokenType.String
-        };
-
-        /// <summary>
         /// Ensures this JObject consists exclusively of supported types.
         /// </summary>
-        public static void CheckSupportedTypes(JObject obj)
+        public static JObject DescendantTypesShouldOnlyBe(this JObject obj, params JTokenType[] supportedTokenTypes)
         {
-            if (obj == null)
-                throw new ArgumentNullException(nameof(obj));
-
-            var unsupportedTypes = obj.GetAllTypes().Except(SupportedTokenTypes).ToArray();
+            var unsupportedTypes = obj.GetAllTypes().Except(supportedTokenTypes).ToArray();
 
             if (unsupportedTypes.IsNotEmpty())
                 throw new FormatException($"Unsupported JTokenTypes used in JSON: {string.Join(", ", unsupportedTypes)}.");
+
+            return obj;
         }
     }
 }

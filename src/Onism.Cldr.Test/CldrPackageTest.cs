@@ -1,28 +1,33 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using FluentAssertions;
+using Onism.Cldr.Tools;
 
 namespace Onism.Cldr.Test
 {
     [TestFixture]
     public class CldrPackageTest
     {
-        /*
         [Test]
-        public void Packages_ShouldContainExactlyTheirSet()
+        public void GetPackages_ShouldReturnAllStaticInstances()
         {
             var staticInstances = typeof(CldrPackage)
-                .GetFields(BindingFlags.Public | BindingFlags.Static)
-                .Where(f => f.FieldType == typeof(CldrPackage))
-                .Select(f => (CldrPackage)f.GetValue(null));
+                .GetProperties(BindingFlags.Public | BindingFlags.Static)
+                .Select(x => x.GetValue(null))
+                .Where(x => x is CldrPackage)
+                .Cast<CldrPackage>()
+                .ToArray();
 
             var a = staticInstances;
             var b = CldrPackage.GetPackages();
 
-            a.All(x => b.Contains(x)).Should().BeTrue();
-            b.All(x => a.Contains(x)).Should().BeTrue();
+            Func<object, object, bool> sameType = (x1, x2) => x1.GetType() == x2.GetType();
+            Func<CldrPackage, CldrPackage, bool> sameName = (x1, x2) => x1.Name == x2.Name;
+
+            a.All(x => b.Any(y => sameType(x, y) && sameName(x, y))).Should().BeTrue();
+            b.All(x => a.Any(y => sameType(x, y) && sameName(x, y))).Should().BeTrue();
         }
-        */
     }
 }

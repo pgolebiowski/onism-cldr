@@ -25,7 +25,7 @@ namespace Onism.Cldr.Tools
             Name = $"cldr-{name}";
         }
 
-        internal abstract IEnumerable<CldrJson> TryParsePackage(string directoryPath);
+        internal abstract CldrJson TryParseFile(string path);
 
         /// <summary>
         /// Downloads this CLDR package from GitHub to a local directory.
@@ -35,21 +35,27 @@ namespace Onism.Cldr.Tools
         {
             using (var client = new WebClient())
             {
+                // download the information (zip)
+                // and extract the data
+                var uri = $"https://github.com/unicode-cldr/{Name}/archive/master.zip";
                 var tempPath = Path.GetTempPath();
                 var zipPath = Path.Combine(tempPath, $"{Name}.zip");
-                var extractPath = Path.Combine(tempPath, $"{Name}");
-                var uri = $"https://github.com/unicode-cldr/{Name}/archive/master.zip";
+                var packageDirectoryName = Path.Combine(tempPath, $"{Name}");
 
                 client.DownloadFile(uri, zipPath);
-                ZipFile.ExtractToDirectory(zipPath, extractPath);
+                ZipFile.ExtractToDirectory(zipPath, packageDirectoryName);
                 File.Delete(zipPath);
 
-                var cldrJsons = TryParsePackage(extractPath);
-                Directory.Delete(extractPath, true);
+                // parse the package
+                var cldrJsons = CldrPackagePathExtractor
+                    .ExtractPaths(packageDirectoryName)
+                    .Select(TryParseFile)
+                    .ToArray();
 
+                // cleanup and serialization
+                Directory.Delete(packageDirectoryName, true);
                 var resultPath = Path.Combine(destinationDirectoryName, Name + Extension);
                 var result = JsonConvert.SerializeObject(cldrJsons, Formatting.Indented);
-
                 File.WriteAllText(resultPath, result);
             }
         }
