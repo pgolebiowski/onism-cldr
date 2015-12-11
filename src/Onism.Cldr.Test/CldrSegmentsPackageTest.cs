@@ -125,6 +125,19 @@ namespace Onism.Cldr.Test
         }
 
         [Test]
+        public void TryParseFile_UnsupportedTokenTypes_FormatExceptionThrown()
+        {
+            var o = CorrectJson;
+            o["segments"]["segmentations"]["4"]["C"]["iii"] = 5;
+            o["segments"]["segmentations"]["5"] = null;
+            o["segments"]["segmentations"]["6"] = true;
+
+            Parsing(o)
+                .ShouldThrow<FormatException>()
+                .WithMessage("Unsupported JTokenTypes used in JSON: Integer, Null, Boolean.");
+        }
+
+        [Test]
         public void TryParseFile_SegmentsTokenMissing_ExceptionThrown()
         {
             var o = new JObject();

@@ -24,7 +24,7 @@ namespace Onism.Cldr.Extensions
         /// <summary>
         /// Concatenates the members of a collection, using the specified separator between each member.
         /// </summary>
-        public static string JoinStrings(this IEnumerable<string> source, string separator)
+        public static string JoinStrings<T>(this IEnumerable<T> source, string separator = ", ")
         {
             return string.Join(separator, source);
         }

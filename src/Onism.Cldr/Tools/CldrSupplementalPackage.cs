@@ -21,6 +21,7 @@ namespace Onism.Cldr.Tools
         {
             // root
             var o = JsonUtils.LoadFromFile(path)
+                .DescendantsTypesShouldOnlyBe(JTokenType.Object, JTokenType.Property, JTokenType.String, JTokenType.Array)
                 .PropertiesCountShouldBe(1);
 
             // files left as they are
