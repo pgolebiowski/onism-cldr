@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using FluentAssertions;
-using Onism.Cldr.Tools;
+using Onism.Cldr.Packages;
 
 namespace Onism.Cldr.Test
 {

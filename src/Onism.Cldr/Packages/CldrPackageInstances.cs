@@ -1,4 +1,4 @@
-﻿namespace Onism.Cldr.Tools
+﻿namespace Onism.Cldr.Packages
 {
     public abstract partial class CldrPackage
     {

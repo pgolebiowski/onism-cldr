@@ -1,7 +1,7 @@
 using System.IO;
 using Newtonsoft.Json.Linq;
 
-namespace Onism.Cldr.Tools
+namespace Onism.Cldr.Packages
 {
     /// <summary>
     /// Represents a package containing line breaking data from Unicode's ULI project.

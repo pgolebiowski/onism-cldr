@@ -29,7 +29,7 @@ using Onism.Cldr.Extensions;
 //  such pattern can be a combination of literal and wildcard characters, but doesn't support regular expressions.
 //  The only allowed wildcard characters are '*' and '?'. Characters other than the wildcard are literal characters.
 
-namespace Onism.Cldr.Tools
+namespace Onism.Cldr.Packages
 {
     /// <summary>
     /// Utility class for extracting relevant file paths from packages using bower.json files.
