@@ -1,19 +1,19 @@
 ﻿using System;
 using System.IO;
+using FluentAssertions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using FluentAssertions;
 using Onism.Cldr.Packages;
 
-namespace Onism.Cldr.Test
+namespace Onism.Cldr.Test.Packages
 {
     [TestFixture]
-    public class CldrSegmentsPackageTest
+    public class CldrStandardPackageTest
     {
         #region Utils for testing
 
-        private static readonly CldrSegmentsPackage DummyPackage = new CldrSegmentsPackage("dummy");
+        private static readonly CldrStandardPackage DummyPackage = new CldrStandardPackage("dummy");
         private string _tempFolder;
 
         private static string CreateDirectory(string locale)
@@ -52,10 +52,18 @@ namespace Onism.Cldr.Test
         private Action Parsing(JObject obj) => () => Parse(obj);
 
         private static JObject CorrectJson =>
-        new JObject(
-            new JProperty("segments", new JObject(
-                CorrectLocale,
-                CorrectData)));
+            new JObject(
+                new JProperty("main", new JObject(
+                    new JProperty("en-GB", new JObject(
+                        CorrectLocale,
+                        CorrectData)))));
+
+        private static JObject CorrectJson2 =>
+            new JObject(
+                new JProperty("main", new JObject(
+                    new JProperty("en-Latn-GB-POSIX", new JObject(
+                        CorrectLocale,
+                        CorrectData)))));
 
         private static JProperty CorrectLocale =>
             new JProperty("identity", new JObject(
@@ -63,7 +71,7 @@ namespace Onism.Cldr.Test
                 new JProperty("territory", "GB")));
 
         private static JProperty CorrectData =>
-            new JProperty("segmentations", new JObject(
+            new JProperty("data", new JObject(
                 new JProperty("1", "aaa"),
                 new JProperty("2", "bbb"),
                 new JProperty("3", "ccc"),
@@ -80,14 +88,14 @@ namespace Onism.Cldr.Test
         #endregion
 
         [Test]
-        public void TryParseFile_CorrectInput()
+        public void Parse_CorrectInput()
         {
             var o = CorrectJson;
 
             var fromObject = Parse(o);
             var fromString = Parse(o.ToString());
 
-            var cjs = new[] { fromObject, fromString };
+            var cjs = new[] {fromObject, fromString};
 
             foreach (var cj in cjs)
             {
@@ -97,7 +105,7 @@ namespace Onism.Cldr.Test
                 cj.Locale.Script.Should().BeNull();
                 cj.Locale.Variant.Should().BeNull();
 
-                cj.Package.Should().Be<CldrSegmentsPackage>();
+                cj.Package.Should().Be<CldrStandardPackage>();
 
                 var dataAsJObject = new JObject(CorrectData);
                 JToken.DeepEquals(cj.Data, dataAsJObject).Should().BeTrue();
@@ -105,16 +113,16 @@ namespace Onism.Cldr.Test
         }
 
         [Test]
-        public void TryParseFile_FullLocaleDeserialization()
+        public void Parse_FullLocaleDeserialization()
         {
             // this is exception to what is set up for all the tests
             // thus dispose and change the path to be disposed once again later
             Dispose();
             _tempFolder = CreateDirectory("en-Latn-GB-POSIX");
 
-            var o = CorrectJson;
-            o["segments"]["identity"]["script"] = "Latn";
-            o["segments"]["identity"]["variant"] = "POSIX";
+            var o = CorrectJson2;
+            o["main"]["en-Latn-GB-POSIX"]["identity"]["script"] = "Latn";
+            o["main"]["en-Latn-GB-POSIX"]["identity"]["variant"] = "POSIX";
 
             var cj = Parse(o);
 
@@ -125,20 +133,20 @@ namespace Onism.Cldr.Test
         }
 
         [Test]
-        public void TryParseFile_UnsupportedTokenTypes_FormatExceptionThrown()
+        public void Parse_UnsupportedTokenTypes_FormatExceptionThrown()
         {
             var o = CorrectJson;
-            o["segments"]["segmentations"]["4"]["C"]["iii"] = 5;
-            o["segments"]["segmentations"]["5"] = null;
-            o["segments"]["segmentations"]["6"] = true;
+            o["main"]["en-GB"]["data"]["4"]["C"]["iii"] = new JArray { "x", "y", "z" };
+            o["main"]["en-GB"]["data"]["5"] = 5;
+            o["main"]["en-GB"]["data"]["6"] = null;
 
             Parsing(o)
                 .ShouldThrow<FormatException>()
-                .WithMessage("Unsupported JTokenTypes used in JSON: Integer, Null, Boolean.");
+                .WithMessage("Unsupported JTokenTypes used in JSON: Array, Integer, Null.");
         }
 
         [Test]
-        public void TryParseFile_SegmentsTokenMissing_ExceptionThrown()
+        public void Parse_MainTokenMissing_ExceptionThrown()
         {
             var o = new JObject();
 
@@ -148,20 +156,21 @@ namespace Onism.Cldr.Test
         }
 
         [Test]
-        public void TryParseFile_SegmentsTokenAlternative_ExceptionThrown()
+        public void Parse_MainTokenAlternative_ExceptionThrown()
         {
             var o = new JObject(
-            new JProperty("alternative", new JObject(
-                CorrectLocale,
-                CorrectData)));
+                new JProperty("alternative", new JObject(
+                    new JProperty("en-GB", new JObject(
+                        CorrectLocale,
+                        CorrectData)))));
 
             Parsing(o)
                 .ShouldThrow<FormatException>()
-                .WithMessage("Required property is missing: segments.");
+                .WithMessage("Required property is missing: main.");
         }
 
         [Test]
-        public void TryParseFile_SegmentsTokenSibling_ExceptionThrown()
+        public void Parse_MainTokenSibling_ExceptionThrown()
         {
             var o = CorrectJson;
             o["sibling"] = "Nefarious Sibling";
@@ -172,9 +181,9 @@ namespace Onism.Cldr.Test
         }
 
         [Test]
-        public void TryParseFile_SegmentsTokenValueTypeMismatch_ExceptionThrown()
+        public void Parse_MainTokenValueTypeMismatch_ExceptionThrown()
         {
-            var o = new JObject { ["segments"] = "<3" };
+            var o = new JObject {["main"] = "<3"};
 
             Parsing(o)
                 .ShouldThrow<FormatException>()
@@ -182,47 +191,84 @@ namespace Onism.Cldr.Test
         }
 
         [Test]
-        public void TryParseFile_IdentityTokenValueTypeMismatch_ExceptionThrown()
+        public void Parse_LocaleTokenMissing_ExceptionThrown()
         {
             var o = new JObject(
-            new JProperty("segments", new JObject(
-                new JProperty("identity", "<3"),
-                CorrectData)));
+                new JProperty("main", new JObject()));
 
             Parsing(o)
                 .ShouldThrow<FormatException>()
-                .WithMessage("Expected Object type, but found String.");
+                .WithMessage("Expected 1 properties, but found 0.");
         }
 
         [Test]
-        public void TryParseFile_IdentityTokenMissing_ExceptionThrown()
-        {
-            var o = new JObject(
-            new JProperty("segments", new JObject(
-                CorrectData)));
-
-            Parsing(o)
-                .ShouldThrow<FormatException>()
-                .WithMessage("Expected 2 properties, but found 1.");
-        }
-
-        [Test]
-        public void TryParseFile_SegmentationsTokenMissing_ExceptionThrown()
-        {
-            var o = new JObject(
-            new JProperty("segments", new JObject(
-                CorrectLocale)));
-
-            Parsing(o)
-                .ShouldThrow<FormatException>()
-                .WithMessage("Expected 2 properties, but found 1.");
-        }
-
-        [Test]
-        public void TryParseFile_IdentityAndSegmentationTokensSibling_ExceptionThrown()
+        public void Parse_LocaleTokenSibling_ExceptionThrown()
         {
             var o = CorrectJson;
-            o["segments"]["sibling"] = "Nefarious Sibling";
+            o["main"]["sibling"] = "Nefarious Sibling";
+
+            Parsing(o)
+                .ShouldThrow<FormatException>()
+                .WithMessage("Expected 1 properties, but found 2.");
+        }
+
+        [Test]
+        public void Parse_LocaleTokenValueTypeMismatch_ExceptionThrown()
+        {
+            var o = new JObject(
+                new JProperty("main", new JObject(
+                    new JProperty("en-GB", "<3"))));
+
+            Parsing(o)
+                .ShouldThrow<FormatException>()
+                .WithMessage("Expected Object type, but found String.");
+        }
+
+        [Test]
+        public void Parse_IdentityTokenValueTypeMismatch_ExceptionThrown()
+        {
+            var o = new JObject(
+                new JProperty("main", new JObject(
+                    new JProperty("en-GB", new JObject(
+                        new JProperty("identity", "<3"),
+                        CorrectData)))));
+
+            Parsing(o)
+                .ShouldThrow<FormatException>()
+                .WithMessage("Expected Object type, but found String.");
+        }
+
+        [Test]
+        public void Parse_IdentityTokenMissing_ExceptionThrown()
+        {
+            var o = new JObject(
+                new JProperty("main", new JObject(
+                    new JProperty("en-GB", new JObject(
+                        CorrectData)))));
+
+            Parsing(o)
+                .ShouldThrow<FormatException>()
+                .WithMessage("Expected 2 properties, but found 1.");
+        }
+
+        [Test]
+        public void Parse_DataTokenMissing_ExceptionThrown()
+        {
+            var o = new JObject(
+                new JProperty("main", new JObject(
+                    new JProperty("en-GB", new JObject(
+                        CorrectLocale)))));
+
+            Parsing(o)
+                .ShouldThrow<FormatException>()
+                .WithMessage("Expected 2 properties, but found 1.");
+        }
+
+        [Test]
+        public void Parse_IdentityAndDataTokensSibling_ExceptionThrown()
+        {
+            var o = CorrectJson;
+            o["main"]["en-GB"]["sibling"] = "Nefarious Sibling";
 
             Parsing(o)
                 .ShouldThrow<FormatException>()
@@ -230,7 +276,7 @@ namespace Onism.Cldr.Test
         }
 
         [Test]
-        public void TryParseText_NotJObject_ExceptionThrown()
+        public void ParseText_NotJObject_ExceptionThrown()
         {
             var array = new JArray();
             Action action = () => Parse(array.ToString());

@@ -63,12 +63,12 @@
     <Compile Include="Packages\CldrJson.cs" />
     <Compile Include="Packages\CldrPackage.cs" />
     <Compile Include="Packages\CldrPackageInstances.cs" />
-    <Compile Include="Packages\CldrPackagePathExtractor.cs" />
+    <Compile Include="Packages\CldrJsonPathExtractor.cs" />
     <Compile Include="Packages\CldrSegmentsPackage.cs" />
     <Compile Include="Packages\CldrStandardPackage.cs" />
     <Compile Include="Packages\CldrSupplementalPackage.cs" />
-    <Compile Include="Packages\FluentValidationUtils.cs" />
-    <Compile Include="Packages\JsonUtils.cs" />
+    <Compile Include="Utils\FluentValidationUtils.cs" />
+    <Compile Include="Utils\JsonUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

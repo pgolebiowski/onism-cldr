@@ -140,8 +140,9 @@ publish/
 **/packages/*
 # except build/, which is used as an MSBuild target.
 !**/packages/build/
-# except Packages, which is a namespace in Onism.Cldr xD
+# except Packages, which is a namespace in Onism xD
 !src/onism.cldr/packages/*
+!src/onism.cldr.test/packages/*
 # Uncomment if necessary however generally it will be regenerated when needed
 #!**/packages/repositories.config
 

@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Onism.Cldr.Extensions;
 using Onism.Cldr.Packages;
+using Onism.Cldr.Utils;
 using ProtoBuf;
 
 namespace Onism.Cldr
@@ -86,7 +87,7 @@ namespace Onism.Cldr
         /// <param name="directoryName">The relative or absolute path to the directory to search.</param>
         public static CldrData MergePackages(string directoryName)
         {
-            var packages = Directory.GetFiles(directoryName, "*.cldrpkg");
+            var packages = Directory.GetFiles(directoryName, $"*{CldrPackage.Extension}");
             return MergePackages(packages);
         }
 

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using NUnit.Framework;
 using FluentAssertions;
+using NUnit.Framework;
 using Onism.Cldr.Packages;
 
-namespace Onism.Cldr.Test
+namespace Onism.Cldr.Test.Packages
 {
     [TestFixture]
     public class CldrPackageTest

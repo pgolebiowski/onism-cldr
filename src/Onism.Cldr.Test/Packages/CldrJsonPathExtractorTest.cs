@@ -1,15 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using NUnit.Framework;
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
+using NUnit.Framework;
 using Onism.Cldr.Packages;
 
-namespace Onism.Cldr.Test
+namespace Onism.Cldr.Test.Packages
 {
     [TestFixture]
-    public class CldrPackagePathExtractorTest
+    public class CldrJsonPathExtractorTest
     {
         #region Helper methods
 
@@ -63,7 +63,7 @@ namespace Onism.Cldr.Test
                 .Replace('\\', '/');
         }
 
-        private string[] ExtractPaths() => CldrPackagePathExtractor
+        private string[] ExtractPaths() => CldrJsonPathExtractor
             .ExtractPaths(_tempFolder)
             .ToArray();
 

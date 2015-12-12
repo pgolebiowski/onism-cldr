@@ -72,12 +72,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CldrDataTest.cs" />
     <Compile Include="CldrLocaleTest.cs" />
-    <Compile Include="CldrPackagePathExtractorTest.cs" />
-    <Compile Include="CldrPackageTest.cs" />
-    <Compile Include="CldrSegmentsPackageTest.cs" />
-    <Compile Include="CldrStandardPackageTest.cs" />
-    <Compile Include="CldrSupplementalPackageTest.cs" />
+    <Compile Include="Packages\CldrJsonPathExtractorTest.cs" />
+    <Compile Include="Packages\CldrPackageTest.cs" />
+    <Compile Include="Packages\CldrSegmentsPackageTest.cs" />
+    <Compile Include="Packages\CldrStandardPackageTest.cs" />
+    <Compile Include="Packages\CldrSupplementalPackageTest.cs" />
+    <Compile Include="CldrTreeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
