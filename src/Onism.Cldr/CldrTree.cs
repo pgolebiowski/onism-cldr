@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Onism.Cldr.Extensions;
+using Onism.Cldr.Tools;
 
 namespace Onism.Cldr
 {
@@ -45,7 +46,7 @@ namespace Onism.Cldr.Tools
 
         private readonly Dictionary<CldrLocale, int> _locales;
 
-        public CldrTree()
+        internal CldrTree()
         {
             _root = new CldrTreeNode(null);
             _values = new Dictionary<string, int>();
@@ -54,7 +55,15 @@ namespace Onism.Cldr.Tools
 
         public CldrTreeNode SelectNode(string path) => _root.SelectNode(path);
 
-        public void AddValue(CldrLocale locale, string path, string value)
+        internal void Add(CldrJson cldrJson)
+        {
+            foreach (var leaf in cldrJson.Data.Leaves())
+            {
+                Add(cldrJson.Locale, leaf.Path, (string) leaf);
+            }
+        }
+
+        private void Add(CldrLocale locale, string path, string value)
         {
             var pathData = path.Split('.');
 

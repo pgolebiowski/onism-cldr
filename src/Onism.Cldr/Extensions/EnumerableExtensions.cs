@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Onism.Cldr.Extensions
@@ -38,6 +39,17 @@ namespace Onism.Cldr.Extensions
         public static IEnumerable<T> Yield<T>(this T item)
         {
             yield return item;
+        }
+
+        /// <summary>
+        /// The <see cref="Array"/> and <see cref="List{T}"/> classes already have ForEach methods,
+        /// though it is then necessary to actually create those new objects so that one can iterate
+        /// over them. That is bad. So bad. This is better ;)
+        /// </summary>
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            foreach (var item in source)
+                action(item);
         }
     }
 }
