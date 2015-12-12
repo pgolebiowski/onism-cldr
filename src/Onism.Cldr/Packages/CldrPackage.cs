@@ -11,7 +11,7 @@ namespace Onism.Cldr.Packages
     /// </summary>
     public abstract partial class CldrPackage
     {
-        private const string Extension = ".cldrpkg";
+        internal const string Extension = ".cldrpkg";
 
         /// <summary>
         /// Gets or sets the name of this package.
@@ -48,7 +48,7 @@ namespace Onism.Cldr.Packages
                 File.Delete(zipPath);
 
                 // parse the package
-                var cldrJsons = CldrPackagePathExtractor
+                var cldrJsons = CldrJsonPathExtractor
                     .ExtractPaths(packageDirectoryName)
                     .Select(TryParseFile)
                     .ToArray();

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
+using FluentAssertions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using FluentAssertions;
 using Onism.Cldr.Packages;
 
-namespace Onism.Cldr.Test
+namespace Onism.Cldr.Test.Packages
 {
     [TestFixture]
     public class CldrSupplementalPackageTest

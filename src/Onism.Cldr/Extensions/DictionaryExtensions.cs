@@ -23,7 +23,7 @@ namespace Onism.Cldr.Extensions
             // dangerous if removing elements!
             id = dict.Count;
 
-            // slower, but safe solution
+            // safe solution, although slower on large dictionaries
             // id = dict.IsEmpty() ? 0 : dict.Values.Max() + 1;
 
             dict.Add(key, id);

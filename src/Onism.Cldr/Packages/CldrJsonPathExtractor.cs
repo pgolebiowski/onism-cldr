@@ -32,9 +32,9 @@ using Onism.Cldr.Extensions;
 namespace Onism.Cldr.Packages
 {
     /// <summary>
-    /// Utility class for extracting relevant file paths from packages using bower.json files.
+    /// Utility class for extracting relevant CLDR JSON file paths from packages using bower.json files.
     /// </summary>
-    internal static class CldrPackagePathExtractor
+    internal static class CldrJsonPathExtractor
     {
         /// <summary>
         /// Extracts relevant file paths from the specified directory.
