@@ -21,21 +21,21 @@ namespace Onism.Cldr
         /// <see cref="CldrTree"/> object containing localization data.
         /// </summary>
         [ProtoMember(1)]
-        public CldrTree Standard { get; }
+        public CldrTree Standard { get; private set; }
 
         /// <summary>
         /// Serialized JSON object containing supplemental CLDR data, merged in a safe way.
         /// Use your favourite tool to browse this object.
         /// </summary>
         [ProtoMember(2)]
-        public string Supplemental { get; }
+        public string Supplemental { get; private set; }
 
         /// <summary>
         /// Serialized JSON object containing line breaking data from Unicode's ULI project,
         /// merged in a safe way. Use your favourite tool to browse this object.
         /// </summary>
         [ProtoMember(3)]
-        public string Segments { get; }
+        public string Segments { get; private set; }
 
 
         private CldrData(CldrTree standard, string supplemental, string segments)
