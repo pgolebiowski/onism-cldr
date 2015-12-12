@@ -31,7 +31,10 @@ namespace Onism.Cldr.Tools
                 .Select(x => x.Path + (string) x)
                 .Distinct());
 
-            o1.Merge(o2);
+            o1.Merge(o2, new JsonMergeSettings
+            {
+                MergeArrayHandling = MergeArrayHandling.Merge
+            });
 
             var newLeaves = new HashSet<string>(o1
                 .Leaves()
