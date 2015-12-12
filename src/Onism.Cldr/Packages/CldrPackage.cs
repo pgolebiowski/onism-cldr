@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
 
-namespace Onism.Cldr.Tools
+namespace Onism.Cldr.Packages
 {
     /// <summary>
     /// Represents one of the packages the CLDR data has been grouped into. This is a "smart enum" type.

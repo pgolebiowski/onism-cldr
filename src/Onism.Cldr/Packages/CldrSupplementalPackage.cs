@@ -1,6 +1,6 @@
 using Newtonsoft.Json.Linq;
 
-namespace Onism.Cldr.Tools
+namespace Onism.Cldr.Packages
 {
     /// <summary>
     /// Represents a package containing supplementary information about locales.

@@ -2,7 +2,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace Onism.Cldr.Tools
+namespace Onism.Cldr.Packages
 {
     /// <summary>
     /// Represents a package containing localization data.

@@ -5,7 +5,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using Onism.Cldr.Extensions;
 
-namespace Onism.Cldr.Tools
+namespace Onism.Cldr.Packages
 {
     internal static class JsonUtils
     {

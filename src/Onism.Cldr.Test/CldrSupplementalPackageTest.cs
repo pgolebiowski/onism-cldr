@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using FluentAssertions;
-using Onism.Cldr.Tools;
+using Onism.Cldr.Packages;
 
 namespace Onism.Cldr.Test
 {
