@@ -11,22 +11,57 @@ namespace Onism.Cldr
     [ProtoContract]
     public class CldrTreeNode
     {
+        internal CldrTree Tree { get; set; }
+
         /// <remarks>
         /// This property is set automatically right after deserialization.
         /// </remarks>
         internal CldrTreeNode Parent { get; set; }
 
         [ProtoMember(1)]
-        internal readonly Dictionary<string, CldrTreeNode> Children;
+        public Dictionary<string, CldrTreeNode> Children = new Dictionary<string, CldrTreeNode>();
 
         [ProtoMember(2)]
-        private readonly Dictionary<int, int> _localeValues;
+        public Dictionary<int, int> LocaleValues = new Dictionary<int, int>();
 
-        internal CldrTreeNode(CldrTreeNode parent)
+        public CldrTreeNode()
         {
+ 
+        }
+
+        internal CldrTreeNode(CldrTree tree, CldrTreeNode parent)
+        {
+            Tree = tree;
             Parent = parent;
-            Children = new Dictionary<string, CldrTreeNode>();
-            _localeValues = new Dictionary<int, int>();
+        }
+
+        public string this[CldrLocale index]
+        {
+            get
+            {
+                var localeId = Tree.Locales[index];
+                var valueId = LocaleValues[localeId];
+                var value = Tree.GetValueById(valueId);
+                return value;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return Children.GetHashCode() ^ LocaleValues.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as CldrTreeNode;
+
+            if (other == null)
+                return false;
+
+            var childrenEqual = Children.IsSameAs(other.Children);
+            var localeValuesEqual = LocaleValues.IsSameAs(other.LocaleValues);
+
+            return childrenEqual && localeValuesEqual;
         }
 
         /// <summary>
@@ -116,7 +151,7 @@ namespace Onism.Cldr
             // this is the sought node
             if (remainingNodes.IsEmpty())
             {
-                _localeValues.Add(locale, value);
+                LocaleValues.Add(locale, value);
                 return;
             }
 
@@ -127,7 +162,7 @@ namespace Onism.Cldr
             // the sought node does not exist
             if (Children.TryGetValue(childName, out child) == false)
             {
-                child = new CldrTreeNode(this);
+                child = new CldrTreeNode(Tree, this);
                 Children.Add(childName, child);
             }
 
