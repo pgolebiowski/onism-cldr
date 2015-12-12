@@ -25,7 +25,7 @@ namespace Onism.Cldr.Packages
 
         /// <summary>
         /// Validates a file extracted from this package and creates a temporary representation
-        /// of the data to be later consumed while building a <see cref="CldrTree"/>.
+        /// of the data to be later consumed while building <see cref="CldrData"/>.
         /// </summary>
         internal abstract CldrJson TryParseFile(string path);
 

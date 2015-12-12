@@ -4,13 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Onism.Cldr.Extensions;
+using ProtoBuf;
 
 namespace Onism.Cldr
 {
+    [ProtoContract]
     public class CldrTreeNode
     {
-        private CldrTreeNode Parent { get; }
+        /// <remarks>
+        /// This property is set automatically right after deserialization.
+        /// </remarks>
+        internal CldrTreeNode Parent { get; set; }
+
+        [ProtoMember(1)]
         internal readonly Dictionary<string, CldrTreeNode> Children;
+
+        [ProtoMember(2)]
         private readonly Dictionary<int, int> _localeValues;
 
         internal CldrTreeNode(CldrTreeNode parent)

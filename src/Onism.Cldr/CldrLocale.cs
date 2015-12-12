@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Newtonsoft.Json;
+using ProtoBuf;
 
 namespace Onism.Cldr
 {
@@ -13,6 +14,7 @@ namespace Onism.Cldr
     /// See the Core Specification (http://cldr.unicode.org/core-spec) for definitions.
     /// </remarks>
     [JsonObject(MemberSerialization.OptIn)]
+    [ProtoContract]
     public sealed class CldrLocale
     {
         public static readonly CldrLocale None = new CldrLocale { Language = "none" };
@@ -21,24 +23,28 @@ namespace Onism.Cldr
         /// Unicode language subtag (also known as a Unicode base language code).
         /// </summary>
         [JsonProperty(PropertyName = "language")]
+        [ProtoMember(1)]
         public string Language { get; set; }
 
         /// <summary>
         /// Unicode script subtag (also known as a Unicode script code).
         /// </summary>
         [JsonProperty(PropertyName = "script")]
+        [ProtoMember(2)]
         public string Script { get; set; }
 
         /// <summary>
         /// Unicode region subtag (also known as a Unicode region code, or a Unicode territory code).
         /// </summary>
         [JsonProperty(PropertyName = "territory")]
+        [ProtoMember(3)]
         public string Territory { get; set; }
 
         /// <summary>
         /// Unicode variant subtag (also known as a Unicode language variant code)
         /// </summary>
         [JsonProperty(PropertyName = "variant")]
+        [ProtoMember(4)]
         public string Variant { get; set; }
 
         /// <summary>
