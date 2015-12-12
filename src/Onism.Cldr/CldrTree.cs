@@ -25,22 +25,27 @@ namespace Onism.Cldr
     public class CldrTree
     {
         [ProtoMember(1)]
-        private readonly CldrTreeNode _root;
+        internal readonly CldrTreeNode Root;
 
         [ProtoMember(2)]
-        private readonly Dictionary<string, int> _values;
+        internal readonly Dictionary<string, int> Values;
 
         [ProtoMember(3)]
-        private readonly Dictionary<CldrLocale, int> _locales;
+        internal readonly Dictionary<CldrLocale, int> Locales;
 
         internal CldrTree()
         {
-            _root = new CldrTreeNode(null);
-            _values = new Dictionary<string, int>();
-            _locales = new Dictionary<CldrLocale, int>();
+            Root = new CldrTreeNode(this, null);
+            Values = new Dictionary<string, int>();
+            Locales = new Dictionary<CldrLocale, int>();
         }
 
-        public CldrTreeNode SelectNode(string path) => _root.SelectNode(path);
+        internal string GetValueById(int id)
+        {
+            return Values.First(x => x.Value == id).Key;
+        }
+
+        public CldrTreeNode SelectNode(string path) => Root.SelectNode(path);
 
         internal void Add(CldrJson cldrJson)
         {
@@ -54,16 +59,16 @@ namespace Onism.Cldr
         {
             var pathData = path.Split('.');
 
-            var localeId = _locales.GetOrAddId(locale);
-            var valueId = _values.GetOrAddId(value);
+            var localeId = Locales.GetOrAddId(locale);
+            var valueId = Values.GetOrAddId(value);
 
-            _root.Add(localeId, pathData, valueId);
+            Root.Add(localeId, pathData, valueId);
         }
 
         [ProtoAfterDeserialization]
         protected void OnDeserialized()
         {
-            SetParentRecursive(_root);
+            SetParentRecursive(Root);
         }
 
         private static void SetParentRecursive(CldrTreeNode node)
@@ -73,6 +78,25 @@ namespace Onism.Cldr
                 child.Parent = node;
                 SetParentRecursive(child);
             }
+        }
+
+        public override int GetHashCode()
+        {
+            return Values.GetHashCode() ^ Locales.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as CldrTree;
+
+            if (other == null)
+                return false;
+
+            var valuesEqual = Values.IsSameAs(other.Values);
+            var localesEqual = Locales.IsSameAs(other.Locales);
+            var childrenEqual = Root.Equals(other.Root);
+
+            return valuesEqual && localesEqual && childrenEqual;
         }
 
         /// <summary>
