@@ -47,7 +47,7 @@ namespace Onism.Cldr
         /// Downloads the specified CLDR packages from GitHub and merges them.
         /// </summary>
         /// <param name="packages">The packages to be downloaded and merged.</param>
-        public static CldrData MergePackages(IEnumerable<CldrPackage> packages)
+        public static CldrData Download(params CldrPackage[] packages)
         {
             var tempPath = Path.GetTempPath();
             var packagesDirectory = Path.Combine(tempPath, "cldr-packages");

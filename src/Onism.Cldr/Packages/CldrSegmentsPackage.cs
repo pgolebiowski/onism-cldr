@@ -40,7 +40,9 @@ namespace Onism.Cldr.Packages
                 .ToObject<CldrLocale>()
                 .LocaleCodeShouldBe(localeCode);
 
-            var segmentations = new JObject(segments.Property("segmentations"));
+            var segmentations =new JObject(
+                new JProperty(localeCode, new JObject(
+                    segments.Property("segmentations"))));
 
             return new CldrJson(GetType(), identity, segmentations);
         }
