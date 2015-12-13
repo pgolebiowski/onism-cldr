@@ -36,7 +36,7 @@ namespace Onism.Cldr.Test.Utils
         {
             var fixture = new Fixture();
             var locale = fixture.Create<CldrLocale>().Yield();
-            var cldrJsons = CldrJsonGenerator.Generate(locale, 2, 5, 0.03125, 1);
+            var cldrJsons = CldrJsonGenerator.GenerateMany(null, locale, 2, 5, 0.03125, 1);
 
             foreach (var cldrJson in cldrJsons)
             {
@@ -53,7 +53,7 @@ namespace Onism.Cldr.Test.Utils
 
             var fixture = new Fixture();
             var locales = fixture.CreateMany<CldrLocale>(5);
-            var cldrJsons = CldrJsonGenerator.Generate(locales, arity, depth, 0.75, 0.875);
+            var cldrJsons = CldrJsonGenerator.GenerateMany(null, locales, arity, depth, 0.75, 0.875);
 
             // counts
             foreach (var cldrJson in cldrJsons)
@@ -98,7 +98,7 @@ namespace Onism.Cldr.Test.Utils
 
             var fixture = new Fixture();
             var locales = fixture.CreateMany<CldrLocale>(3);
-            var cldrJsons = CldrJsonGenerator.Generate(locales, arity, depth, 1, 0);
+            var cldrJsons = CldrJsonGenerator.GenerateMany(null, locales, arity, depth, 1, 0);
 
             // common
             var common = new HashSet<string>(cldrJsons.First().Data.LeafPaths());

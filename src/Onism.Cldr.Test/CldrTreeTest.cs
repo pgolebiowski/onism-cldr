@@ -31,7 +31,7 @@ namespace Onism.Cldr.Test
         {
             var fixture = new Fixture();
             var locales = fixture.CreateMany<CldrLocale>(5);
-            var cjs = CldrJsonGenerator.Generate(locales, 5, 5, 0.75, 0.875);
+            var cjs = CldrJsonGenerator.GenerateMany(null, locales, 5, 5, 0.75, 0.875);
             var tree = new CldrTree();
 
             cjs.ForEach(x => tree.Add(x));
@@ -51,7 +51,7 @@ namespace Onism.Cldr.Test
         {
             var fixture = new Fixture();
             var locales = fixture.CreateMany<CldrLocale>(5);
-            var cjs = CldrJsonGenerator.Generate(locales, 5, 5, 0.75, 0.875);
+            var cjs = CldrJsonGenerator.GenerateMany(null, locales, 5, 5, 0.75, 0.875);
             var tree = new CldrTree();
             CldrTree deserialized;
 

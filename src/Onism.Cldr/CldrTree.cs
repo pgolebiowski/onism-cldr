@@ -68,15 +68,16 @@ namespace Onism.Cldr
         [ProtoAfterDeserialization]
         protected void OnDeserialized()
         {
-            SetParentRecursive(Root);
+            SetPropertiesRecursive(this, Root);
         }
 
-        private static void SetParentRecursive(CldrTreeNode node)
+        private static void SetPropertiesRecursive(CldrTree tree, CldrTreeNode node)
         {
             foreach (var child in node.Children.Values)
             {
+                child.Tree = tree;
                 child.Parent = node;
-                SetParentRecursive(child);
+                SetPropertiesRecursive(tree, child);
             }
         }
 

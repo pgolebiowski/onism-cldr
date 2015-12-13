@@ -21,7 +21,7 @@ namespace Onism.Cldr.Test.Utils
         /// Returns an array of CldrJson objects, where their data has trees similar in "similarity" %.
         /// Similarity is the % of leaves (and thus paths to them) that are common between all trees.
         /// </summary>
-        public static CldrJson[] Generate(IEnumerable<CldrLocale> locales, int arity, int depth, double similarity, double uniqueLeavesAmongCommon, bool refill = false)
+        public static CldrJson[] GenerateMany(Type packageType, IEnumerable<CldrLocale> locales, int arity, int depth, double similarity, double uniqueLeavesAmongCommon, bool refill = false)
         {
             // in order to create a collection of trees with a certain density of their subtrees,
             // simply create one full tree and then remove a proper amount of vertices
@@ -56,7 +56,7 @@ namespace Onism.Cldr.Test.Utils
             }
 
             return trees
-                .Select(x => new CldrJson(null, x.Locale, x.Data))
+                .Select(x => new CldrJson(packageType, x.Locale, x.Data))
                 .ToArray();
         }
 
@@ -72,7 +72,7 @@ namespace Onism.Cldr.Test.Utils
             }
 
             if (obj.HasValues == false)
-                obj.Parent.Remove();
+                obj.Parent?.Remove();
         }
 
         /// <summary>
