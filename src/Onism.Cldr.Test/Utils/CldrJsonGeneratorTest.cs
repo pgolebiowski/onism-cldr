@@ -63,7 +63,7 @@ namespace Onism.Cldr.Test.Utils
             }
 
             // common
-            var common = new HashSet<string>(cldrJsons.First().Data.Leaves().Select(x => x.Path));
+            var common = new HashSet<string>(cldrJsons.First().Data.LeafPaths());
             common.Count.Should().Be(48);
 
             foreach (var paths in cldrJsons.Select(x => x.Data.Leaves()))
@@ -85,7 +85,7 @@ namespace Onism.Cldr.Test.Utils
             var commonHashSet = new HashSet<string>(common);
             foreach (var cldrJson in cldrJsons)
             {
-                var paths = new HashSet<string>(cldrJson.Data.Leaves().Select(y => y.Path));
+                var paths = new HashSet<string>(cldrJson.Data.LeafPaths());
                 commonHashSet.IsProperSubsetOf(paths).Should().BeTrue();
             }
         }
@@ -101,7 +101,7 @@ namespace Onism.Cldr.Test.Utils
             var cldrJsons = CldrJsonGenerator.Generate(locales, arity, depth, 1, 0);
 
             // common
-            var common = new HashSet<string>(cldrJsons.First().Data.Leaves().Select(x => x.Path));
+            var common = new HashSet<string>(cldrJsons.First().Data.LeafPaths());
             common.Count.Should().Be(32);
 
             foreach (var paths in cldrJsons.Select(x => x.Data.Leaves()))

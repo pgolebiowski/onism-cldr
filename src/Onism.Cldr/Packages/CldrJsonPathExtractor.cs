@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using Onism.Cldr.Extensions;
+using Onism.Cldr.Utils;
 
 //  There is some information you need to know about the CLDR JSON structure.
 //
@@ -47,8 +48,7 @@ namespace Onism.Cldr.Packages
 
             foreach (var bowerFile in bowerFiles)
             {
-                var json = File.ReadAllText(bowerFile);
-                var token = JObject.Parse(json)["main"];
+                var token = JsonUtils.LoadFromFile(bowerFile)["main"];
 
                 var patterns = token.Type == JTokenType.Array
                     ? token.Values().Select(x => (string)x)

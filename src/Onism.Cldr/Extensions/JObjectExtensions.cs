@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace Onism.Cldr.Extensions
 {
-    public static class JObjectExtensions
+    internal static class JObjectExtensions
     {
         /// <summary>
         /// Returns a collection of all the types found in this token and its child tokens.
@@ -26,5 +27,26 @@ namespace Onism.Cldr.Extensions
                 .DescendantsAndSelf()
                 .Where(x => x is JValue);
         }
+
+        /// <summary>
+        /// Returns a collection of the paths to tokens that are leaves in this subtree.
+        /// </summary>
+        public static IEnumerable<string> LeafPaths(this JObject obj)
+        {
+            return obj
+                .Leaves()
+                .Select(x => x.Path);
+        }
+
+        /// <summary>
+        /// Returns a dictionary of the paths to the tokens that are leaves in this subtree,
+        /// mapped with their values.
+        /// </summary>
+        public static Dictionary<string, string> LeafPathsAndValues(this JObject obj)
+        {
+            return obj
+                .Leaves()
+                .ToDictionary(x => x.Path, x => (string) x);
+        } 
     }
 }

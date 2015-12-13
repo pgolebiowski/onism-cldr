@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Onism.Cldr.Extensions
 {
-    public static class StringExtensions
+    internal static class StringExtensions
     {
         /// <summary>
         /// Removes diacritics from each glyph in the specified text.

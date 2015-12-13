@@ -17,7 +17,7 @@ namespace Onism.Cldr
     [ProtoContract]
     public sealed class CldrLocale
     {
-        public static readonly CldrLocale None = new CldrLocale { Language = "none" };
+        internal static readonly CldrLocale None = new CldrLocale { Language = "none" };
 
         /// <summary>
         /// Unicode language subtag (also known as a Unicode base language code).

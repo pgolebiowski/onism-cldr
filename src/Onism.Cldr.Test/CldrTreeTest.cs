@@ -20,14 +20,9 @@ namespace Onism.Cldr.Test
 
             tree.Add(cj);
 
-            var pathValuePairs = cj
-                .Data
-                .Leaves()
-                .Select(x => new {Path = x.Path, Value = (string) x});
-
-            foreach (var pair in pathValuePairs)
+            foreach (var pair in cj.Data.LeafPathsAndValues())
             {
-                tree.SelectNode(pair.Path)[cj.Locale].Should().Be(pair.Value);
+                tree.SelectNode(pair.Key)[cj.Locale].Should().Be(pair.Value);
             }
         }
 
@@ -42,12 +37,12 @@ namespace Onism.Cldr.Test
             cjs.ForEach(x => tree.Add(x));
 
             var localePathsPairs = cjs
-                .Select(x => new {Locale = x.Locale, Paths = x.Data.Leaves().Select(y => new { Path = y.Path, Value = (string)y })});
+                .Select(x => new {Locale = x.Locale, Paths = x.Data.LeafPathsAndValues()});
 
             foreach (var pair in localePathsPairs)
-                foreach (var path in pair.Paths)
+                foreach (var pathValue in pair.Paths)
                 {
-                    tree.SelectNode(path.Path)[pair.Locale].Should().Be(path.Value);
+                    tree.SelectNode(pathValue.Key)[pair.Locale].Should().Be(pathValue.Value);
                 }
         }
 

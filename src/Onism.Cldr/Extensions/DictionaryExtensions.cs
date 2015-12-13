@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Onism.Cldr.Extensions
 {
-    public static class DictionaryExtensions
+    internal static class DictionaryExtensions
     {
         /// <summary>
         /// Gets the id associated with the specified key. If the key is missing,
@@ -23,9 +23,13 @@ namespace Onism.Cldr.Extensions
             return id;
         }
 
+        /// <summary>
+        /// Gets a flag indicating whether two dictionaries have exactly same contents by using the default
+        /// equality comparer to compare values.
+        /// </summary>
         public static bool IsSameAs<TKey, TValue>(this Dictionary<TKey, TValue> dict1, Dictionary<TKey, TValue> dict2)
         {
-            return dict1.Count == dict2.Count && !dict1.Except(dict2).Any();
+            return dict1.Count == dict2.Count && dict1.Except(dict2).IsEmpty();
         }
     }
 }
