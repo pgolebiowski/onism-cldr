@@ -17,6 +17,8 @@ namespace Onism.Cldr
     [ProtoContract]
     public class CldrData
     {
+        #region Properties
+
         /// <summary>
         /// <see cref="CldrTree"/> object containing localization data.
         /// </summary>
@@ -37,31 +39,9 @@ namespace Onism.Cldr
         [ProtoMember(3)]
         public string Segments { get; private set; }
 
+        #endregion
 
-        private CldrData(CldrTree standard, string supplemental, string segments)
-        {
-            Standard = standard;
-            Supplemental = supplemental;
-            Segments = segments;
-        }
-
-        /// <summary>
-        /// Writes a protocol-buffer representation of the given instance to the supplied stream.
-        /// </summary>
-        /// <param name="destination">The destination stream to write to.</param>
-        public void Serialize(Stream destination)
-        {
-            Serializer.Serialize(destination, this);
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="CldrData"/> instance from a protocol-buffer stream.
-        /// </summary>
-        /// <param name="source">The binary stream to apply to the new instance (cannot be null).</param>
-        public static CldrData Deserialize(Stream source)
-        {
-            return Serializer.Deserialize<CldrData>(source);
-        }
+        #region Creation
 
         /// <summary>
         /// Downloads the specified CLDR packages from GitHub and merges them.
@@ -129,7 +109,36 @@ namespace Onism.Cldr
                 .ForEach(cldrJson => @switch[cldrJson.Package](cldrJson));
 
             // all the packages have already been parsed
-            return new CldrData(standard, supplemental.ToString(), segments.ToString());
+            return new CldrData()
+            {
+                Standard = standard,
+                Supplemental = supplemental.ToString(),
+                Segments = segments.ToString()
+            };
         }
+
+        #endregion
+
+        #region Serialization
+
+        /// <summary>
+        /// Writes a protocol-buffer representation of the given instance to the supplied stream.
+        /// </summary>
+        /// <param name="destination">The destination stream to write to.</param>
+        public void Serialize(Stream destination)
+        {
+            Serializer.Serialize(destination, this);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="CldrData"/> instance from a protocol-buffer stream.
+        /// </summary>
+        /// <param name="source">The binary stream to apply to the new instance (cannot be null).</param>
+        public static CldrData Deserialize(Stream source)
+        {
+            return Serializer.Deserialize<CldrData>(source);
+        }
+
+        #endregion
     }
 }

@@ -19,7 +19,7 @@ namespace Onism.Cldr
     // - about 50% of all the dictionaries in leaves contain data for all the locales
 
     /// <summary>
-    /// Represents CLDR data in a hierarchical way.
+    /// Represents CLDR data (of standard type) in a hierarchical way.
     /// </summary>
     [ProtoContract]
     public class CldrTree

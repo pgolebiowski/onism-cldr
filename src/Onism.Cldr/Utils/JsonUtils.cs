@@ -33,7 +33,7 @@ namespace Onism.Cldr.Utils
 
             o1.Merge(o2, new JsonMergeSettings
             {
-                MergeArrayHandling = MergeArrayHandling.Merge
+                MergeArrayHandling = MergeArrayHandling.Union
             });
 
             var newLeaves = new HashSet<string>(o1

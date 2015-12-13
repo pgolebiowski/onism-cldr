@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Onism.Cldr.Extensions
 {
-    public static class EnumerableExtensions
+    internal static class EnumerableExtensions
     {
         /// <summary>
         /// Gets a flag indicating whether the collection is empty.
