@@ -11,6 +11,9 @@ namespace Onism.Cldr
     [ProtoContract]
     public class CldrTreeNode
     {
+        /// <remarks>
+        /// This property is set automatically right after deserialization.
+        /// </remarks>
         internal CldrTree Tree { get; set; }
 
         /// <remarks>
