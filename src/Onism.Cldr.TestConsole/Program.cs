@@ -8,7 +8,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Onism.Cldr.Extensions;
-using Onism.Cldr.Tools;
 
 namespace Onism.Cldr.TestConsole
 {
@@ -18,11 +17,6 @@ namespace Onism.Cldr.TestConsole
         {
             Console.WriteLine("Cldr.NET Test Console");
             Console.WriteLine("Doing stuff...");
-
-
-            var path = @"\\Mac\Home\Desktop\";
-            //CldrPackage.Core.Download(path);
-
 
             Console.WriteLine();
             Console.WriteLine("Finished");
