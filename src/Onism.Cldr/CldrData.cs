@@ -128,14 +128,14 @@ namespace Onism.Cldr
         public void WriteToFile(string path)
         {
             using (var stream = new FileStream(path, FileMode.Create))
-                WriteToFile(stream);
+                WriteToStream(stream);
         }
 
         /// <summary>
         /// Writes a binary representation of this <see cref="CldrData"/> to the supplied stream.
         /// </summary>
         /// <param name="destination">The destination stream to write to.</param>
-        public void WriteToFile(Stream destination)
+        public void WriteToStream(Stream destination)
         {
             Serializer.Serialize(destination, this);
         }
@@ -147,14 +147,14 @@ namespace Onism.Cldr
         public static CldrData LoadFromFile(string path)
         {
             using (var stream = new FileStream(path, FileMode.Open))
-                return LoadFromFile(stream);
+                return LoadFromStream(stream);
         }
 
         /// <summary>
         /// Creates a new <see cref="CldrData"/> instance from a binary stream.
         /// </summary>
         /// <param name="source">The binary stream to apply to the new instance (cannot be null).</param>
-        public static CldrData LoadFromFile(Stream source)
+        public static CldrData LoadFromStream(Stream source)
         {
             return Serializer.Deserialize<CldrData>(source);
         }
