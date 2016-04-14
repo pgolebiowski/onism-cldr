@@ -90,6 +90,8 @@
   <ItemGroup>
     <Compile Include="CldrDataTest.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Schema\JsonSchemaPropertyTest.cs" />
+    <Compile Include="Schema\JsonSchemaValueTest.cs" />
     <Compile Include="Utils\CldrJsonGenerator.cs" />
     <Compile Include="CldrLocaleTest.cs" />
     <Compile Include="Packages\CldrJsonPathExtractorTest.cs" />
