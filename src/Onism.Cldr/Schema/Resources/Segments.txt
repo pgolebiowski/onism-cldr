@@ -1,0 +1,17 @@
+﻿{
+  "segments": {
+    "identity": {
+      "version": {
+        "_number": "STRING @revisionNumber",
+        "_cldrVersion": "STRING @cldrVersion"
+      },
+
+      "language": "STRING @language",
+      "~territory": "STRING @territory",
+      "~script": "STRING @script",
+      "~variant": "STRING @variant"
+    },
+
+    "segmentations": "JOBJECT @dataObject"
+  }
+}
