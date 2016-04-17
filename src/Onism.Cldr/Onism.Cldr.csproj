@@ -73,13 +73,29 @@
     <Compile Include="Schema\JsonSchemaProperty.cs" />
     <Compile Include="Schema\JsonSchemaValidationException.cs" />
     <Compile Include="Schema\JsonSchemaValue.cs" />
+    <Compile Include="Schema\Resources\CldrSchemas.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CldrSchemas.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utils\FluentValidationUtils.cs" />
     <Compile Include="Utils\JsonUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Schema\Resources\Rbnf.txt" />
+    <Content Include="Schema\Resources\Segments.txt" />
+    <Content Include="Schema\Resources\Standard.txt" />
+    <Content Include="Schema\Resources\Supplemental.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Schema\Resources\CldrSchemas.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CldrSchemas.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
