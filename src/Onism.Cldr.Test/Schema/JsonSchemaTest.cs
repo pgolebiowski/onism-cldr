@@ -3,10 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using FluentAssertions.Equivalency;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Onism.Cldr.Extensions;
@@ -18,6 +15,8 @@ namespace Onism.Cldr.Test.Schema
     [TestFixture]
     public class JsonSchemaTest
     {
+        #region Fixed functional tests
+
         [TestCase("{ }", Result = true)]
         [TestCase("{ 'a': '' }", Result = false)]
         public bool EmptySchema(string json)
@@ -35,12 +34,12 @@ namespace Onism.Cldr.Test.Schema
         }
 
         [TestCase("{ }", Result = true)]
-        [TestCase("{ 'required': 'text' }", Result = true)]
+        [TestCase("{ 'known': 'text' }", Result = true)]
         [TestCase("{ 'different': '' }", Result = false)]
-        [TestCase("{ 'required': '', 'another': '' }", Result = false)]
+        [TestCase("{ 'known': '', 'another': '' }", Result = false)]
         public bool KnownAndOptional(string json)
         {
-            return JsonSchema.Parse("{ '~required': 'STRING whatever' }").Validate(json);
+            return JsonSchema.Parse("{ '~known': 'STRING whatever' }").Validate(json);
         }
 
         [TestCase("{ }", false)]
@@ -48,15 +47,36 @@ namespace Onism.Cldr.Test.Schema
         [TestCase("{ 'one': '', 'another': '' }", false)]
         public void UnknownAndRequired(string json, bool expectedResult)
         {
-            var variables = JsonSchema.Parse("{ '@optional': 'STRING whatever' }").ExtractVariables(json);
+            Dictionary<string, dynamic> variables;
+            var isValid = JsonSchema.Parse("{ '@optional': 'STRING whatever' }").TryExtractVariables(json, out variables);
             
-            Assert.That(variables.Count.Equals(1));
-            Assert.That(variables, Contains.Item(new KeyValuePair<string, string>("optional", "property")));
+            Assert.AreEqual(isValid, expectedResult);
+
+            if (isValid)
+            {
+                Assert.That(variables.Count.Equals(1));
+                Assert.That(variables, Contains.Item(new KeyValuePair<string, string>("optional", "property")));
+            }
         }
+
+        [TestCase("{ 'property': 'text' }", Result = true)]
+        [TestCase("{ 'property': { } }", Result = false)]
+        [TestCase("{ 'property': [ 'text' ] }", Result = false)]
+        [TestCase("{ 'property': null }", Result = false)]
+        public bool ShouldNotPassWhenUnexpectedTypeIsFound(string json)
+        {
+            return JsonSchema.Parse("{ 'property': 'STRING whatever' }").Validate(json);
+        }
+
+        #endregion
+
+        #region Tests enumerating through schema variants
 
         private static IEnumerable<string> SchemasFromResources => new[]
         {
-            JsonResources.JsonSchema1
+            JsonSchemas.Diversified,
+            JsonSchemas.RequiredOnly,
+            JsonSchemas.NestedWithAllOptionalAndVariable
         };
 
         [TestCaseSource(nameof(SchemasFromResources))]
@@ -86,17 +106,40 @@ namespace Onism.Cldr.Test.Schema
         [TestCaseSource(nameof(SchemasFromResources))]
         public void ShouldNotPassWhenRequiredPropertiesAreMissing(string jsonSchema)
         {
-            throw new NotImplementedException();
+            // Arrange
+            var schema = JsonSchema.Parse(jsonSchema);
+
+            foreach (var schemaVariant in EnumerateSchemaVariantsWithMissingRequiredProperties(jsonSchema))
+            {
+                var dummyDictionary = new Dictionary<string, dynamic>();
+                var jsonVariant = CreateJsonForSchema(schemaVariant, ref dummyDictionary);
+
+                // Act & Assert
+                Assert.That(() => schema.ExtractVariables(jsonVariant), Throws.TypeOf<JsonSchemaValidationException>());
+            }
         }
 
         [TestCaseSource(nameof(SchemasFromResources))]
         public void ShouldNotPassWhenUnexpectedPropertiesAreIncluded(string jsonSchema)
         {
-            throw new NotImplementedException();
+            // Arrange
+            var schema = JsonSchema.Parse(jsonSchema);
+
+            foreach (var schemaVariant in EnumerateSchemaVariantsWithUnexpectedProperties(jsonSchema))
+            {
+                var dummyDictionary = new Dictionary<string, dynamic>();
+                var jsonVariant = CreateJsonForSchema(schemaVariant, ref dummyDictionary);
+
+                // Act & Assert
+                Assert.That(() => schema.ExtractVariables(jsonVariant), Throws.TypeOf<JsonSchemaValidationException>());
+            }
         }
+
+        #region Utility methods for generating JSONs
+
         /// <summary>
-        /// For a set S of optional properties included in the specified JSON schema,
-        /// this method enumerates through its power set P(S). Thus, each possible combination
+        /// For a set O of optional properties included in the specified JSON schema,
+        /// this method enumerates through its power set P(O). Thus, each possible combination
         /// of included/excluded optional property will be yielded.
         /// </summary>
         private static IEnumerable<string> EnumerateSchemaVariantsWithAllSubsetsOfOptionalProperties(string jsonSchema)
@@ -115,11 +158,50 @@ namespace Onism.Cldr.Test.Schema
 
                 yield return variant.ToString();
             }
-        } 
+        }
 
-        private static JProperty[] GetProperties(JObject obj, string expressionMark)
+        /// <summary>
+        /// For a set R of required properties included in the specified JSON schema,
+        /// this method yields |R| variants - with one required property missing in each.
+        /// |R| stands for the cardinality.
+        /// </summary>
+        private static IEnumerable<string> EnumerateSchemaVariantsWithMissingRequiredProperties(string jsonSchema)
         {
-            return obj.Descendants<JProperty>(p => p.Name.Contains(expressionMark))
+            var schema = JObject.Parse(jsonSchema);
+            var options = GetProperties(schema, "~", false).Length;
+
+            for (var i = 0; i < options; ++i)
+            {
+                var variant = JObject.Parse(jsonSchema);
+                var propertyToRemove = GetProperties(variant, "~", false)[i];
+                propertyToRemove.Remove();
+
+                yield return variant.ToString();
+            }
+        }
+
+        /// <summary>
+        /// For a set J of JSON objects included in the specified schema, this method
+        /// yields |J| variants - with one additional property included in each.
+        /// </summary>
+        private static IEnumerable<string> EnumerateSchemaVariantsWithUnexpectedProperties(string jsonSchema)
+        {
+            var schema = JObject.Parse(jsonSchema);
+            var options = schema.Descendants<JObject>().Count();
+
+            for (var i = 0; i < options; ++i)
+            {
+                var variant = JObject.Parse(jsonSchema);
+                var objectToAddProperty = variant.Descendants<JObject>().ToArray()[i];
+                objectToAddProperty.Add("additional property", "some value");
+
+                yield return variant.ToString();
+            }
+        }
+
+        private static JProperty[] GetProperties(JObject obj, string expressionMark, bool contains = true)
+        {
+            return obj.Descendants<JProperty>(p => p.Name.Contains(expressionMark) == contains)
                 .ToArray();
         }
 
@@ -155,5 +237,9 @@ namespace Onism.Cldr.Test.Schema
 
             return schema.ToString().Replace("~", "").Replace("@", ""); // hack to rename properties
         }
+
+        #endregion
+
+        #endregion
     }
 }
