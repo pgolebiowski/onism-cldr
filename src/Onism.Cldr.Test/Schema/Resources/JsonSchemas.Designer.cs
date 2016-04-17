@@ -22,14 +22,14 @@ namespace Onism.Cldr.Test.Schema.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class JsonResources {
+    internal class JsonSchemas {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal JsonResources() {
+        internal JsonSchemas() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Onism.Cldr.Test.Schema.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Onism.Cldr.Test.Schema.Resources.JsonResources", typeof(JsonResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Onism.Cldr.Test.Schema.Resources.JsonSchemas", typeof(JsonSchemas).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -82,13 +82,69 @@ namespace Onism.Cldr.Test.Schema.Resources {
         ///  },
         ///  &quot;~5&quot;: &quot;STRING @text5&quot;,
         ///  &quot;~6&quot;: {
-        ///    &quot;~6.1&quot;: {
-        ///      &quot;~6.1.1&quot;: {
-        ///        &quot;~6.1.1 [rest of string was truncated]&quot;;.
+        ///    &quot;6.1&quot;: {
+        ///      &quot;6.1.1&quot;: {
+        ///        &quot;~6.1.1.1 [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string JsonSchema1 {
+        internal static string Diversified {
             get {
-                return ResourceManager.GetString("JsonSchema1", resourceCulture);
+                return ResourceManager.GetString("Diversified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;~@1&quot;: {
+        ///    &quot;~@1.1&quot;: {
+        ///      &quot;~@1.1.1&quot;: {
+        ///        &quot;~@1.1.1.1&quot;: {
+        ///          &quot;~@1.1.1.1.1&quot;: {
+        ///            &quot;~@1.1.1.1.1.1&quot;: {
+        ///              &quot;~@1.1.1.1.1.1.1&quot;: {
+        ///                &quot;~@1.1.1.1.1.1.1.1&quot;: {
+        ///                  &quot;~@1.1.1.1.1.1.1.1.1&quot;: {
+        ///                    &quot;~@1.1.1.1.1.1.1.1.1.1&quot;: {
+        ///                      &quot;~@1.1.1.1.1.1.1.1.1.1.1&quot;: &quot;JOBJECT @object1.1.1.1.1.1.1.1.1.1&quot;
+        ///                    }
+        ///                  },
+        ///                }
+        ///              }
+        ///            }
+        ///          }
+        ///        }
+        ///   [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string NestedWithAllOptionalAndVariable {
+            get {
+                return ResourceManager.GetString("NestedWithAllOptionalAndVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;1&quot;: {
+        ///    &quot;1.1&quot;: {
+        ///      &quot;1.1.1&quot;: {
+        ///        &quot;1.1.1.1&quot;: &quot;STRING @text1.1.1.1&quot;,
+        ///        &quot;1.1.1.2&quot;: &quot;STRING @text1.1.1.2&quot;,
+        ///        &quot;1.1.1.3&quot;: &quot;STRING @text1.1.1.3&quot;
+        ///      },
+        ///      &quot;1.1.2&quot;: {
+        ///        &quot;1.1.2.1&quot;: &quot;STRING @text1.1.2.1&quot;,
+        ///        &quot;1.1.2.2&quot;: &quot;STRING @text1.1.2.2&quot;,
+        ///        &quot;1.1.2.3&quot;: &quot;STRING @text1.1.2.3&quot;
+        ///      },
+        ///      &quot;1.1.3&quot;: {
+        ///        &quot;1.1.3.1&quot;: &quot;STRING @text1.1.3.1&quot;,
+        ///        &quot;1.1.3.2&quot;: &quot;STRING @text1.1.3.2&quot;,
+        ///        &quot;1.1.3.3&quot;: &quot;STRING @text1.1.3.3&quot;
+        ///      }
+        ///    },
+        ///    &quot;1.2&quot;: [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string RequiredOnly {
+            get {
+                return ResourceManager.GetString("RequiredOnly", resourceCulture);
             }
         }
     }

@@ -90,14 +90,14 @@
   <ItemGroup>
     <Compile Include="CldrDataTest.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
-    <Compile Include="Schema\Resources\JsonResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>JsonResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Schema\JsonSchemaPropertyTest.cs" />
     <Compile Include="Schema\JsonSchemaTest.cs" />
     <Compile Include="Schema\JsonSchemaValueTest.cs" />
+    <Compile Include="Schema\Resources\JsonSchemas.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JsonSchemas.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utils\CldrJsonGenerator.cs" />
     <Compile Include="CldrLocaleTest.cs" />
     <Compile Include="Packages\CldrJsonPathExtractorTest.cs" />
@@ -123,13 +123,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Schema\Resources\JsonResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>JsonResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Content Include="Schema\Resources\Diversified.txt" />
+    <Content Include="Schema\Resources\RequiredOnly.txt" />
+    <Content Include="Schema\Resources\NestedWithAllOptionalAndVariable.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Schema\Resources\JsonSchema1.txt" />
+    <EmbeddedResource Include="Schema\Resources\JsonSchemas.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>JsonSchemas.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,6 +7,27 @@ using Onism.Cldr.Extensions;
 
 namespace Onism.Cldr.Schema
 {
+    /// <summary>
+    /// Allows you to validate other JSONs. What is more, it allows you to define
+    /// variables - objects to be extracted from the validated JSON.
+    /// </summary>
+    /// <syntax>
+    /// The syntax and structure of a JSON schema is almost the same as the syntax of
+    /// the JSON you would write the schema for. There are several rules:
+    /// 
+    /// # Properties
+    ///     * If you precede a property name with '~', it will be considered *optional*
+    ///       (it can missing).
+    ///     * If you precede a property name with '@', it will be considered as *variable*
+    ///       (unknown name, to be matched).
+    ///     * '~' needs to come before '@', if both are used.
+    ///     * '@' cannot be used more than once within a single object.
+    /// 
+    /// # Values
+    ///     * The syntax is always '{TYPE} @{variableName}'.
+    ///     * You don't need to write '@' - it won't be remembered then in a dictionary.
+    ///     * Only 'STRING' and 'JOBJECT' are supported as the 'TYPE' parameter.
+    /// </syntax>
     public class JsonSchema
     {
         private readonly JObject schema;
