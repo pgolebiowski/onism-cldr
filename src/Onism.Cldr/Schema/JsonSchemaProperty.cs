@@ -11,13 +11,13 @@ namespace Onism.Cldr.Schema
     public class JsonSchemaProperty
     {
         public string Name { get; }
-        public bool IsOptional { get; }
+        public bool IsRequired { get; }
         public bool IsVariable { get; }
 
-        private JsonSchemaProperty(string name, bool isOptional, bool isVariable)
+        private JsonSchemaProperty(string name, bool isRequired, bool isVariable)
         {
             this.Name = name;
-            this.IsOptional = isOptional;
+            this.IsRequired = isRequired;
             this.IsVariable = isVariable;
         }
 
@@ -32,7 +32,7 @@ namespace Onism.Cldr.Schema
             return new JsonSchemaProperty
             (
                 name: match.GetMatchedGroup("name"),
-                isOptional: match.IsGroupMatched("tilde"),
+                isRequired: !match.IsGroupMatched("tilde"),
                 isVariable: match.IsGroupMatched("at")
             );
         }

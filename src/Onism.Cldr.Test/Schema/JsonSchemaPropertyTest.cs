@@ -22,14 +22,14 @@ namespace Onism.Cldr.Test.Schema
             return JsonSchemaProperty.Parse(expression).Name;
         }
 
-        [TestCase("text", Result = false)]
-        [TestCase("~text", Result = true)]
-        [TestCase("@text", Result = false)]
-        [TestCase("~@text", Result = true)]
-        [TestCase("~@爱", Result = true)]
-        public bool OptionalityShouldBeExtracted(string expression)
+        [TestCase("text", Result = true)]
+        [TestCase("~text", Result = false)]
+        [TestCase("@text", Result = true)]
+        [TestCase("~@text", Result = false)]
+        [TestCase("~@爱", Result = false)]
+        public bool RequiredShouldBeDetected(string expression)
         {
-            return JsonSchemaProperty.Parse(expression).IsOptional;
+            return JsonSchemaProperty.Parse(expression).IsRequired;
         }
 
         [TestCase("text", Result = false)]

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using Newtonsoft.Json.Linq;
@@ -47,6 +48,25 @@ namespace Onism.Cldr.Extensions
             return obj
                 .Leaves()
                 .ToDictionary(x => x.Path, x => (string) x);
+        }
+
+        public static IEnumerable<T> Descendants<T>(this JObject obj)
+        {
+            return obj.DescendantsAndSelf()
+                .Where(x => x is T)
+                .Cast<T>();
+        }
+
+        public static IEnumerable<T> Descendants<T>(this JObject obj, Func<T, bool> predicate)
+        {
+            return obj.Descendants<T>()
+                .Where(predicate);
+        } 
+
+        public static IEnumerable<JValue> ValuesByType(this JObject obj, JTokenType valueType)
+        {
+            return obj.Descendants<JValue>()
+                .Where(x => x.Type == valueType);
         } 
     }
 }

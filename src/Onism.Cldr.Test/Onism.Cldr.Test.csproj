@@ -90,7 +90,13 @@
   <ItemGroup>
     <Compile Include="CldrDataTest.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Schema\Resources\JsonResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JsonResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Schema\JsonSchemaPropertyTest.cs" />
+    <Compile Include="Schema\JsonSchemaTest.cs" />
     <Compile Include="Schema\JsonSchemaValueTest.cs" />
     <Compile Include="Utils\CldrJsonGenerator.cs" />
     <Compile Include="CldrLocaleTest.cs" />
@@ -115,6 +121,15 @@
       <Project>{e7f266dd-bcec-4652-8e99-73c1e7e60d1f}</Project>
       <Name>Onism.Cldr</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Schema\Resources\JsonResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>JsonResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Schema\Resources\JsonSchema1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
