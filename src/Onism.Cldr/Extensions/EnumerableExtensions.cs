@@ -51,5 +51,12 @@ namespace Onism.Cldr.Extensions
             foreach (var item in source)
                 action(item);
         }
+
+        public static IEnumerable<int> GetIndexes<T>(this T[] source, Func<T, bool> predicate)
+        {
+            for (var i = 0; i < source.Length; ++i)
+                if (predicate(source[i]))
+                    yield return i;
+        }
     }
 }

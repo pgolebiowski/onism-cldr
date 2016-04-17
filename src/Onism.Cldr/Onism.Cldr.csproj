@@ -56,6 +56,7 @@
     <Compile Include="CldrTreeNode.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\IntegerExtensions.cs" />
     <Compile Include="Extensions\JObjectExtensions.cs" />
     <Compile Include="Extensions\MatchExtensions.cs" />
     <Compile Include="Extensions\ReadOnlyListExtensions.cs" />
@@ -68,7 +69,9 @@
     <Compile Include="Packages\CldrSegmentsPackage.cs" />
     <Compile Include="Packages\CldrStandardPackage.cs" />
     <Compile Include="Packages\CldrSupplementalPackage.cs" />
+    <Compile Include="Schema\JsonSchema.cs" />
     <Compile Include="Schema\JsonSchemaProperty.cs" />
+    <Compile Include="Schema\JsonSchemaValidationException.cs" />
     <Compile Include="Schema\JsonSchemaValue.cs" />
     <Compile Include="Utils\FluentValidationUtils.cs" />
     <Compile Include="Utils\JsonUtils.cs" />
