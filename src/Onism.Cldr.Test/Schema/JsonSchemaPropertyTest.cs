@@ -12,31 +12,31 @@ namespace Onism.Cldr.Test.Schema
     [TestFixture]
     public class JsonSchemaPropertyTest
     {
-        [TestCase("text", Result = "text")]
-        [TestCase("~text", Result = "text")]
-        [TestCase("@text", Result = "text")]
-        [TestCase("~@text", Result = "text")]
-        [TestCase("~@爱", Result = "爱")]
+        [TestCase("text", ExpectedResult = "text")]
+        [TestCase("~text", ExpectedResult = "text")]
+        [TestCase("@text", ExpectedResult = "text")]
+        [TestCase("~@text", ExpectedResult = "text")]
+        [TestCase("~@爱", ExpectedResult = "爱")]
         public string NameShouldBeExtracted(string expression)
         {
             return JsonSchemaProperty.Parse(expression).Name;
         }
 
-        [TestCase("text", Result = true)]
-        [TestCase("~text", Result = false)]
-        [TestCase("@text", Result = true)]
-        [TestCase("~@text", Result = false)]
-        [TestCase("~@爱", Result = false)]
+        [TestCase("text", ExpectedResult = true)]
+        [TestCase("~text", ExpectedResult = false)]
+        [TestCase("@text", ExpectedResult = true)]
+        [TestCase("~@text", ExpectedResult = false)]
+        [TestCase("~@爱", ExpectedResult = false)]
         public bool RequiredShouldBeDetected(string expression)
         {
             return JsonSchemaProperty.Parse(expression).IsRequired;
         }
 
-        [TestCase("text", Result = false)]
-        [TestCase("~text", Result = false)]
-        [TestCase("@text", Result = true)]
-        [TestCase("~@text", Result = true)]
-        [TestCase("~@爱", Result = true)]
+        [TestCase("text", ExpectedResult = false)]
+        [TestCase("~text", ExpectedResult = false)]
+        [TestCase("@text", ExpectedResult = true)]
+        [TestCase("~@text", ExpectedResult = true)]
+        [TestCase("~@爱", ExpectedResult = true)]
         public bool VariablesShouldBeDetected(string expression)
         {
             var result = JsonSchemaProperty.Parse(expression).IsVariable;

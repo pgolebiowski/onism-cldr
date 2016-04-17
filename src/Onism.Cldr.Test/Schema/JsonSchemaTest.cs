@@ -17,26 +17,26 @@ namespace Onism.Cldr.Test.Schema
     {
         #region Fixed functional tests
 
-        [TestCase("{ }", Result = true)]
-        [TestCase("{ 'a': '' }", Result = false)]
+        [TestCase("{ }", ExpectedResult = true)]
+        [TestCase("{ 'a': '' }", ExpectedResult = false)]
         public bool EmptySchema(string json)
         {
             return JsonSchema.Parse("{ }").Validate(json);
         }
 
-        [TestCase("{ }", Result = false)]
-        [TestCase("{ 'required': 'text' }", Result = true)]
-        [TestCase("{ 'different': '' }", Result = false)]
-        [TestCase("{ 'required': '', 'another': '' }", Result = false)]
+        [TestCase("{ }", ExpectedResult = false)]
+        [TestCase("{ 'required': 'text' }", ExpectedResult = true)]
+        [TestCase("{ 'different': '' }", ExpectedResult = false)]
+        [TestCase("{ 'required': '', 'another': '' }", ExpectedResult = false)]
         public bool KnownAndRequired(string json)
         {
             return JsonSchema.Parse("{ 'required': 'STRING whatever' }").Validate(json);
         }
 
-        [TestCase("{ }", Result = true)]
-        [TestCase("{ 'known': 'text' }", Result = true)]
-        [TestCase("{ 'different': '' }", Result = false)]
-        [TestCase("{ 'known': '', 'another': '' }", Result = false)]
+        [TestCase("{ }", ExpectedResult = true)]
+        [TestCase("{ 'known': 'text' }", ExpectedResult = true)]
+        [TestCase("{ 'different': '' }", ExpectedResult = false)]
+        [TestCase("{ 'known': '', 'another': '' }", ExpectedResult = false)]
         public bool KnownAndOptional(string json)
         {
             return JsonSchema.Parse("{ '~known': 'STRING whatever' }").Validate(json);
@@ -59,10 +59,10 @@ namespace Onism.Cldr.Test.Schema
             }
         }
 
-        [TestCase("{ 'property': 'text' }", Result = true)]
-        [TestCase("{ 'property': { } }", Result = false)]
-        [TestCase("{ 'property': [ 'text' ] }", Result = false)]
-        [TestCase("{ 'property': null }", Result = false)]
+        [TestCase("{ 'property': 'text' }", ExpectedResult = true)]
+        [TestCase("{ 'property': { } }", ExpectedResult = false)]
+        [TestCase("{ 'property': [ 'text' ] }", ExpectedResult = false)]
+        [TestCase("{ 'property': null }", ExpectedResult = false)]
         public bool ShouldNotPassWhenUnexpectedTypeIsFound(string json)
         {
             return JsonSchema.Parse("{ 'property': 'STRING whatever' }").Validate(json);
