@@ -17,11 +17,12 @@ namespace Onism.Cldr.Schema
     /// 
     /// # Properties
     ///     * If you precede a property name with '~', it will be considered *optional*
-    ///       (it can missing).
+    ///       (it can be missing).
     ///     * If you precede a property name with '@', it will be considered as *variable*
-    ///       (unknown name, to be matched).
+    ///       (unknown name; to be matched).
     ///     * '~' needs to come before '@', if both are used.
-    ///     * '@' cannot be used more than once within a single object.
+    ///     * Variable properties (marked with '@') cannot be used more than once
+    ///       within a single JSON object.
     /// 
     /// # Values
     ///     * The syntax is always '{TYPE} @{variableName}'.
