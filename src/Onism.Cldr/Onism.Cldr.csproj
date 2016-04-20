@@ -51,7 +51,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CldrData.cs" />
+    <Compile Include="CldrDataBuilder.cs" />
+    <Compile Include="CldrJsonFileFinder.cs" />
     <Compile Include="CldrLocale.cs" />
+    <Compile Include="CldrVersionConsistencyAssurer.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\IntegerExtensions.cs" />
