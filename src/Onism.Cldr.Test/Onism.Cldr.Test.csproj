@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CldrVersionConsistencyAssurerTest.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Schema\JsonSchemaPropertyTest.cs" />
     <Compile Include="Schema\JsonSchemaTest.cs" />
