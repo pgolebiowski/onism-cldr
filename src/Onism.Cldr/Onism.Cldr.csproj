@@ -60,6 +60,7 @@
     <Compile Include="Extensions\ReadOnlyListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schema\CldrLocaleFilter.cs" />
     <Compile Include="Schema\JsonSchema.cs" />
     <Compile Include="Schema\JsonSchemaProperty.cs" />
     <Compile Include="Schema\JsonSchemaValidationException.cs" />
