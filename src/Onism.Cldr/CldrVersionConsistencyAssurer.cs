@@ -1,0 +1,32 @@
+﻿using System;
+
+namespace Onism.Cldr
+{
+    public class CldrVersionConsistencyAssurer
+    {
+        private string version;
+        private string jsonPath;
+
+        public string Version => version ?? "unspecified";
+
+        public void AssureVersionIsConsistent(string version, string jsonPath)
+        {
+            if (this.version == null)
+            {
+                this.version = version;
+                this.jsonPath = jsonPath;
+                return;
+            }
+
+            if (string.Equals(this.version, version))
+            {
+                this.jsonPath = jsonPath;
+                return;
+            }
+
+            var first = $"Version '{this.version}' was found in the file '{this.jsonPath}'.";
+            var second = $"Version '{version}' was found in the file '{jsonPath}'.";
+            throw new Exception($"Inconsistent CLDR versions detected.\n{first}\n{second}");
+        }
+    }
+}
