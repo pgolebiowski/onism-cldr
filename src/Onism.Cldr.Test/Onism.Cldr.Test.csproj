@@ -66,16 +66,22 @@
   <ItemGroup>
     <Compile Include="CldrVersionConsistencyAssurerTest.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Schema\CldrLocaleFilterTest.cs" />
     <Compile Include="Schema\JsonSchemaPropertyTest.cs" />
     <Compile Include="Schema\JsonSchemaTest.cs" />
     <Compile Include="Schema\JsonSchemaValueTest.cs" />
-    <Compile Include="Schema\Resources\JsonSchemas.Designer.cs">
+    <Compile Include="Schema\Resources\Schemas\JsonSchemas.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>JsonSchemas.resx</DependentUpon>
     </Compile>
     <Compile Include="CldrLocaleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schema\Resources\Locales\LocaleList.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocaleList.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -91,14 +97,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Schema\Resources\Diversified.txt" />
-    <Content Include="Schema\Resources\RequiredOnly.txt" />
-    <Content Include="Schema\Resources\NestedWithAllOptionalAndVariable.txt" />
+    <Content Include="Schema\Resources\Schemas\Diversified.txt" />
+    <Content Include="Schema\Resources\Locales\Full.txt" />
+    <Content Include="Schema\Resources\Schemas\RequiredOnly.txt" />
+    <Content Include="Schema\Resources\Schemas\NestedWithAllOptionalAndVariable.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Schema\Resources\JsonSchemas.resx">
+    <EmbeddedResource Include="Schema\Resources\Schemas\JsonSchemas.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>JsonSchemas.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schema\Resources\Locales\LocaleList.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocaleList.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

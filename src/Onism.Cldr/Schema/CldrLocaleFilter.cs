@@ -12,15 +12,18 @@ namespace Onism.Cldr.Schema
     {
         private readonly Regex filterRegex;
 
-        public CldrLocaleFilter(IEnumerable<string> include, IEnumerable<string> exclude)
+        public CldrLocaleFilter(IReadOnlyList<string> include, IReadOnlyList<string> exclude)
         {
+            if (include.IsEmpty())
+                include = new[] {"*"};
+
             var toInclude = include.Select(WildcardToRegex).JoinStrings("|");
             var toExclude = exclude.Select(WildcardToRegex).JoinStrings("|");
             
             this.filterRegex = new Regex($"(?!^({toExclude})$)^({toInclude})$", RegexOptions.IgnoreCase);
         }
 
-        public bool IsMatch(string locale) => this.filterRegex.IsMatch(locale);
+        public bool IsAllowed(string locale) => this.filterRegex.IsMatch(locale);
 
         private static string WildcardToRegex(string pattern)
         {
