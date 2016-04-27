@@ -9,6 +9,7 @@ using NUnit.Framework;
 using Onism.Cldr.Extensions;
 using Onism.Cldr.Schema;
 using Onism.Cldr.Test.Schema.Resources;
+using Onism.Cldr.Test.Schema.Resources.Schemas;
 
 namespace Onism.Cldr.Test.Schema
 {
