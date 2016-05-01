@@ -50,6 +50,10 @@ namespace Onism.Cldr.Subsetting
             JObject.Parse("{}").SelectTokens(path);
         }
 
-        public override string ToString() => this.Expression;
+        public override string ToString()
+        {
+            var exclamation = IsNegated ? "!" : "";
+            return exclamation + this.Expression;
+        }
     }
 }

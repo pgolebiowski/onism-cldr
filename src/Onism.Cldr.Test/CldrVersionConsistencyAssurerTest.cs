@@ -51,7 +51,7 @@ namespace Onism.Cldr.Test
 
             // Act & Assert
             Assert.DoesNotThrow(() => assurer.AssureVersionIsConsistent("30", "dummy path 1"));
-            Assert.Throws<Exception>(() => assurer.AssureVersionIsConsistent("31", "dummy path 2"));
+            Assert.Throws<FormatException>(() => assurer.AssureVersionIsConsistent("31", "dummy path 2"));
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace Onism.Cldr.Test
             for (var i = 0; i < 100; ++i)
                 Assert.DoesNotThrow(() => assurer.AssureVersionIsConsistent("30", $"dummy path {i}"));
 
-            Assert.Throws<Exception>(() => assurer.AssureVersionIsConsistent("31", "dummy path 101"));
+            Assert.Throws<FormatException>(() => assurer.AssureVersionIsConsistent("31", "dummy path 101"));
         }
     }
 }

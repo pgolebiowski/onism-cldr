@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Newtonsoft.Json.Linq;
 
@@ -13,7 +12,7 @@ namespace Onism.Cldr.Subsetting
     public class DecisionDictionary : Dictionary<long, Decision>
     {
         private int time;
-        private readonly ObjectIDGenerator objectIdGenerator;
+        private readonly ObjectIDGenerator objectIdGenerator; // crucial
 
         public DecisionDictionary() : this(new Dictionary<long, Decision>())
         {

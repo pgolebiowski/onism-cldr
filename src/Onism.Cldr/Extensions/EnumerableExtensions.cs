@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Onism.Cldr.Extensions
 {
@@ -23,11 +24,23 @@ namespace Onism.Cldr.Extensions
         }
 
         /// <summary>
-        /// Concatenates the members of a collection, using the specified separator between each member.
+        /// Concatenates members of the collection using the specified separator between each member.
         /// </summary>
         public static string JoinStrings<T>(this IEnumerable<T> source, string separator = ", ")
         {
             return string.Join(separator, source);
+        }
+
+        /// <summary>
+        /// Concatenates members of the collection so that each is in separate line.
+        /// </summary>
+        public static string MergeLines<T>(this IEnumerable<T> source)
+        {
+            var builder = new StringBuilder();
+            foreach (var s in source)
+                builder.AppendLine(s.ToString());
+
+            return builder.ToString();
         }
 
         /// <summary>
@@ -57,6 +70,26 @@ namespace Onism.Cldr.Extensions
             for (var i = 0; i < source.Length; ++i)
                 if (predicate(source[i]))
                     yield return i;
+        }
+
+        /// <summary>
+        /// Determines whether this array is a prefix of another - that all its elements
+        /// at corresponding indexes in the other array are equal.
+        /// </summary>
+        public static bool IsPrefixOf<T>(this IReadOnlyList<T> source, IReadOnlyList<T> other)
+        {
+            var toCheck = source.Count;
+
+            if (toCheck > other.Count)
+                return false;
+
+            for (var i = 0; i < toCheck; ++i)
+            {
+                if (object.Equals(source[i], other[i]) == false)
+                    return false;
+            }
+
+            return true;
         }
     }
 }
