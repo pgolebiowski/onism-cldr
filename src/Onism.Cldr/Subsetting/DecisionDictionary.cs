@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using Newtonsoft.Json.Linq;
 
 namespace Onism.Cldr.Subsetting
@@ -7,16 +10,19 @@ namespace Onism.Cldr.Subsetting
     /// Represents a dictionary of JSON tokens and decisions to be made
     /// when they're encouneted during post-order traversal.
     /// </summary>
-    public class DecisionDictionary : Dictionary<JToken, Decision>
+    public class DecisionDictionary : Dictionary<long, Decision>
     {
-        private int time = 0;
+        private int time;
+        private readonly ObjectIDGenerator objectIdGenerator;
 
-        public DecisionDictionary() : this(new Dictionary<JToken, Decision>())
+        public DecisionDictionary() : this(new Dictionary<long, Decision>())
         {
         }
 
-        private DecisionDictionary(IDictionary<JToken, Decision> dictionary) : base(dictionary)
+        private DecisionDictionary(IDictionary<long, Decision> dictionary) : base(dictionary)
         {
+            this.time = 0;
+            this.objectIdGenerator = new ObjectIDGenerator();
         }
 
         /// <summary>
@@ -25,8 +31,8 @@ namespace Onism.Cldr.Subsetting
         public void AddOrUpdateFor(IEnumerable<JToken> tokens, bool toExclude)
         {
             foreach (var token in tokens)
-                this[token] = new Decision(time, toExclude);
-
+                this[GetId(token)] = new Decision(time, toExclude);
+            
             ++time;
         }
 
@@ -36,8 +42,15 @@ namespace Onism.Cldr.Subsetting
         public Decision GetFor(JToken token)
         {
             Decision result;
-            this.TryGetValue(token, out result);
+            this.TryGetValue(GetId(token), out result);
             return result;
+        }
+
+        private long GetId(JToken token)
+        {
+            bool firstTime;
+            var id = this.objectIdGenerator.GetId(token, out firstTime);
+            return id;
         }
     }
 }
