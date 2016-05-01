@@ -1,0 +1,210 @@
+﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+using NUnit.Framework;
+using Onism.Cldr.Extensions;
+using Onism.Cldr.Subsetting;
+using Onism.Cldr.Test.Utils;
+
+namespace Onism.Cldr.Test.Subsetting
+{
+    [TestFixture]
+    public class TokenRemovalTest
+    {
+        public class TokenRemovalTestCase : TestCaseData
+        {
+            public TokenRemovalTestCase(string original, string expected, params string[] patterns) : base(original, expected, patterns)
+            {
+            }
+        }
+
+        public static IEnumerable<TokenRemovalTestCase> EmptyTokens()
+        {
+            yield return new TokenRemovalTestCase("{}", "{}");
+            yield return new TokenRemovalTestCase("{}", "{}", "*");
+            yield return new TokenRemovalTestCase("{}", "{}", "!*");
+            yield return new TokenRemovalTestCase("[]", "[]", "*");
+            yield return new TokenRemovalTestCase("[]", "[]", "!*");
+        }
+
+        public static IEnumerable<TokenRemovalTestCase> OnePropertyObject()
+        {
+            var original = @"{
+                'k': 'v'
+            }";
+
+            yield return new TokenRemovalTestCase(original, original);
+            yield return new TokenRemovalTestCase(original, "{}", "*");
+            yield return new TokenRemovalTestCase(original, original, "*", "!*");
+            yield return new TokenRemovalTestCase(original, original, "k", "!k");
+            yield return new TokenRemovalTestCase(original, "{}", "k");
+        }
+
+        public static IEnumerable<TokenRemovalTestCase> OneValueArray()
+        {
+            var original = @"[
+                'v'
+            ]";
+
+            yield return new TokenRemovalTestCase(original, original);
+            yield return new TokenRemovalTestCase(original, "[]", "[*]");
+            yield return new TokenRemovalTestCase(original, original, "[*]", "![*]");
+            yield return new TokenRemovalTestCase(original, original, "[0]", "![0]");
+            yield return new TokenRemovalTestCase(original, original, "[*]", "![*]");
+            yield return new TokenRemovalTestCase(original, "[]", "[*]");
+            yield return new TokenRemovalTestCase(original, "[]", "[0]");
+        }
+
+        public static IEnumerable<TokenRemovalTestCase> ThreePropertyObject()
+        {
+            var original = @"{
+                'k1': 'v1',
+                'k2': 'v2',
+                'k3': 'v3'
+            }";
+
+            yield return new TokenRemovalTestCase(original, original);
+            yield return new TokenRemovalTestCase(original, "{}", "*");
+            yield return new TokenRemovalTestCase(original, original, "*", "!*");
+            yield return new TokenRemovalTestCase(original, original, "k*", "!k*");
+            yield return new TokenRemovalTestCase(original, original, "k1", "k2", "k3", "!k1", "!k2", "!k3");
+            yield return new TokenRemovalTestCase(original, "{'k2':'v2','k3':'v3'}", "k1");
+            yield return new TokenRemovalTestCase(original, "{'k2':'v2','k3':'v3'}", "k1", "k2", "k3", "!k2", "!k3");
+            yield return new TokenRemovalTestCase(original, "{'k2':'v2'}", "k1", "k2", "k3", "!k2");
+            yield return new TokenRemovalTestCase(original, "{}", "k1", "k2", "k3");
+        }
+
+        public static IEnumerable<TokenRemovalTestCase> ThreeValueArray()
+        {
+            var original = @"[
+                'v1',
+                'v2',
+                'v3'
+            ]";
+
+            yield return new TokenRemovalTestCase(original, original);
+            yield return new TokenRemovalTestCase(original, "[]", "[*]");
+            yield return new TokenRemovalTestCase(original, original, "[*]", "![*]");
+            yield return new TokenRemovalTestCase(original, original, "[0]", "[1]", "[2]", "![0]", "![1]", "![2]");
+            yield return new TokenRemovalTestCase(original, "['v1','v2']", "[0]", "[1]", "[2]", "![0]", "![1]");
+            yield return new TokenRemovalTestCase(original, "['v1']", "[0]", "[1]", "[2]", "![0]");
+            yield return new TokenRemovalTestCase(original, "[]", "[0]", "[1]", "[2]");
+        }
+
+        public static IEnumerable<TokenRemovalTestCase> ThreeObjectArray()
+        {
+            var half1 = "{ 'k1': 'v1' }";
+            var half2 = "{ 'k2': 'v2' }";
+
+            var nested = @"{
+                'k1': 'v1',
+                'k2': 'v2'
+            }";
+
+            var original = $@"[
+                {nested},
+                {nested},
+                {nested}
+            ]";
+
+            yield return new TokenRemovalTestCase(original, original);
+            yield return new TokenRemovalTestCase(original, "[]", "[*]");
+            yield return new TokenRemovalTestCase(original, original, "[*]", "![*]");
+            yield return new TokenRemovalTestCase(original, original, "[0]", "[1]", "[2]", "![0]", "![1]", "![2]");
+            yield return new TokenRemovalTestCase(original, $"[{nested},{nested}]", "[0]", "[1]", "[2]", "![0]", "![1]");
+            yield return new TokenRemovalTestCase(original, $"[{nested}]", "[0]", "[1]", "[2]", "![0]");
+            yield return new TokenRemovalTestCase(original, "[]", "[0]", "[1]", "[2]");
+
+            yield return new TokenRemovalTestCase(original, $"[{half1},{half1},{half1}]", "[*].k2");
+            yield return new TokenRemovalTestCase(original, $"[{half1},{half1},{half1}]", "[*].k2");
+            yield return new TokenRemovalTestCase(original, $"[{half1},{half1},{half1}]", "[0].k2", "[1].k2", "[2].k2");
+            yield return new TokenRemovalTestCase(original, $"[{half1},{half1},{half1}]", "[*]", "![*].k1");
+            yield return new TokenRemovalTestCase(original, $"[{half1},{half1},{half1}]", "[*]", "![0].k1", "![1].k1", "![2].k1");
+
+            yield return new TokenRemovalTestCase(original, $"[{half2},{half2},{half2}]", "[*].k1");
+            yield return new TokenRemovalTestCase(original, $"[{half2},{half2},{half2}]", "[*].k1");
+            yield return new TokenRemovalTestCase(original, $"[{half2},{half2},{half2}]", "[0].k1", "[1].k1", "[2].k1");
+            yield return new TokenRemovalTestCase(original, $"[{half2},{half2},{half2}]", "[*]", "![*].k2");
+            yield return new TokenRemovalTestCase(original, $"[{half2},{half2},{half2}]", "[*]", "![0].k2", "![1].k2", "![2].k2");
+
+            yield return new TokenRemovalTestCase(original, $"[{half1},{half1},{half2}]", "[*].k2", "[2].k1", "![2].k2");
+            yield return new TokenRemovalTestCase(original, $"[{half1},{half1}]", "[*].k2", "[2]");
+            yield return new TokenRemovalTestCase(original, $"[{half1},{half1}]", "[*]", "![0].k1", "![1].k1");
+            yield return new TokenRemovalTestCase(original, $"[{half1},{half2}]", "[*]", "![*]", "[1]", "[2]", "[0].k2", "![1].k2");
+        }
+
+        public static IEnumerable<TokenRemovalTestCase> DeepArray()
+        {
+            var v = "['v']";
+            var vv = $"[{v},{v}]";
+            var original = $"[[[{vv}],[{vv}],[{vv}]]]";
+
+            yield return new TokenRemovalTestCase(original, original);
+            yield return new TokenRemovalTestCase(original, "[]", "[*]");
+            yield return new TokenRemovalTestCase(original, $"[[[{vv}],[{vv}]]]", "[0][0]");
+            yield return new TokenRemovalTestCase(original, $"[[[{vv}]]]", "[0][0]", "[0][1]");
+            yield return new TokenRemovalTestCase(original, "[]", "[0][0]", "[0][1]", "[0][2]");
+            yield return new TokenRemovalTestCase(original, $"[[[{vv}]]]", "[*]", "![0][0]");
+
+            yield return new TokenRemovalTestCase(original, $"[[[[{v}]],[[{v}]],[[{v}]]]]", "[0][*][0][0]");
+            yield return new TokenRemovalTestCase(original, $"[[[[{v}]],[[{v}]],[{vv}]]]", "[0][*][0][0]", "![0][2][0][0]");
+            yield return new TokenRemovalTestCase(original, $"[[[[{v}]],[{vv}],[{vv}]]]", "[0][*][0][0]", "![0][1][0][0]", "![0][2][0][0]");
+            yield return new TokenRemovalTestCase(original, $"[[[{vv}],[{vv}],[{vv}]]]", "[0][*][0][0]", "![0][0][0][0]", "![0][1][0][0]", "![0][2][0][0]");
+
+            yield return new TokenRemovalTestCase(original, $"[[[[{v}]],[[{v}]],[[{v}]]]]", "[0]", "![0][0]", "[0][0][0][1]", "![0][1]", "[0][1][0][1]", "![0][2]", "[0][2][0][1]");
+            yield return new TokenRemovalTestCase(original, $"[[[[{v}]],[[{v}]],[[{v}]]]]", "[0]", "![0][0]", "[0][0][0][0]", "![0][1]", "[0][1][0][0]", "![0][2]", "[0][2][0][0]", "[0][0][0][0]", "[0][1][0][0]", "[0][2][0][0]", "[0][*][0][0]");
+        }
+
+        public static IEnumerable<TokenRemovalTestCase> DeepObject()
+        {
+            var kk = @"{
+                'k1': 'v1',
+                'k2': 'v2'
+            }";
+
+            var KK = $@"{{
+                'k1': {kk},
+                'k2': {kk}
+            }}";
+
+            var original = $"{{'k1': {KK} }}";
+
+            yield return new TokenRemovalTestCase(original, original);
+            yield return new TokenRemovalTestCase(original, "{}", "*");
+            yield return new TokenRemovalTestCase(original, "{'k1':{'k1':{'k1':'v1','k2':'v2'}, 'k2':{'k1':'v1','k2':'v2'}}}", "*", "!k1.k1.k1", "!k1.k1.k2", "!k1.k2.k1", "!k1.k2.k2");
+            yield return new TokenRemovalTestCase(original, "{'k1':{'k1':{'k1':'v1','k2':'v2'}, 'k2':{'k1':'v1'}}}", "*", "!k1.k1.k1", "!k1.k1.k2", "!k1.k2.k1");
+            yield return new TokenRemovalTestCase(original, "{'k1':{'k1':{'k1':'v1'}, 'k2':{'k1':'v1'}}}", "*", "!k1.k1.k1", "!k1.k2.k1");
+            yield return new TokenRemovalTestCase(original, "{'k1':{'k1':{'k1':'v1'}, 'k2':{'k1':'v1'}}}", "*.*.k2");
+            yield return new TokenRemovalTestCase(original, "{'k1':{'k1':{'k2':'v2'}, 'k2':{'k2':'v2'}}}", "*.*.k1");
+            yield return new TokenRemovalTestCase(original, "{'k1':{'k1':{'k1':'v1'}}}", "*", "!k1.k1.k1");
+            yield return new TokenRemovalTestCase(original, "{}", "$..k1");
+        }
+
+        [TestCaseSource(nameof(EmptyTokens))]
+        [TestCaseSource(nameof(OnePropertyObject))]
+        [TestCaseSource(nameof(OneValueArray))]
+        [TestCaseSource(nameof(ThreePropertyObject))]
+        [TestCaseSource(nameof(ThreeValueArray))]
+        [TestCaseSource(nameof(ThreeObjectArray))]
+        [TestCaseSource(nameof(DeepArray))]
+        [TestCaseSource(nameof(DeepObject))]
+        public void HandWrittenTests(string original, string expected, string[] patterns)
+        {
+            // Arrange
+            var originalJson = JToken.Parse(original);
+            var expectedJson = JToken.Parse(expected);
+            var patternCollection = PatternCollection.Parse(patterns);
+
+            Console.WriteLine($"PATTERNS:\n{patterns.JoinStrings(Environment.NewLine)}\n");
+            Console.WriteLine($"ORIGINAL:\n{originalJson.ToPrettyString()}\n");
+            Console.WriteLine($"EXPECTED:\n{expectedJson.ToPrettyString()}\n");
+
+            // Act
+            originalJson.Remove(patternCollection);
+
+            // Assert
+            Console.WriteLine($"WAS:\n{originalJson.ToPrettyString()}\n");
+            Assert.That(JToken.DeepEquals(expectedJson, originalJson));
+        }
+    }
+}
