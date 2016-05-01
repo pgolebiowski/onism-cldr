@@ -162,12 +162,12 @@ namespace Onism.Cldr.Test.Subsetting
                 'k2': 'v2'
             }";
 
-            var KK = $@"{{
+            var kkkk = $@"{{
                 'k1': {kk},
                 'k2': {kk}
             }}";
 
-            var original = $"{{'k1': {KK} }}";
+            var original = $"{{'k1': {kkkk} }}";
 
             yield return new TokenRemovalTestCase(original, original);
             yield return new TokenRemovalTestCase(original, "{}", "*");
@@ -195,7 +195,7 @@ namespace Onism.Cldr.Test.Subsetting
             var expectedJson = JToken.Parse(expected);
             var patternCollection = PatternCollection.Parse(patterns);
 
-            Console.WriteLine($"PATTERNS:\n{patterns.JoinStrings(Environment.NewLine)}\n");
+            Console.WriteLine($"PATTERNS:\n{patterns.MergeLines()}\n");
             Console.WriteLine($"ORIGINAL:\n{originalJson.ToPrettyString()}\n");
             Console.WriteLine($"EXPECTED:\n{expectedJson.ToPrettyString()}\n");
 
@@ -205,6 +205,43 @@ namespace Onism.Cldr.Test.Subsetting
             // Assert
             Console.WriteLine($"WAS:\n{originalJson.ToPrettyString()}\n");
             Assert.That(JToken.DeepEquals(expectedJson, originalJson));
+        }
+
+        public static IEnumerable<TestCaseData> TestGenerationRecipes()
+        {
+            for (var arity = 2; arity <= 4; ++arity)
+                for (var depth = 2; depth <= 6; ++depth)
+                    for (var i = 0; i < 25; ++i)
+                        yield return new TestCaseData(arity, depth, 50);
+        }
+
+        [TestCaseSource(nameof(TestGenerationRecipes))]
+        public void GeneratedTests(int arity, int depth, int patternCount)
+        {
+            // Arrange
+            var random = new DeterministicRandom(3000);
+            var treeGenerator = new JContainerGenerator(random);
+            var patternGenerator = new PatternCollectionGenerator(random);
+
+            var original = treeGenerator.GeneratePerfectTree(arity, depth);
+            var patterns = patternGenerator.GeneratePatterns(original, patternCount);
+
+            var expected = original.DeepClone();
+            var actual = original.DeepClone();
+
+            // Act
+            expected.NaiveRemove(patterns);
+            actual.Remove(patterns);
+
+            // Debug
+            Console.WriteLine($"BIT ARRAY:\n{random}\n");
+            //Console.WriteLine($"PATTERNS:\n{patterns.MergeLines()}\n");
+            //Console.WriteLine($"ORIGINAL:\n{original.ToPrettyString()}\n");
+            //Console.WriteLine($"EXPECTED:\n{expected.ToPrettyString()}\n");
+            //Console.WriteLine($"WAS:\n{actual.ToPrettyString()}\n");
+
+            // Assert
+            Assert.That(JToken.DeepEquals(expected, actual));
         }
     }
 }

@@ -65,7 +65,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CldrVersionConsistencyAssurerTest.cs" />
-    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Utils\ListExtensions.cs" />
+    <Compile Include="JsonNetTest.cs" />
     <Compile Include="Schema\CldrLocaleFilterTest.cs" />
     <Compile Include="Schema\JsonSchemaPropertyTest.cs" />
     <Compile Include="Schema\JsonSchemaTest.cs" />
@@ -82,6 +83,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LocaleList.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utils\JContainerGenerator.cs" />
+    <Compile Include="Utils\NaiveTokenRemover.cs" />
+    <Compile Include="Utils\PatternCollectionGenerator.cs" />
+    <Compile Include="Subsetting\TokenRemovalTest.cs" />
+    <Compile Include="Utils\JTokenExtensions.cs" />
+    <Compile Include="Utils\DeterministicRandom.cs" />
+    <Compile Include="Utils\DeterministicRandomTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -106,12 +114,15 @@
     <EmbeddedResource Include="Schema\Resources\Schemas\JsonSchemas.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>JsonSchemas.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Schema\Resources\Locales\LocaleList.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LocaleList.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Text;
 
 namespace Onism.Cldr.Extensions
@@ -23,6 +25,18 @@ namespace Onism.Cldr.Extensions
             }
 
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+        public static IEnumerable<string> EnumerateLines(this string text)
+        {
+            using (var reader = new StringReader(text))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    yield return line;
+                }
+            }
         }
     }
 }

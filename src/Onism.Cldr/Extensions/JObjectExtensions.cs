@@ -22,11 +22,12 @@ namespace Onism.Cldr.Extensions
         /// <summary>
         /// Returns a collection of the tokens that are leaves in this subtree.
         /// </summary>
-        public static IEnumerable<JToken> Leaves(this JObject obj)
+        public static IEnumerable<JValue> Leaves(this JObject obj)
         {
             return obj
                 .DescendantsAndSelf()
-                .Where(x => x is JValue);
+                .Where(x => x is JValue)
+                .Cast<JValue>();
         }
 
         /// <summary>
@@ -67,6 +68,6 @@ namespace Onism.Cldr.Extensions
         {
             return obj.Descendants<JValue>()
                 .Where(x => x.Type == valueType);
-        } 
+        }
     }
 }

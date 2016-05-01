@@ -11,6 +11,9 @@ namespace Onism.Cldr
 
         public void AssureVersionIsConsistent(string version, string jsonPath)
         {
+            if (string.IsNullOrWhiteSpace(version))
+                throw new FormatException($"Version cannot be null or empty. Path: {jsonPath}");
+
             if (this.version == null)
             {
                 this.version = version;
@@ -26,7 +29,7 @@ namespace Onism.Cldr
 
             var first = $"Version '{this.version}' was found in the file '{this.jsonPath}'.";
             var second = $"Version '{version}' was found in the file '{jsonPath}'.";
-            throw new Exception($"Inconsistent CLDR versions detected.\n{first}\n{second}");
+            throw new FormatException($"Inconsistent CLDR versions detected.\n{first}\n{second}");
         }
     }
 }
