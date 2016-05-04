@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Onism.Cldr.Resources {
+namespace Onism.Cldr.JsonHandlers.Schemas {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Onism.Cldr.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Onism.Cldr.Resources.CldrJsonSchemas", typeof(CldrJsonSchemas).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Onism.Cldr.JsonHandlers.Schemas.CldrJsonSchemas", typeof(CldrJsonSchemas).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
