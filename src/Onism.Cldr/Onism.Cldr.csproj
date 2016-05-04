@@ -74,8 +74,10 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="Schema\CldrJsonType.cs" />
-    <Compile Include="Schema\CldrJsonTypeDetector.cs" />
+    <Compile Include="AvailableLocale.cs" />
+    <Compile Include="Schema\AvailableLocalesHandler.cs" />
+    <Compile Include="Schema\CldrJsonHandler.cs" />
+    <Compile Include="Schema\DefaultContentHandler.cs" />
     <Compile Include="Subsetting\Decision.cs" />
     <Compile Include="Subsetting\DecisionDictionary.cs" />
     <Compile Include="Subsetting\Pattern.cs" />

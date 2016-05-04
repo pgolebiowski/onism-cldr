@@ -10,13 +10,13 @@ namespace Onism.Cldr.Utils
     internal static class JsonUtils
     {
         /// <summary>
-        /// Returns a <see cref="JObject"/> loaded from a JSON file.
+        /// Returns a <see cref="JToken"/> loaded from a JSON file.
         /// </summary>
         /// <param name="path">The path to the JSON file.</param>
-        public static JObject LoadFromFile(string path)
+        public static JToken LoadFromFile(string path)
         {
             var allText = File.ReadAllText(path);
-            return JObject.Parse(allText);
+            return JToken.Parse(allText);
         }
 
         /// <summary>
