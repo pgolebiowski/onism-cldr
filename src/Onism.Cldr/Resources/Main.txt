@@ -1,0 +1,60 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "type": "object",
+  "properties": {
+    "main":						{ "$ref": "#/definitions/main" }
+  },
+  "additionalProperties": false,
+  "required": [ "main" ],
+
+  "definitions": {
+
+    "main": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9-]+$":		{ "$ref": "#/definitions/locale" }
+      },
+      "additionalProperties": false,
+      "minProperties": 1,
+      "maxProperties": 1
+    },
+
+    "locale": {
+      "type": "object",
+      "properties": {
+        "identity":				{ "$ref": "#/definitions/identity" }
+      },
+      "patternProperties": {
+        "^[a-zA-Z0-9]+$":		{ "type": "object" }
+      },
+      "additionalProperties": false,
+      "minProperties": 2,
+      "maxProperties": 2,
+      "required": [ "identity" ]
+    },
+
+    "identity": {
+      "type": "object",
+      "properties": {
+        "version":				{ "$ref": "#/definitions/version" },
+        "language":				{ "type": "string" },
+        "territory":			{ "type": "string" },
+        "variant":				{ "type": "string" },
+        "script":				{ "type": "string" }
+      },
+      "additionalProperties": false,
+      "required": [ "version", "language" ]
+    },
+
+    "version": {
+      "type": "object",
+      "properties": {
+        "_number": 				{ "type": "string" },
+        "_cldrVersion":			{ "type": "string" }
+      },
+      "additionalProperties": false,
+      "required": [ "_number", "_cldrVersion" ]
+    }
+  }
+}
