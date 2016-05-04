@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using Onism.Cldr.Schema;
+using Onism.Cldr.JsonHandlers;
 using Onism.Cldr.Utils;
 
 namespace Onism.Cldr
@@ -49,6 +49,9 @@ namespace Onism.Cldr
                         // should go to next file
                     }
                 }
+
+                // TODO: if not valid against any schema:
+                // react depending on the options (-ignore, -warning, -error)
             }
 
             return result;

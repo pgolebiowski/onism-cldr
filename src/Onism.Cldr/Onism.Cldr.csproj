@@ -69,15 +69,15 @@
     <Compile Include="Extensions\ReadOnlyListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\CldrJsonSchemas.Designer.cs">
+    <Compile Include="JsonHandlers\Schemas\CldrJsonSchemas.Designer.cs">
       <DependentUpon>CldrJsonSchemas.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="AvailableLocale.cs" />
-    <Compile Include="Schema\AvailableLocalesHandler.cs" />
-    <Compile Include="Schema\CldrJsonHandler.cs" />
-    <Compile Include="Schema\DefaultContentHandler.cs" />
+    <Compile Include="JsonHandlers\AvailableLocalesHandler.cs" />
+    <Compile Include="JsonHandlers\CldrJsonHandler.cs" />
+    <Compile Include="JsonHandlers\DefaultContentHandler.cs" />
     <Compile Include="Subsetting\Decision.cs" />
     <Compile Include="Subsetting\DecisionDictionary.cs" />
     <Compile Include="Subsetting\Pattern.cs" />
@@ -90,16 +90,16 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Resources\AvailableLocales.txt" />
-    <Content Include="Resources\DefaultContent.txt" />
-    <Content Include="Resources\Main.txt" />
-    <Content Include="Resources\Rbnf.txt" />
-    <Content Include="Resources\ScriptMetadata.txt" />
-    <Content Include="Resources\Segments.txt" />
-    <Content Include="Resources\Supplemental.txt" />
+    <Content Include="JsonHandlers\Schemas\AvailableLocales.txt" />
+    <Content Include="JsonHandlers\Schemas\DefaultContent.txt" />
+    <Content Include="JsonHandlers\Schemas\Main.txt" />
+    <Content Include="JsonHandlers\Schemas\Rbnf.txt" />
+    <Content Include="JsonHandlers\Schemas\ScriptMetadata.txt" />
+    <Content Include="JsonHandlers\Schemas\Segments.txt" />
+    <Content Include="JsonHandlers\Schemas\Supplemental.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\CldrJsonSchemas.resx">
+    <EmbeddedResource Include="JsonHandlers\Schemas\CldrJsonSchemas.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>CldrJsonSchemas.Designer.cs</LastGenOutput>
     </EmbeddedResource>

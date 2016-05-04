@@ -2,7 +2,7 @@ using Newtonsoft.Json.Linq;
 using NJsonSchema;
 using Onism.Cldr.Extensions;
 
-namespace Onism.Cldr.Schema
+namespace Onism.Cldr.JsonHandlers
 {
     public class CldrJsonHandler
     {

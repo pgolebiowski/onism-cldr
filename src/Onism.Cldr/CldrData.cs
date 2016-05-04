@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Onism.Cldr.Schema;
 using ProtoBuf;
 
 namespace Onism.Cldr
