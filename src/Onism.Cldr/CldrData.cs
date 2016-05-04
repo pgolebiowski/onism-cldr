@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Onism.Cldr.Schema;
 using ProtoBuf;
 
 namespace Onism.Cldr
@@ -12,6 +13,9 @@ namespace Onism.Cldr
     [ProtoContract]
     public class CldrData
     {
+        public IEnumerable<AvailableLocale> AvailableLocales { get; set; }
+        public IEnumerable<string> DefaultContent { get; set; }
+
         #region Serialization
 
         /// <summary>
