@@ -1,0 +1,38 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "type": "object",
+  "properties": {
+    "supplemental": { "$ref": "#/definitions/supplemental" }
+  },
+  "additionalProperties": false,
+  "required": [ "supplemental" ],
+
+  "definitions": {
+    
+    "supplemental": {
+      "type": "object",
+      "properties": {
+        "version": { "$ref": "#/definitions/version" }
+      },
+      "patternProperties": {
+        "^[a-zA-Z-]+$":    { "type": "object" }
+      },
+      "additionalProperties": false,
+      "minProperties": 2,
+      "maxProperties": 2,
+      "required": [ "version" ]
+    },
+
+    "version": {
+      "type": "object",
+      "properties": {
+        "_number": 		     { "type": "string" },
+        "_unicodeVersion": { "type": "string" },
+        "_cldrVersion":    { "type": "string" }
+      },
+      "additionalProperties": false,
+      "required": [ "_number", "_unicodeVersion", "_cldrVersion" ]
+    }
+  }
+}

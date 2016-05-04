@@ -1,0 +1,35 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "type": "object",
+  "properties": {
+    "availableLocales": { "$ref": "#/definitions/availableLocales" }
+  },
+  "additionalProperties": false,
+  "required": [ "availableLocales" ],
+
+  "definitions": {
+    
+    "availableLocales": {
+      "type": "object",
+      "properties": {
+      	"modern": { "$ref": "#/definitions/modern" },
+    	"full": { "$ref": "#/definitions/full" }
+      },
+      "additionalProperties": false,
+	  "required": [ "modern", "full" ]	
+    },
+    
+    "modern": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+      
+    "full": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    }
+  }
+}

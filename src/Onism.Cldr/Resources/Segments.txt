@@ -1,0 +1,46 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "type": "object",
+  "properties": {
+    "segments": { "$ref": "#/definitions/segments" }
+  },
+  "additionalProperties": false,
+  "required": [ "segments" ],
+
+  "definitions": {
+    
+    "segments": {
+      "type": "object",
+      "properties": {
+        "identity":       { "$ref": "#/definitions/identity" },
+        "segmentations":  { "type": "object" }
+      },
+      "additionalProperties": false,
+      "required": [ "identity", "segmentations" ]
+    },
+
+    "identity": {
+      "type": "object",
+      "properties": {
+        "version":        { "$ref": "#/definitions/version" },
+        "language":       { "type": "string" },
+        "territory":      { "type": "string" },
+        "script":         { "type": "string" },
+        "variant":        { "type": "string" }
+      },
+      "additionalProperties": false,
+      "required": [ "version", "language" ]
+    },
+
+    "version": {
+      "type": "object",
+      "properties": {
+        "_number": 		    { "type": "string" },
+        "_cldrVersion":   { "type": "string" }
+      },
+      "additionalProperties": false,
+      "required": [ "_number", "_cldrVersion" ]
+    }
+  }
+}
