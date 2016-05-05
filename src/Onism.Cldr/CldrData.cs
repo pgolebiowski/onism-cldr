@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 using ProtoBuf;
 
 namespace Onism.Cldr
@@ -12,8 +13,18 @@ namespace Onism.Cldr
     [ProtoContract]
     public class CldrData
     {
-        public IEnumerable<AvailableLocale> AvailableLocales { get; set; }
-        public IEnumerable<string> DefaultContent { get; set; }
+        /// <summary>
+        /// <see cref="CldrTree"/> object containing main and rbnf CLDR data.
+        /// </summary>
+        [ProtoMember(1)]
+        public CldrTree Main { get; set; }
+
+        /// <summary>
+        /// Serialized JSON object containing all the other CLDR data: supplemental,
+        /// available locales, default content, and more.
+        /// </summary>
+        [ProtoMember(2)]
+        public string Other { get; set; }
 
         #region Serialization
 

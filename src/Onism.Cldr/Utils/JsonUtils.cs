@@ -23,7 +23,7 @@ namespace Onism.Cldr.Utils
         /// Safely merges two JSON objects. If any original value is missing from the
         /// resulting object (due to overwriting), an exception is thrown.
         /// </summary>
-        public static JObject SafeMerge(JObject o1, JObject o2)
+        public static JContainer SafeMerge(JContainer o1, JContainer o2)
         {
             var originalLeaves = new HashSet<string>(o1
                 .Leaves()

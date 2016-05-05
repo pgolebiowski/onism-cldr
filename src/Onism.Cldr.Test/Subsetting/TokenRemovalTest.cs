@@ -200,7 +200,7 @@ namespace Onism.Cldr.Test.Subsetting
             Console.WriteLine($"EXPECTED:\n{expectedJson.ToPrettyString()}\n");
 
             // Act
-            originalJson.Remove(patternCollection);
+            originalJson.Subset(patternCollection);
 
             // Assert
             Console.WriteLine($"WAS:\n{originalJson.ToPrettyString()}\n");
@@ -231,7 +231,7 @@ namespace Onism.Cldr.Test.Subsetting
 
             // Act
             expected.NaiveRemove(patterns);
-            actual.Remove(patterns);
+            actual.Subset(patterns);
 
             // Debug
             Console.WriteLine($"BIT ARRAY:\n{random}\n");

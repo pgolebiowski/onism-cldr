@@ -22,7 +22,7 @@ namespace Onism.Cldr.Extensions
         /// <summary>
         /// Returns a collection of the tokens that are leaves in this subtree.
         /// </summary>
-        public static IEnumerable<JValue> Leaves(this JObject obj)
+        public static IEnumerable<JValue> Leaves(this JContainer obj)
         {
             return obj
                 .DescendantsAndSelf()
