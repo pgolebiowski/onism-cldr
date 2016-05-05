@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Onism.Cldr.Extensions;
 using Onism.Cldr.JsonHandlers;
-using Onism.Cldr.Utils;
+using Onism.Cldr.Subsetting;
 
 namespace Onism.Cldr
 {
@@ -23,38 +21,67 @@ namespace Onism.Cldr
             this.jsonHandlers = new CldrJsonHandler[]
             {
                 new AvailableLocalesHandler(),
-                new DefaultContentHandler()
+                new DefaultContentHandler(),
+                new MainHandler(),
+                new RbnfHandler(),
+                new ScriptMetadataHandler(),
+                new SegmentsHandler(),
+                new SupplementalHandler()
             };
         }
 
-        public CldrData Build(string directory)
+        public CldrData Build(string directory, PatternCollection patterns)
         {
-            var result = new CldrData();
+            var forJsonMerging = new List<JObject>();
+            var forCldrTreeMerging = new List<CldrJson>();
 
-            foreach (var file in fileFinder.FindFiles(directory))
+            foreach (var path in fileFinder.FindFiles(directory))
             {
-                var json = File.ReadAllText(file);
-                var token = JToken.Parse(json);
+                var json = File.ReadAllText(path);
+                var token = JObject.Parse(json);
+                var wasMatched = false;
 
                 foreach (var handler in this.jsonHandlers)
                 {
-                    if (handler.IsValid(token))
-                    {
-                        // should do before something like:
-                        // versionConsistencyAssurer.AssureVersionIsConsistent();
+                    if (!handler.IsValid(token))
+                        continue;
 
-                        handler.Merge(result, token);
-                        break;
+                    var metadata = handler.ExtractMetadata(token);
+                    handler.RemoveMetadata(token);
 
-                        // should go to next file
-                    }
+                    versionConsistencyAssurer.AssureVersionIsConsistent(metadata?.CldrVersion, path);
+
+                    token.Subset(patterns);
+
+                    if (handler.IncludeInCldrTree)
+                        forCldrTreeMerging.Add(handler.PrepareForCldrTreeMerging(token, metadata?.CldrLocale));
+                    else
+                        forJsonMerging.Add(handler.PrepareForJsonMerging(token, metadata?.CldrLocale));
+
+                    wasMatched = true;
                 }
 
-                // TODO: if not valid against any schema:
-                // react depending on the options (-ignore, -warning, -error)
+                if (!wasMatched)
+                {
+                    // react depending on the options (-ignore, -warning, -error)
+                }
             }
 
-            return result;
+            var merged = forJsonMerging.Count > 1 ? forJsonMerging.HierarchicalAggregate((a, b) =>
+            {
+                a.Merge(b);
+                return a;
+            }) : new JObject();
+            
+            var cldrTree = new CldrTree();
+            foreach (var cldrJson in forCldrTreeMerging)
+                cldrTree.Add(cldrJson);
+
+            return new CldrData
+            {
+                Main = cldrTree,
+                Other = merged.ToString(Formatting.None)
+            };
         }
     }
 }

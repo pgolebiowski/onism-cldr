@@ -9,7 +9,7 @@ namespace Onism.Cldr.Subsetting
         /// <summary>
         /// Removes tokens from this JSON token using a collection of patterns.
         /// </summary>
-        public static void Remove(this JToken root, PatternCollection patterns)
+        public static void Subset(this JToken root, PatternCollection patterns)
         {
             var decisions = new DecisionDictionary();
 
@@ -20,20 +20,20 @@ namespace Onism.Cldr.Subsetting
                 decisions.AddOrUpdateFor(matchedTokens, toExclude);
             }
             
-            Remove(root, decisions.GetFor(root), decisions);
+            Subset(root, decisions.GetFor(root), decisions);
         }
 
         /// <summary>
         /// Traverses the JSON in post-order, removing tokens bottom-up.
         /// </summary>
-        private static void Remove(JToken token, Decision decision, DecisionDictionary decisions)
+        private static void Subset(JToken token, Decision decision, DecisionDictionary decisions)
         {
             foreach (var child in token.Children().ToArray())
             {
                 var inherited = decision;
                 var decisionForChild = Decision.GetNewer(inherited, decisions.GetFor(child));
 
-                Remove(child, decisionForChild, decisions);
+                Subset(child, decisionForChild, decisions);
             }
 
             var isLeafToExclude = token is JValue && decision != null && decision.Remove;

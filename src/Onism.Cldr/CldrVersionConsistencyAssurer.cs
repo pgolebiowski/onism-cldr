@@ -11,9 +11,6 @@ namespace Onism.Cldr
 
         public void AssureVersionIsConsistent(string version, string jsonPath)
         {
-            if (string.IsNullOrWhiteSpace(version))
-                throw new FormatException($"Version cannot be null or empty. Path: {jsonPath}");
-
             if (this.version == null)
             {
                 this.version = version;
