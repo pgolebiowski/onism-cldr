@@ -41,6 +41,9 @@ namespace Onism.Cldr
 
         internal void Add(CldrJson cldrJson)
         {
+            if (cldrJson == null)
+                return;
+
             foreach (var leaf in cldrJson.Data.Leaves())
             {
                 Add(cldrJson.Locale, leaf.Path, (string)leaf);

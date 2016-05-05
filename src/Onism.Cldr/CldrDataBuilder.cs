@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -32,8 +33,9 @@ namespace Onism.Cldr
 
         public CldrData Build(string directory, PatternCollection patterns)
         {
-            var forJsonMerging = new List<JObject>();
-            var forCldrTreeMerging = new List<CldrJson>();
+            var cldrTree = new CldrTree();
+            var other = new JObject();
+            int done = 0;
 
             foreach (var path in fileFinder.FindFiles(directory))
             {
@@ -54,9 +56,9 @@ namespace Onism.Cldr
                     token.Subset(patterns);
 
                     if (handler.IncludeInCldrTree)
-                        forCldrTreeMerging.Add(handler.PrepareForCldrTreeMerging(token, metadata?.CldrLocale));
+                        cldrTree.Add(handler.PrepareForCldrTreeMerging(token, metadata?.CldrLocale));
                     else
-                        forJsonMerging.Add(handler.PrepareForJsonMerging(token, metadata?.CldrLocale));
+                        other.Merge(handler.PrepareForJsonMerging(token, metadata?.CldrLocale));
 
                     wasMatched = true;
                 }
@@ -65,22 +67,15 @@ namespace Onism.Cldr
                 {
                     // react depending on the options (-ignore, -warning, -error)
                 }
+                done++;
+                if (done % 100 == 0)
+                Console.WriteLine(done);
             }
-
-            var merged = forJsonMerging.Count > 1 ? forJsonMerging.HierarchicalAggregate((a, b) =>
-            {
-                a.Merge(b);
-                return a;
-            }) : new JObject();
-            
-            var cldrTree = new CldrTree();
-            foreach (var cldrJson in forCldrTreeMerging)
-                cldrTree.Add(cldrJson);
 
             return new CldrData
             {
                 Main = cldrTree,
-                Other = merged.ToString(Formatting.None)
+                Other = other.ToString(Formatting.None)
             };
         }
     }
