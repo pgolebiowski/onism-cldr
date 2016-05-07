@@ -28,16 +28,9 @@ namespace Onism.Cldr.JsonHandlers
         {
         }
 
-        public virtual bool IncludeInCldrTree => false;
-
-        public virtual JObject PrepareForJsonMerging(JObject obj, CldrLocale locale)
+        public virtual CldrJson PrepareForMerging(CldrLocale locale, JObject obj)
         {
-            return obj; // no need for modifications
-        }
-
-        public virtual CldrJson PrepareForCldrTreeMerging(JObject obj, CldrLocale locale)
-        {
-            return null; // no data for merging
+            return new CldrJson(locale, obj); // no modifications
         }
     }
 }

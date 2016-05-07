@@ -29,9 +29,7 @@ namespace Onism.Cldr.JsonHandlers
             obj.SelectToken("main.*.identity").Parent.Remove();
         }
 
-        public override bool IncludeInCldrTree => true;
-
-        public override CldrJson PrepareForCldrTreeMerging(JObject obj, CldrLocale locale)
+        public override CldrJson PrepareForMerging(CldrLocale locale, JObject obj)
         {
             // data token is after subsetting and may be empty!
             var dataProperty = obj.SelectToken("main.*.*")?.Parent;

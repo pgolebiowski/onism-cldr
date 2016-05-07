@@ -14,17 +14,10 @@ namespace Onism.Cldr
     public class CldrData
     {
         /// <summary>
-        /// <see cref="CldrTree"/> object containing main and rbnf CLDR data.
+        /// <see cref="CldrTree"/> object containing CLDR data.
         /// </summary>
         [ProtoMember(1)]
-        public CldrTree Main { get; set; }
-
-        /// <summary>
-        /// Serialized JSON object containing all the other CLDR data: supplemental,
-        /// available locales, default content, and more.
-        /// </summary>
-        [ProtoMember(2)]
-        public string Other { get; set; }
+        public CldrTree Tree { get; set; }
 
         #region Serialization
 

@@ -55,11 +55,9 @@ namespace Onism.Cldr
 
                     token.Subset(patterns);
 
-                    if (handler.IncludeInCldrTree)
-                        cldrTree.Add(handler.PrepareForCldrTreeMerging(token, metadata?.CldrLocale));
-                    else
-                        other.Merge(handler.PrepareForJsonMerging(token, metadata?.CldrLocale));
-
+                    var toAdd = handler.PrepareForMerging(metadata?.CldrLocale, token);
+                    cldrTree.Add(toAdd);
+                    
                     wasMatched = true;
                 }
 
@@ -74,8 +72,7 @@ namespace Onism.Cldr
 
             return new CldrData
             {
-                Main = cldrTree,
-                Other = other.ToString(Formatting.None)
+                Tree = cldrTree
             };
         }
     }

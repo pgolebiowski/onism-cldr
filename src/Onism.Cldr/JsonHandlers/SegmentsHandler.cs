@@ -29,15 +29,17 @@ namespace Onism.Cldr.JsonHandlers
             obj.SelectToken("segments.identity").Parent.Remove();
         }
 
-        public override JObject PrepareForJsonMerging(JObject obj, CldrLocale locale)
+        public override CldrJson PrepareForMerging(CldrLocale locale, JObject obj)
         {
             // data token is after subsetting and may be empty!
             var data = obj.SelectToken("segments.segmentations");
             if (data == null)
                 return null;
 
-            return new JObject(new JProperty("segments",
+            obj = new JObject(new JProperty("segments",
                 new JObject(new JProperty(locale.Code, data))));
+
+            return new CldrJson(locale, obj);
         }
     }
 }
