@@ -52,12 +52,11 @@ namespace Onism.Cldr
 
         private void Add(CldrLocale locale, string path, string value)
         {
-            var pathData = path.Split('.');
-
-            var localeId = Locales.GetOrAddId(locale);
+            var treePath = CldrTreePath.Parse(path);
+            var localeId = Locales.GetOrAddId(locale ?? CldrLocale.None);
             var valueId = Values.GetOrAddId(value);
 
-            Root.Add(localeId, pathData, valueId);
+            Root.Add(localeId, treePath, valueId);
         }
 
         [ProtoAfterDeserialization]
@@ -68,7 +67,13 @@ namespace Onism.Cldr
 
         private static void SetPropertiesRecursively(CldrTree tree, CldrTreeNode node)
         {
-            foreach (var child in node.Children.Values)
+            foreach (var child in node.ChildrenByKeys.Values)
+            {
+                child.Tree = tree;
+                child.Parent = node;
+                SetPropertiesRecursively(tree, child);
+            }
+            foreach (var child in node.ChildrenByIndexes)
             {
                 child.Tree = tree;
                 child.Parent = node;

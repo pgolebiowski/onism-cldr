@@ -3,6 +3,28 @@ using System.Linq;
 
 namespace Onism.Cldr.Extensions
 {
+    internal static class ListExtensions
+    {
+        public static bool IsSameAs<T>(this List<T> list1, List<T> list2)
+        {
+            return list1.Count == list2.Count && list1.Except(list2).IsEmpty();
+        }
+
+        public static bool TryGetElement<T>(this List<T> list, int index, out T element)
+        {
+            if (index >= 0 && index < list.Count)
+            {
+                element = list[index];
+                return true;
+            }
+            else
+            {
+                element = default(T);
+                return false;
+            }
+        }
+    }
+
     internal static class DictionaryExtensions
     {
         /// <summary>
