@@ -28,16 +28,5 @@ namespace Onism.Cldr.JsonHandlers
         {
             obj.SelectToken("rbnf.identity").Parent.Remove();
         }
-
-        public override CldrJson PrepareForMerging(CldrLocale locale, JObject obj)
-        {
-            // data token is after subsetting and may be empty!
-            var dataProperty = obj.SelectToken("rbnf.rbnf")?.Parent;
-            if (dataProperty == null)
-                return null;
-
-            var data = new JObject((JProperty)dataProperty);
-            return new CldrJson(locale, data);
-        }
     }
 }
