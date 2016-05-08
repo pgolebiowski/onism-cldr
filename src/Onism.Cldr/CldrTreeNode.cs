@@ -114,7 +114,7 @@ namespace Onism.Cldr
         public readonly List<CldrTreeNode> ChildrenByIndexes = new List<CldrTreeNode>();
 
         [ProtoMember(3)]
-        public readonly Dictionary<int, int> LocaleValues = new Dictionary<int, int>();
+        internal readonly Dictionary<int, int> LocaleValues = new Dictionary<int, int>();
 
         public CldrTreeNode()
         {
@@ -127,20 +127,13 @@ namespace Onism.Cldr
             Parent = parent;
         }
 
-        public string this[CldrLocale locale]
+        public string GetValue(CldrLocale locale)
         {
-            get
-            {
-                var localeId = Tree.Locales[locale];
-                var valueId = LocaleValues[localeId];
-                var value = Tree.GetValueById(valueId);
-                return value;
-            }
+            var localeId = Tree.Locales[locale];
+            var valueId = LocaleValues[localeId];
+            var value = Tree.GetValueById(valueId);
+            return value;
         }
-
-        public CldrTreeNode this[int index] => this.ChildrenByIndexes[index];
-
-        public CldrTreeNode this[string key] => this.ChildrenByKeys[key];
 
         public override int GetHashCode()
         {
