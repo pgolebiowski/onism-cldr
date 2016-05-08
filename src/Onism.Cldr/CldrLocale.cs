@@ -13,46 +13,49 @@ namespace Onism.Cldr
     /// since no locale extensions are being used. However, this might be changed in future CLDR releases.
     /// See the Core Specification (http://cldr.unicode.org/core-spec) for definitions.
     /// </remarks>
-    [JsonObject(MemberSerialization.OptIn)]
     [ProtoContract]
     public sealed class CldrLocale
     {
         internal static readonly CldrLocale None = new CldrLocale("none");
 
+        [ProtoMember(1)]
+        private readonly string language;
+
+        [ProtoMember(2)]
+        private readonly string script;
+
+        [ProtoMember(3)]
+        private readonly string territory;
+
+        [ProtoMember(4)]
+        private readonly string variant;
+
         /// <summary>
         /// Unicode language subtag (also known as a Unicode base language code).
         /// </summary>
-        [JsonProperty(PropertyName = "language")]
-        [ProtoMember(1)]
-        public string Language { get; }
+        public string Language => this.language;
 
         /// <summary>
         /// Unicode script subtag (also known as a Unicode script code).
         /// </summary>
-        [JsonProperty(PropertyName = "script")]
-        [ProtoMember(2)]
-        public string Script { get; }
+        public string Script => this.script;
 
         /// <summary>
         /// Unicode region subtag (also known as a Unicode region code, or a Unicode territory code).
         /// </summary>
-        [JsonProperty(PropertyName = "territory")]
-        [ProtoMember(3)]
-        public string Territory { get; }
+        public string Territory => this.territory;
 
         /// <summary>
         /// Unicode variant subtag (also known as a Unicode language variant code)
         /// </summary>
-        [JsonProperty(PropertyName = "variant")]
-        [ProtoMember(4)]
-        public string Variant { get; }
+        public string Variant => this.variant;
 
         public CldrLocale(string language, string script = null, string territory = null, string variant = null)
         {
-            this.Language = language;
-            this.Script = script;
-            this.Territory = territory;
-            this.Variant = variant;
+            this.language = language;
+            this.script = script;
+            this.territory = territory;
+            this.variant = variant;
         }
 
         /// <summary>
