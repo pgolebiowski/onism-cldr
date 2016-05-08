@@ -10,7 +10,7 @@ namespace Onism.Cldr.Subsetting
     /// </summary>
     public class PatternCollection : ReadOnlyCollection<Pattern>
     {
-        private PatternCollection(IList<Pattern> list) : base(list)
+        internal PatternCollection(IList<Pattern> list) : base(list)
         {
         }
 

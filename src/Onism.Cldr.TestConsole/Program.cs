@@ -21,18 +21,44 @@ namespace Onism.Cldr.TestConsole
             Console.WriteLine("Cldr.NET Test Console");
             Console.WriteLine("Doing stuff...");
 
-            /*var builder = new CldrDataBuilder();
-            var directory1 = @"\\Mac\Home\Downloads\jsons\standard\cldr-dates-full-master";
+            var inputDirectory = @"\\Mac\Home\Downloads\cldr-cal-hebrew-full-master";
+            var outputFile = @"\\Mac\Home\Desktop\some19.bin";
 
-            var data = builder.Build(directory2, PatternCollection.Parse(""));
+            var patterns = new PatternCollectionBuilder()
+                .Exclude("*")
+                .Include("main.*.dates.calendars.hebrew.months")
+                .Build();
 
-            data.WriteToFile(@"\\Mac\Home\Desktop\some16.bin");
+            var builder = new CldrDataBuilder();
+            var data = builder.Build(inputDirectory, patterns);
+            
+            data.WriteToFile(outputFile);
+
+            /*
+            var data = CldrData.LoadFromFile(outputFile);
+            var path = "dates.calendars.hebrew.months.format.abbreviated.1";
+            var locale = new CldrLocale
+            {
+                Language = "en",
+                Territory = "GB"
+            };
+
+            var value = data.Tree.SelectNode(path)[locale];
+            Console.WriteLine(value);
             */
+            // prints "Tishri"
 
-            var data = CldrData.LoadFromFile(@"\\Mac\Home\Desktop\some16.bin");
-            var directory2 = @"\\Mac\Home\Downloads\jsons\";
+            /*
+            var directory = @"\\Mac\Home\Downloads\jsons\nonstandard";
+            var binFile = @"\\Mac\Home\Desktop\some17.bin";
+
+            var builder = new CldrDataBuilder();
+            var data = builder.Build(directory, PatternCollection.Parse(""));
+
+            //data.WriteToFile(binFile);
+            // var data = CldrData.LoadFromFile(@"\\Mac\Home\Desktop\some16.bin");
+
             var fileFinder = new CldrJsonFileFinder();
-
             var jsonHandlers = new CldrJsonHandler[]
             {
                 new AvailableLocalesHandler(),
@@ -44,7 +70,7 @@ namespace Onism.Cldr.TestConsole
                 new SupplementalHandler()
             };
 
-            foreach (var path in fileFinder.FindFiles(directory2))
+            foreach (var path in fileFinder.FindFiles(directory))
             {
                 var token = JObject.Parse(File.ReadAllText(path));
 
@@ -74,12 +100,12 @@ namespace Onism.Cldr.TestConsole
                     }
                 }                
             }
-
-
+            
+    */
             Console.WriteLine();
             Console.WriteLine("Finished");
-            Console.WriteLine("Press any key to exit");
-            Console.ReadKey();
+            Console.WriteLine("Press enter to exit");
+            Console.ReadLine();
         }
     }
 }
