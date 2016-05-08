@@ -9,13 +9,11 @@ namespace Onism.Cldr.Test
     {
         private static CldrLocale Arrange(string language, string territory, string script, string variant)
         {
-            return new CldrLocale()
-            {
-                Language = language,
-                Territory = territory,
-                Script = script,
-                Variant = variant
-            };
+            return new CldrLocale(
+                language: language,
+                territory: territory,
+                script: script,
+                variant: variant);
         }
 
         private static CldrLocale EnGb => Arrange("en", "GB", null, null);
@@ -87,22 +85,13 @@ namespace Onism.Cldr.Test
         [Test]
         public void Equals_SlightlyDifferent_False()
         {
-            var l1 = Arrange("a", "b", "c", "d");
-            var l2 = Arrange("a", "b", "c", "e");
+            var l = new CldrLocale("a", "b", "c", "d");
 
-            l1.Should().NotBe(l2);
-            l2.Variant = "d";
-            l1.Should().Be(l2);
-
-            l1.Script = "f";
-            l1.Should().NotBe(l2);
-            l2.Script = "f";
-            l1.Should().Be(l2);
-
-            l1.Territory = "g";
-            l1.Should().NotBe(l2);
-            l2.Territory = "g";
-            l2.Should().Be(l2);
+            l.Should().NotBe(new CldrLocale("a", "b", "c", "e"));
+            l.Should().NotBe(new CldrLocale("a", "b", "d", "d"));
+            l.Should().NotBe(new CldrLocale("a", "d", "c", "d"));
+            l.Should().NotBe(new CldrLocale("d", "b", "c", "d"));
+            l.Should().Be(new CldrLocale("a", "b", "c", "d"));
         }
     }
 }
