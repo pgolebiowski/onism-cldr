@@ -67,8 +67,10 @@ namespace Onism.Cldr
                 }
                 done++;
                 if (done % 100 == 0)
-                Console.WriteLine(done);
+                Console.WriteLine($"{done} files processed");
             }
+            if (done % 100 != 0)
+                Console.WriteLine($"{done} files processed");
 
             return new CldrData
             {
