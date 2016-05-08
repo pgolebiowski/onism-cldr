@@ -50,6 +50,11 @@ namespace Onism.Cldr
         /// </summary>
         public string Variant => this.variant;
 
+        public CldrLocale()
+        {
+            
+        }
+
         public CldrLocale(string language, string script = null, string territory = null, string variant = null)
         {
             this.language = language;
