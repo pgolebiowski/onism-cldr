@@ -17,35 +17,43 @@ namespace Onism.Cldr
     [ProtoContract]
     public sealed class CldrLocale
     {
-        internal static readonly CldrLocale None = new CldrLocale { Language = "none" };
+        internal static readonly CldrLocale None = new CldrLocale("none");
 
         /// <summary>
         /// Unicode language subtag (also known as a Unicode base language code).
         /// </summary>
         [JsonProperty(PropertyName = "language")]
         [ProtoMember(1)]
-        public string Language { get; set; }
+        public string Language { get; }
 
         /// <summary>
         /// Unicode script subtag (also known as a Unicode script code).
         /// </summary>
         [JsonProperty(PropertyName = "script")]
         [ProtoMember(2)]
-        public string Script { get; set; }
+        public string Script { get; }
 
         /// <summary>
         /// Unicode region subtag (also known as a Unicode region code, or a Unicode territory code).
         /// </summary>
         [JsonProperty(PropertyName = "territory")]
         [ProtoMember(3)]
-        public string Territory { get; set; }
+        public string Territory { get; }
 
         /// <summary>
         /// Unicode variant subtag (also known as a Unicode language variant code)
         /// </summary>
         [JsonProperty(PropertyName = "variant")]
         [ProtoMember(4)]
-        public string Variant { get; set; }
+        public string Variant { get; }
+
+        public CldrLocale(string language, string script = null, string territory = null, string variant = null)
+        {
+            this.Language = language;
+            this.Script = script;
+            this.Territory = territory;
+            this.Variant = variant;
+        }
 
         /// <summary>
         /// A locale that only has a language subtag (and optionally a script subtag)

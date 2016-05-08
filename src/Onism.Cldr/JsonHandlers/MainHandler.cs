@@ -14,13 +14,12 @@ namespace Onism.Cldr.JsonHandlers
             return new CldrJsonMetadata
             {
                 CldrVersion = obj.SelectToken("main.*.identity.version._cldrVersion").ToString(),
-                CldrLocale = new CldrLocale
-                {
-                    Language = obj.SelectToken("main.*.identity.language").ToString(),
-                    Script = obj.SelectToken("main.*.identity.script")?.ToString(),
-                    Territory = obj.SelectToken("main.*.identity.territory")?.ToString(),
-                    Variant = obj.SelectToken("main.*.identity.variant")?.ToString()
-                }
+                CldrLocale = new CldrLocale(
+                    language: obj.SelectToken("main.*.identity.language").ToString(),
+                    script: obj.SelectToken("main.*.identity.script")?.ToString(),
+                    territory: obj.SelectToken("main.*.identity.territory")?.ToString(),
+                    variant: obj.SelectToken("main.*.identity.variant")?.ToString()
+                )
             };
         }
 
