@@ -92,6 +92,7 @@
     <Compile Include="Subsetting\DecisionDictionary.cs" />
     <Compile Include="Subsetting\Pattern.cs" />
     <Compile Include="Subsetting\JTokenExtensions.cs" />
+    <Compile Include="Subsetting\PatternCollectionBuilder.cs" />
     <Compile Include="Subsetting\PatternCollection.cs" />
     <Compile Include="Utils\JsonUtils.cs" />
   </ItemGroup>
