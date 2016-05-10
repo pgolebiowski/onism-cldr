@@ -63,6 +63,8 @@
     <Compile Include="CldrLocale.cs" />
     <Compile Include="CldrTree.cs" />
     <Compile Include="CldrTreeNode.cs" />
+    <Compile Include="CldrTreePath.cs" />
+    <Compile Include="CldrTreePathSegment.cs" />
     <Compile Include="CldrVersionConsistencyAssurer.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />

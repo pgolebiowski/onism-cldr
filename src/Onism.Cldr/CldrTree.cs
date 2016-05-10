@@ -67,13 +67,13 @@ namespace Onism.Cldr
 
         private static void SetPropertiesRecursively(CldrTree tree, CldrTreeNode node)
         {
-            foreach (var child in node.ChildrenByKeys.Values)
+            foreach (var child in node.PropertyChildren.Values)
             {
                 child.Tree = tree;
                 child.Parent = node;
                 SetPropertiesRecursively(tree, child);
             }
-            foreach (var child in node.ChildrenByIndexes)
+            foreach (var child in node.ArrayChildren)
             {
                 child.Tree = tree;
                 child.Parent = node;
