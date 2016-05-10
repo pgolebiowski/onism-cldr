@@ -109,5 +109,7 @@ namespace Onism.Cldr
         {
             return !Equals(left, right);
         }
+
+        public override string ToString() => this.Code;
     }
 }
