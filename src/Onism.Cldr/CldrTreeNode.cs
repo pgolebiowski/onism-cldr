@@ -3,96 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Onism.Cldr.Extensions;
 using ProtoBuf;
 
 namespace Onism.Cldr
 {
-    /// <summary>
-    /// Represents a queue of edges to choose while traversing a <see cref="CldrTree"/>.
-    /// </summary>
-    public class CldrTreePath : Queue<CldrTreePathSegment>
-    {
-        public static CldrTreePath Parse(string path)
-        {
-            var index = @"\[(?<index>[0-9]+)\]";    // [0]
-            var key = @"(?<key>[a-zA-Z0-9-_%/,$\+\*]+)"; // year
-            var special = @"\['(?<key>[^']+)'\]"; // ['x.x']
-
-            var firstSegment = $@"(({index})|({key})|({special}))";
-            var nextSegment = $@"(({index})|(\.{key})|({special}))*";
-
-            var pattern = $"^{firstSegment}{nextSegment}$";
-
-            var match = Regex.Match(path, pattern);
-
-            var keys = match.Groups["key"].Captures.Cast<Capture>().Select(x => new {x.Index, x.Value, IsKey = true});
-            var indexes = match.Groups["index"].Captures.Cast<Capture>().Select(x => new {x.Index, x.Value, IsKey = false});
-
-            var merged = keys.Concat(indexes).OrderBy(x => x.Index);
-
-            var result = new CldrTreePath();
-
-            //if (!match.Success)
-              //  throw new FormatException($"Path segment expected to match '{pattern}' but was '{potentialSegment}'.");
-
-            foreach (var capture in merged)
-            {
-                if (capture.IsKey)
-                    result.Enqueue(new CldrTreePathSegment(capture.Value));
-                else
-                    result.Enqueue(new CldrTreePathSegment(int.Parse(capture.Value)));
-            }
-
-            return result;
-        }
-    }
-
-    /// <summary>
-    /// Represents an edge to choose while traversing a <see cref="CldrTree"/>.
-    /// </summary>
-    public class CldrTreePathSegment
-    {
-        /// <summary>
-        /// Gets a flag indicating whether this segment is a dictionary key (true)
-        /// or an array index (false).
-        /// </summary>
-        public bool IsDictionaryKey { get; }
-
-        /// <summary>
-        /// Gets or sets the dictionary key used to select a proper child node
-        /// while traversing the tree.
-        /// </summary>
-        public string Key { get; }
-
-        /// <summary>
-        /// Gets or sets the array index used to select a proper child node
-        /// while traversing the tree.
-        /// </summary>
-        public int Index { get; }
-
-        public CldrTreePathSegment(string key)
-        {
-            this.IsDictionaryKey = true;
-            this.Key = key;
-        }
-
-        public CldrTreePathSegment(int index)
-        {
-            this.IsDictionaryKey = false;
-            this.Index = index;
-        }
-
-        public override string ToString()
-        {
-            return IsDictionaryKey
-                ? Key
-                : Index.ToString();
-        }
-    }
-
     [ProtoContract]
     public class CldrTreeNode
     {
@@ -108,10 +24,10 @@ namespace Onism.Cldr
         internal CldrTreeNode Parent { get; set; }
 
         [ProtoMember(1)]
-        public readonly Dictionary<string, CldrTreeNode> ChildrenByKeys = new Dictionary<string, CldrTreeNode>();
+        public readonly Dictionary<string, CldrTreeNode> PropertyChildren = new Dictionary<string, CldrTreeNode>();
 
         [ProtoMember(2)]
-        public readonly List<CldrTreeNode> ChildrenByIndexes = new List<CldrTreeNode>();
+        public readonly List<CldrTreeNode> ArrayChildren = new List<CldrTreeNode>();
 
         [ProtoMember(3)]
         internal readonly Dictionary<int, int> LocaleValues = new Dictionary<int, int>();
@@ -137,8 +53,8 @@ namespace Onism.Cldr
 
         public override int GetHashCode()
         {
-            return ChildrenByKeys.GetHashCode()
-                ^ ChildrenByIndexes.GetHashCode()
+            return PropertyChildren.GetHashCode()
+                ^ ArrayChildren.GetHashCode()
                 ^ LocaleValues.GetHashCode();
         }
 
@@ -149,8 +65,8 @@ namespace Onism.Cldr
             if (other == null)
                 return false;
 
-            var keyedChildrenEqual = ChildrenByKeys.IsSameAs(other.ChildrenByKeys);
-            var indexedChildrenEqual = ChildrenByIndexes.IsSameAs(other.ChildrenByIndexes);
+            var keyedChildrenEqual = PropertyChildren.IsSameAs(other.PropertyChildren);
+            var indexedChildrenEqual = ArrayChildren.IsSameAs(other.ArrayChildren);
             var localeValuesEqual = LocaleValues.IsSameAs(other.LocaleValues);
 
             return keyedChildrenEqual && indexedChildrenEqual && localeValuesEqual;
@@ -190,7 +106,7 @@ namespace Onism.Cldr
             get
             {
                 return Parent
-                    ?.ChildrenByKeys
+                    ?.PropertyChildren
                     ?.FirstOrDefault(x => ReferenceEquals(x.Value, this))
                     .Key;
             }
@@ -200,7 +116,7 @@ namespace Onism.Cldr
         {
             get
             {
-                var parentArray = Parent?.ChildrenByIndexes;
+                var parentArray = Parent?.ArrayChildren;
                 
                 if (parentArray == null)
                     throw new NullReferenceException();
@@ -250,12 +166,12 @@ namespace Onism.Cldr
 
             if (pathSegment.IsDictionaryKey)
             {
-                if (ChildrenByKeys.TryGetValue(pathSegment.Key, out child) == false)
+                if (PropertyChildren.TryGetValue(pathSegment.Key, out child) == false)
                     return null;
             }
             else
             {
-                if (ChildrenByIndexes.TryGetElement(pathSegment.Index, out child) == false)
+                if (ArrayChildren.TryGetElement(pathSegment.Index, out child) == false)
                     return null;
             }
 
@@ -277,18 +193,18 @@ namespace Onism.Cldr
 
             if (pathSegment.IsDictionaryKey)
             {
-                if (ChildrenByKeys.TryGetValue(pathSegment.Key, out child) == false)
+                if (PropertyChildren.TryGetValue(pathSegment.Key, out child) == false)
                 {
                     child = new CldrTreeNode(Tree, this);
-                    ChildrenByKeys.Add(pathSegment.Key, child);
+                    PropertyChildren.Add(pathSegment.Key, child);
                 }
             }
             else
             {
-                if (ChildrenByIndexes.TryGetElement(pathSegment.Index, out child) == false)
+                if (ArrayChildren.TryGetElement(pathSegment.Index, out child) == false)
                 {
                     child = new CldrTreeNode(Tree, this);
-                    ChildrenByIndexes.Add(child);
+                    ArrayChildren.Add(child);
                 }
             }
 
@@ -300,24 +216,24 @@ namespace Onism.Cldr
         /*
                 public int FindMaxDepth(int currentMax)
         {
-            if (ChildrenByKeys.IsNotEmpty())
-                return ChildrenByKeys.Select(x => x.FindMaxDepth(currentMax + 1)).Max();
+            if (PropertyChildren.IsNotEmpty())
+                return PropertyChildren.Select(x => x.FindMaxDepth(currentMax + 1)).Max();
             return currentMax;
         }
         public IEnumerable<CldrTreeNode> FindVertices()
         {
             var vertices = new List<CldrTreeNode>() { this };
-            if (ChildrenByKeys.IsNotEmpty())
-                vertices.AddRange(ChildrenByKeys.SelectMany(x => x.FindVertices()));
+            if (PropertyChildren.IsNotEmpty())
+                vertices.AddRange(PropertyChildren.SelectMany(x => x.FindVertices()));
             return vertices;
         }
         public IEnumerable<CldrTreeNode> FindValues()
         {
             var leaves = new List<CldrTreeNode>();
-            if (ChildrenByKeys.IsEmpty())
+            if (PropertyChildren.IsEmpty())
                 leaves.Add(this);
             else
-                leaves.AddRange(ChildrenByKeys.SelectMany(x => x.FindValues()));
+                leaves.AddRange(PropertyChildren.SelectMany(x => x.FindValues()));
             return leaves;
         }
     */
