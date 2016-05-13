@@ -19,4 +19,7 @@
       <dependency id="protobuf-net" version="2.0.0.668" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="obj\Release\Onism.Cldr.dll" target="lib" />
+  </files>
 </package>
