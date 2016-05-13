@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Onism.Cldr</id>
+    <version>0.0.1</version>
+    <authors>Patryk Gołębiowski, Jon Skeet</authors>
+    <owners>Patryk Gołębiowski</owners>
+
+    <projectUrl>https://github.com/pgolebiowski/onism-cldr</projectUrl>
+    <licenseUrl>https://github.com/pgolebiowski/onism-cldr/blob/master/LICENSE</licenseUrl>
+
+    <description>Onism is a high-performance CLDR library for .NET.</description>
+
+    <copyright>Copyright 2016</copyright>
+    <tags>cldr globalization internationalization localization unicode icu</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="8.0.3" />
+      <dependency id="NJsonSchema" version="2.14.5967.31319" />
+      <dependency id="protobuf-net" version="2.0.0.668" />
+    </dependencies>
+  </metadata>
+</package>
