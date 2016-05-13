@@ -1,7 +1,10 @@
 [![][build-img]][build]
+[![][nuget-img]][nuget]
 
 [build]:     https://ci.appveyor.com/project/PatrykGobiowski/onism-cldr
 [build-img]: https://ci.appveyor.com/api/projects/status/hrpmwirp95ib56qb?svg=true
+[nuget]:     https://www.nuget.org/packages/Onism.Cldr
+[nuget-img]: https://badge.fury.io/nu/Onism.Cldr.svg
 
 Onism is a high-performance CLDR library for .NET. It allows you to create an efficient binary file for (optionally subsetted) CLDR data and browse its contents easily.
 
