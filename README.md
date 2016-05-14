@@ -36,7 +36,7 @@ The [wiki][0] is the best place to learn about Onism. It includes, but is not li
 
 
 ## Contributing
-[![][gitter-img]][gitter] ![][email-img]
+[![][gitter-img]][gitter] [![][email-img]](mailto:ortorektyk@gmail.com)
 
 Star the project, give feedback, suggest an improvement you need, or just tell me about your day :smile: Feel free to open an [issue] or to submit a [pull request].
 
