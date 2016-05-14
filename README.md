@@ -6,25 +6,46 @@
 [nuget]:     https://www.nuget.org/packages/Onism.Cldr
 [nuget-img]: https://badge.fury.io/nu/Onism.Cldr.svg
 
-Onism is a high-performance CLDR library for .NET. It allows you to create an efficient binary file for (optionally subsetted) CLDR data and browse its contents easily.
 
-## Specs & Getting started
-Please see the [wiki]. It will help you [get started](https://github.com/pgolebiowski/Onism.Cldr/wiki/Getting-started).
+# Onism
+High-performance CLDR library for .NET. It allows you to build an efficient binary representation of CLDR data and to consume this representation easily.
 
-## What is CLDR?
+## Usage
+How to get the name of the first month in the Hebrew calendar in British English? Couldn't be easier!
 
-The Unicode CLDR provides key building blocks for software to support the world's languages, with the largest and most extensive standard repository of locale data available. This data is used by a wide spectrum of companies (see below) for their software internationalization and localization, adapting software to the conventions of different languages for such common software tasks.
+```csharp
+var data = CldrData.LoadFromFile("cldr.bin");
+var path = "dates.calendars.hebrew.months.format.abbreviated.1";
 
-## Who uses CLDR?
+Console.WriteLine(data.GetValue(path, enGB)); // Tishri
+```
 
-Some of the companies and organizations that use CLDR are:
+## Wiki
+The [wiki][0] is the best place to learn about Onism. It includes, but is not limited to:
 
-  - Apple (OS X & applications; iOS  for iPhone, iPad, iPod touch; Safari for Windows; Apple Mobile Device Support in iTunes for Windows; …)
-  - Google (Web Search, Chrome, Android, Adwords, Google+, Google Maps, Blogger, Google Analytics, …)
-  - IBM (DB2, Lotus, Websphere, Tivoli, Rational, AIX, i/OS, z/OS,…)
-  - Microsoft (Windows, Windows Phone, Bing, Office, Visual Studio, …)
+  * [Getting started][1],
+  * [What is CLDR?][2],
+  * [Exemplary use case][3],
+  * [The meaning of Onism][4].
 
-and many others, including:
-  - ABAS Software, Adobe, Amazon (Kindle), Amdocs, Apache, Appian, Argonne National Laboratory, Avaya, Babel (Pocoo library), BAE Systems Geospatial eXploitation Products, BEA, BluePhoenix Solutions, BMC Software, Boost, BroadJump, Business Objects, caris, CERN, Debian Linux, Dell, Eclipse, eBay, EMC Corporation, ESRI, Firebird RDBMS, Free BSD, Gentoo Linux, GroundWork Open Source, GTK+, Harman/Becker Automotive Systems GmbH, HP, Hyperion, Inktomi, Innodata Isogen, Informatica, Intel, Interlogics, IONA, IXOS, Jikes, jQuery, Library of Congress, Mathworks, Mozilla, Netezza, OpenOffice, Oracle (Solaris, Java), Lawson Software, Leica Geosystems GIS & Mapping LLC, Mandrake Linux, OCLC, Perl, Progress Software, Python, QNX, Rogue Wave, SAP, Shutterstock, SIL, SPSS, Software AG, SuSE, Symantec, Teradata (NCR), ToolAware, Trend Micro, Twitter, Virage, webMethods, Wikimedia Foundation (Wikipedia), Wine, WMS Gaming, XyEnterprise, Yahoo!, Yelp
+[0]:https://github.com/pgolebiowski/Onism.Cldr/wiki
+[1]:https://github.com/pgolebiowski/Onism.Cldr/wiki/Getting-started
+[2]:https://github.com/pgolebiowski/onism-cldr/wiki/About-CLDR
+[3]:https://github.com/pgolebiowski/onism-cldr/wiki/Hebrew-month-names
+[4]:https://github.com/pgolebiowski/onism-cldr/wiki/The-meaning-of-Onism
 
-[wiki]: https://github.com/pgolebiowski/Onism.Cldr/wiki
+
+## Contributing
+[![][gitter-img]][gitter] ![][email-img]
+
+Star the project, give feedback, suggest an improvement you need, or just tell me about your day :smile: Feel free to open an [issue] or to submit a [pull request].
+
+## License
+[The MIT License](LICENSE). Basically, you can do whatever you want as long as you include the original copyright and license notice in any copy or substantial use of this work.
+
+
+[issue]:https://github.com/pgolebiowski/onism-cldr/issues
+[pull request]:https://github.com/pgolebiowski/onism-cldr/pulls
+[gitter-img]:https://img.shields.io/gitter/room/pgolebiowski/onism-cldr.svg
+[gitter]:https://gitter.im/pgolebiowski/onism-cldr?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+[email-img]:https://img.shields.io/badge/email-to%20ortorektyk%40gmail.com-brightgreen.svg

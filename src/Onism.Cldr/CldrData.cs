@@ -24,6 +24,15 @@ namespace Onism.Cldr
         [ProtoMember(1)]
         public CldrTree Tree { get; set; }
 
+        /// <summary>
+        /// Traverses the CLDR tree using a path and gets the value
+        /// associated with the specified locale.
+        /// </summary>
+        public string GetValue(string path, CldrLocale locale)
+        {
+            return this.Tree.SelectNode(path).GetValue(locale);
+        }
+
         #region Serialization
 
         /// <summary>
