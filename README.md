@@ -9,6 +9,8 @@
 Onism is a high-performance CLDR library for .NET. It allows you to create an efficient binary file for (optionally subsetted) CLDR data and browse its contents easily.
 
 ## Specs & Getting started
+
+[![Join the chat at https://gitter.im/pgolebiowski/onism-cldr](https://badges.gitter.im/pgolebiowski/onism-cldr.svg)](https://gitter.im/pgolebiowski/onism-cldr?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Please see the [wiki]. It will help you [get started](https://github.com/pgolebiowski/Onism.Cldr/wiki/Getting-started).
 
 ## What is CLDR?
