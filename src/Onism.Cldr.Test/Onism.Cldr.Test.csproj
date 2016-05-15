@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CldrVersionConsistencyAssurerTest.cs" />
+    <Compile Include="IdentifierDictionaryTest.cs" />
     <Compile Include="Utils\ListExtensions.cs" />
     <Compile Include="JsonNetTest.cs" />
     <Compile Include="CldrLocaleTest.cs" />

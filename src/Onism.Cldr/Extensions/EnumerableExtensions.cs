@@ -64,37 +64,5 @@ namespace Onism.Cldr.Extensions
             foreach (var item in source)
                 action(item);
         }
-
-        public static IEnumerable<int> GetIndexes<T>(this T[] source, Func<T, bool> predicate)
-        {
-            for (var i = 0; i < source.Length; ++i)
-                if (predicate(source[i]))
-                    yield return i;
-        }
-
-        /// <summary>
-        /// Determines whether this array is a prefix of another - that all its elements
-        /// at corresponding indexes in the other array are equal.
-        /// </summary>
-        public static bool IsPrefixOf<T>(this IReadOnlyList<T> source, IReadOnlyList<T> other)
-        {
-            var toCheck = source.Count;
-
-            if (toCheck > other.Count)
-                return false;
-
-            for (var i = 0; i < toCheck; ++i)
-            {
-                if (object.Equals(source[i], other[i]) == false)
-                    return false;
-            }
-
-            return true;
-        }
-
-        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> source)
-        {
-            return new HashSet<T>(source);
-        }
     }
 }

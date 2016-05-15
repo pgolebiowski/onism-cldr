@@ -48,7 +48,7 @@ namespace Onism.Cldr
         public override bool Equals(object obj)
         {
             var other = obj as IdentifierDictionary<T>;
-            return other != null && this.Equals(other);
+            return other != null && Equals(other);
         }
 
         protected bool Equals(IdentifierDictionary<T> other) => this.identifiers.IsSameAs(other.identifiers);

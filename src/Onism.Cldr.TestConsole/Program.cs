@@ -9,8 +9,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Onism.Cldr.Extensions;
-using Onism.Cldr.JsonHandlers;
-using Onism.Cldr.Subsetting;
+using Onism.Cldr.Tools;
+using Onism.Cldr.Tools.Subsetting;
 
 namespace Onism.Cldr.TestConsole
 {
@@ -59,22 +59,22 @@ namespace Onism.Cldr.TestConsole
             // var data = CldrData.LoadFromFile(@"\\Mac\Home\Desktop\some16.bin");
 
             var fileFinder = new CldrJsonFileFinder();
-            var jsonHandlers = new CldrJsonHandler[]
+            var jsonParsers = new CldrJsonParser[]
             {
-                new AvailableLocalesHandler(),
-                new DefaultContentHandler(),
-                new MainHandler(),
-                new RbnfHandler(),
-                new ScriptMetadataHandler(),
-                new SegmentsHandler(),
-                new SupplementalHandler()
+                new AvailableLocalesParser(),
+                new DefaultContentParser(),
+                new MainParser(),
+                new RbnfParser(),
+                new ScriptMetadataParser(),
+                new SegmentsParser(),
+                new SupplementalParser()
             };
 
             foreach (var path in fileFinder.FindFiles(directory))
             {
                 var token = JObject.Parse(File.ReadAllText(path));
 
-                foreach (var handler in jsonHandlers)
+                foreach (var handler in jsonParsers)
                 {
                     if (!handler.IsValid(token))
                         continue;

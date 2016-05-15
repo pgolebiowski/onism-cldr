@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Newtonsoft.Json;
 using ProtoBuf;
 
 namespace Onism.Cldr
@@ -64,23 +63,11 @@ namespace Onism.Cldr
         }
 
         /// <summary>
-        /// A locale that only has a language subtag (and optionally a script subtag)
-        /// is called a language locale.
-        /// </summary>
-        public bool IsLanguageLocale => (Language != null) && (Territory == null) && (Variant == null);
-
-        /// <summary>
-        /// A locale with both language and territory subtag is called
-        /// a territory locale (or country locale).
-        /// </summary>
-        public bool IsTerritoryLocale => (Language != null) && (Territory != null);
-
-        /// <summary>
         /// Gets the hyphen-separated code of this <see cref="CldrLocale"/>.
         /// </summary>
-        public string Code => JoinNotNull("-", Language, Script, Territory, Variant);
+        public string Code => JoinNotNull("-", this.Language, this.Script, this.Territory, this.Variant);
 
-        private string JoinNotNull(string separator, params string[] values)
+        private static string JoinNotNull(string separator, params string[] values)
         {
             return string.Join(separator, values.Where(x => x != null));
         }
@@ -92,13 +79,10 @@ namespace Onism.Cldr
             if (other == null)
                 return false;
 
-            return Code == other.Code;
+            return this.Code == other.Code;
         }
 
-        public override int GetHashCode()
-        {
-            return Code.GetHashCode();
-        }
+        public override int GetHashCode() => this.Code.GetHashCode();
 
         public static bool operator ==(CldrLocale left, CldrLocale right)
         {

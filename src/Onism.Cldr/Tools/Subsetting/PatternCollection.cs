@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Onism.Cldr.Extensions;
 
-namespace Onism.Cldr.Subsetting
+namespace Onism.Cldr.Tools.Subsetting
 {
     /// <summary>
     /// Represents a read-only collection of patterns.

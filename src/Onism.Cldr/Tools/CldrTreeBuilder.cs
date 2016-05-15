@@ -1,6 +1,6 @@
 using Onism.Cldr.Extensions;
 
-namespace Onism.Cldr
+namespace Onism.Cldr.Tools
 {
     internal class CldrTreeBuilder
     {

@@ -7,7 +7,7 @@ namespace Onism.Cldr
         private string version;
         private string jsonPath;
 
-        public string Version => version ?? "unspecified";
+        public string Version => this.version ?? "unspecified";
 
         public void AssureVersionIsConsistent(string version, string jsonPath)
         {

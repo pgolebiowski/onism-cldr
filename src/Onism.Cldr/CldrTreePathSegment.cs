@@ -37,9 +37,9 @@
 
         public override string ToString()
         {
-            return IsDictionaryKey
-                ? Key
-                : Index.ToString();
+            return this.IsDictionaryKey
+                ? this.Key
+                : this.Index.ToString();
         }
     }
 }

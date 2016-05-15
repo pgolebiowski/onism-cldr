@@ -1,11 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
-using Onism.Cldr.JsonHandlers.Schemas;
+using Onism.Cldr.Tools.JsonParsers.Schemas;
 
-namespace Onism.Cldr.JsonHandlers
+namespace Onism.Cldr.Tools.JsonParsers
 {
-    public class SegmentsHandler : CldrJsonHandler
+    /// <summary>
+    /// Parses JSONs valid against the "Segments" schema.
+    /// </summary>
+    internal sealed class SegmentsParser : CldrJsonParser
     {
-        public SegmentsHandler() : base(CldrJsonSchemas.Segments)
+        public SegmentsParser() : base(CldrJsonSchemas.Segments)
         {
         }
 
@@ -25,7 +28,7 @@ namespace Onism.Cldr.JsonHandlers
 
         public override void RemoveMetadata(JObject obj)
         {
-            obj.SelectToken("segments.identity").Parent.Remove();
+            obj.SelectToken("segments.identity")?.Parent?.Remove();
         }
     }
 }

@@ -56,69 +56,62 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CldrData.cs" />
-    <Compile Include="CldrDataBuilder.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Tools\CldrDataBuilder.cs" />
     <Compile Include="CldrJson.cs" />
     <Compile Include="CldrJsonFileFinder.cs" />
     <Compile Include="CldrJsonMetadata.cs" />
     <Compile Include="CldrLocale.cs" />
     <Compile Include="CldrTree.cs" />
-    <Compile Include="CldrTreeBuilder.cs" />
+    <Compile Include="Tools\CldrTreeBuilder.cs" />
     <Compile Include="CldrTreeNode.cs" />
     <Compile Include="CldrTreePath.cs" />
     <Compile Include="CldrTreePathSegment.cs" />
     <Compile Include="CldrVersionConsistencyAssurer.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Extensions\IntegerExtensions.cs" />
-    <Compile Include="Extensions\IntExtensions.cs" />
-    <Compile Include="Extensions\JObjectExtensions.cs" />
-    <Compile Include="Extensions\JTokenExtensions.cs" />
+    <Compile Include="Extensions\JContainerExtensions.cs" />
     <Compile Include="Extensions\MatchExtensions.cs" />
-    <Compile Include="Extensions\ReadOnlyListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="IdentifierDictionary.cs" />
-    <Compile Include="JsonHandlers\RbnfHandler.cs" />
-    <Compile Include="JsonHandlers\ScriptMetadataHandler.cs" />
-    <Compile Include="JsonHandlers\MainHandler.cs" />
-    <Compile Include="JsonHandlers\SegmentsHandler.cs" />
-    <Compile Include="JsonHandlers\SupplementalHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="JsonHandlers\Schemas\CldrJsonSchemas.Designer.cs">
-      <DependentUpon>CldrJsonSchemas.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
+    <Compile Include="Tools\JsonParsers\RbnfParser.cs" />
+    <Compile Include="Tools\JsonParsers\Schemas\CldrJsonSchemas.Designer.cs">
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CldrJsonSchemas.resx</DependentUpon>
     </Compile>
-    <Compile Include="AvailableLocale.cs" />
-    <Compile Include="JsonHandlers\AvailableLocalesHandler.cs" />
-    <Compile Include="JsonHandlers\CldrJsonHandler.cs" />
-    <Compile Include="JsonHandlers\DefaultContentHandler.cs" />
-    <Compile Include="SimpleTree.cs" />
-    <Compile Include="Subsetting\Decision.cs" />
-    <Compile Include="Subsetting\DecisionDictionary.cs" />
-    <Compile Include="Subsetting\Pattern.cs" />
-    <Compile Include="Subsetting\JTokenExtensions.cs" />
-    <Compile Include="Subsetting\PatternCollectionBuilder.cs" />
-    <Compile Include="Subsetting\PatternCollection.cs" />
-    <Compile Include="Utils\JsonUtils.cs" />
+    <Compile Include="Tools\JsonParsers\ScriptMetadataParser.cs" />
+    <Compile Include="Tools\JsonParsers\MainParser.cs" />
+    <Compile Include="Tools\JsonParsers\SegmentsParser.cs" />
+    <Compile Include="Tools\JsonParsers\SupplementalParser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\JsonParsers\AvailableLocalesParser.cs" />
+    <Compile Include="Tools\JsonParsers\CldrJsonParser.cs" />
+    <Compile Include="Tools\JsonParsers\DefaultContentParser.cs" />
+    <Compile Include="Tools\Subsetting\Decision.cs" />
+    <Compile Include="Tools\Subsetting\DecisionDictionary.cs" />
+    <Compile Include="Tools\Subsetting\Pattern.cs" />
+    <Compile Include="Tools\Subsetting\JTokenExtensions.cs" />
+    <Compile Include="Tools\Subsetting\PatternCollectionBuilder.cs" />
+    <Compile Include="Tools\Subsetting\PatternCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="JsonHandlers\Schemas\AvailableLocales.txt" />
-    <Content Include="JsonHandlers\Schemas\DefaultContent.txt" />
-    <Content Include="JsonHandlers\Schemas\Main.txt" />
-    <Content Include="JsonHandlers\Schemas\Rbnf.txt" />
-    <Content Include="JsonHandlers\Schemas\ScriptMetadata.txt" />
-    <Content Include="JsonHandlers\Schemas\Segments.txt" />
-    <Content Include="JsonHandlers\Schemas\Supplemental.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="JsonHandlers\Schemas\CldrJsonSchemas.resx">
+    <EmbeddedResource Include="Tools\JsonParsers\Schemas\CldrJsonSchemas.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>CldrJsonSchemas.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tools\JsonParsers\Schemas\AvailableLocales.txt" />
+    <Content Include="Tools\JsonParsers\Schemas\DefaultContent.txt" />
+    <Content Include="Tools\JsonParsers\Schemas\Main.txt" />
+    <Content Include="Tools\JsonParsers\Schemas\Rbnf.txt" />
+    <Content Include="Tools\JsonParsers\Schemas\ScriptMetadata.txt" />
+    <Content Include="Tools\JsonParsers\Schemas\Segments.txt" />
+    <Content Include="Tools\JsonParsers\Schemas\Supplemental.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

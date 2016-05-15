@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Newtonsoft.Json.Linq;
 
-namespace Onism.Cldr.Subsetting
+namespace Onism.Cldr.Tools.Subsetting
 {
     /// <summary>
     /// Represents a dictionary of JSON tokens and decisions to be made
@@ -30,9 +29,9 @@ namespace Onism.Cldr.Subsetting
         public void AddOrUpdateFor(IEnumerable<JToken> tokens, bool toExclude)
         {
             foreach (var token in tokens)
-                this[GetId(token)] = new Decision(time, toExclude);
+                this[GetId(token)] = new Decision(this.time, toExclude);
             
-            ++time;
+            ++this.time;
         }
 
         /// <summary>

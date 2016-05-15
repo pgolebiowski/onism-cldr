@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Onism.Cldr.Subsetting
+namespace Onism.Cldr.Tools.Subsetting
 {
     public class PatternCollectionBuilder
     {
@@ -27,7 +27,7 @@ namespace Onism.Cldr.Subsetting
 
         public PatternCollection Build()
         {
-            return new PatternCollection(patterns);
+            return new PatternCollection(this.patterns);
         }
     }
 }

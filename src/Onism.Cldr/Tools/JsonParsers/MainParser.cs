@@ -1,11 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
-using Onism.Cldr.JsonHandlers.Schemas;
+using Onism.Cldr.Tools.JsonParsers.Schemas;
 
-namespace Onism.Cldr.JsonHandlers
+namespace Onism.Cldr.Tools.JsonParsers
 {
-    public class MainHandler : CldrJsonHandler
+    /// <summary>
+    /// Parses JSONs valid against the "Main" schema.
+    /// </summary>
+    internal sealed class MainParser : CldrJsonParser
     {
-        public MainHandler() : base(CldrJsonSchemas.Main)
+        public MainParser() : base(CldrJsonSchemas.Main)
         {
         }
 
@@ -30,7 +33,6 @@ namespace Onism.Cldr.JsonHandlers
 
         public override CldrJson PrepareForMerging(CldrLocale locale, JObject obj)
         {
-            // data token is after subsetting and may be empty!
             var dataProperty = obj.SelectToken("main.*.*")?.Parent;
             if (dataProperty == null)
                 return null;

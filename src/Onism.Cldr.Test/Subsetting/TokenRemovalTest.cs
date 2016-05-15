@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Onism.Cldr.Extensions;
-using Onism.Cldr.Subsetting;
 using Onism.Cldr.Test.Utils;
+using Onism.Cldr.Tools.Subsetting;
 
 namespace Onism.Cldr.Test.Subsetting
 {
@@ -196,14 +196,14 @@ namespace Onism.Cldr.Test.Subsetting
             var patternCollection = PatternCollection.Parse(patterns);
 
             Console.WriteLine($"PATTERNS:\n{patterns.MergeLines()}\n");
-            Console.WriteLine($"ORIGINAL:\n{originalJson.ToPrettyString()}\n");
-            Console.WriteLine($"EXPECTED:\n{expectedJson.ToPrettyString()}\n");
+            Console.WriteLine($"ORIGINAL:\n{originalJson}\n");
+            Console.WriteLine($"EXPECTED:\n{expectedJson}\n");
 
             // Act
             originalJson.Subset(patternCollection);
 
             // Assert
-            Console.WriteLine($"WAS:\n{originalJson.ToPrettyString()}\n");
+            Console.WriteLine($"WAS:\n{originalJson}\n");
             Assert.That(JToken.DeepEquals(expectedJson, originalJson));
         }
 

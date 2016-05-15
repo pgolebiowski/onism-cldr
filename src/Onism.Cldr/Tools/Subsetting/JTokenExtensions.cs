@@ -2,7 +2,7 @@
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace Onism.Cldr.Subsetting
+namespace Onism.Cldr.Tools.Subsetting
 {
     public static class JTokenExtensions
     {

@@ -1,5 +1,5 @@
 using Newtonsoft.Json.Linq;
-using Onism.Cldr.Subsetting;
+using Onism.Cldr.Tools.Subsetting;
 
 namespace Onism.Cldr.Test.Utils
 {

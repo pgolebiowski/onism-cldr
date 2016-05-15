@@ -1,61 +1,57 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Onism.Cldr.Extensions;
-using Onism.Cldr.JsonHandlers;
-using Onism.Cldr.Subsetting;
+using Onism.Cldr.Tools.JsonParsers;
+using Onism.Cldr.Tools.Subsetting;
 
-namespace Onism.Cldr
+namespace Onism.Cldr.Tools
 {
     public class CldrDataBuilder
     {
         private readonly CldrJsonFileFinder fileFinder;
         private readonly CldrVersionConsistencyAssurer versionConsistencyAssurer;
-        private readonly CldrJsonHandler[] jsonHandlers;
+        private readonly CldrJsonParser[] jsonParsers;
 
         public CldrDataBuilder()
         {
             this.fileFinder = new CldrJsonFileFinder();
             this.versionConsistencyAssurer = new CldrVersionConsistencyAssurer();
-            this.jsonHandlers = new CldrJsonHandler[]
+            this.jsonParsers = new CldrJsonParser[]
             {
-                new AvailableLocalesHandler(),
-                new DefaultContentHandler(),
-                new MainHandler(),
-                new RbnfHandler(),
-                new ScriptMetadataHandler(),
-                new SegmentsHandler(),
-                new SupplementalHandler()
+                new AvailableLocalesParser(),
+                new DefaultContentParser(),
+                new MainParser(),
+                new RbnfParser(),
+                new ScriptMetadataParser(),
+                new SegmentsParser(),
+                new SupplementalParser()
             };
         }
 
         public CldrData Build(string directory, PatternCollection patterns)
         {
             var cldrTreeBuilder = new CldrTreeBuilder();
-            var other = new JObject();
-            int done = 0;
+            var done = 0;
 
-            foreach (var path in fileFinder.FindFiles(directory))
+            foreach (var path in this.fileFinder.FindFiles(directory))
             {
                 var json = File.ReadAllText(path);
                 var token = JObject.Parse(json);
                 var wasMatched = false;
 
-                foreach (var handler in this.jsonHandlers)
+                foreach (var parser in this.jsonParsers)
                 {
-                    if (!handler.IsValid(token))
+                    if (!parser.IsValid(token))
                         continue;
 
-                    var metadata = handler.ExtractMetadata(token);
-                    handler.RemoveMetadata(token);
+                    var metadata = parser.ExtractMetadata(token);
+                    parser.RemoveMetadata(token);
 
-                    versionConsistencyAssurer.AssureVersionIsConsistent(metadata?.CldrVersion, path);
+                    this.versionConsistencyAssurer.AssureVersionIsConsistent(metadata?.CldrVersion, path);
 
                     token.Subset(patterns);
 
-                    var toAdd = handler.PrepareForMerging(metadata?.CldrLocale, token);
+                    var toAdd = parser.PrepareForMerging(metadata?.CldrLocale, token);
                     cldrTreeBuilder.Add(toAdd);
                     
                     wasMatched = true;

@@ -1,11 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
-using Onism.Cldr.JsonHandlers.Schemas;
+using Onism.Cldr.Tools.JsonParsers.Schemas;
 
-namespace Onism.Cldr.JsonHandlers
+namespace Onism.Cldr.Tools.JsonParsers
 {
-    public class RbnfHandler : CldrJsonHandler
+    /// <summary>
+    /// Parses JSONs valid against the "Rbnf" schema.
+    /// </summary>
+    internal sealed class RbnfParser : CldrJsonParser
     {
-        public RbnfHandler() : base(CldrJsonSchemas.Rbnf)
+        public RbnfParser() : base(CldrJsonSchemas.Rbnf)
         {
         }
 
@@ -25,7 +28,7 @@ namespace Onism.Cldr.JsonHandlers
 
         public override void RemoveMetadata(JObject obj)
         {
-            obj.SelectToken("rbnf.identity").Parent.Remove();
+            obj.SelectToken("rbnf.identity")?.Parent?.Remove();
         }
     }
 }

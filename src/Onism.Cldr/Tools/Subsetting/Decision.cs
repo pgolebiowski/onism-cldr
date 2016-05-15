@@ -1,4 +1,4 @@
-namespace Onism.Cldr.Subsetting
+namespace Onism.Cldr.Tools.Subsetting
 {
     /// <summary>
     /// Represents a decision of how to handle a JSON token when

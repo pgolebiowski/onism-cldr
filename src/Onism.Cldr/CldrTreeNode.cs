@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Onism.Cldr.Extensions;
 using ProtoBuf;
 
@@ -39,8 +36,8 @@ namespace Onism.Cldr
 
         internal CldrTreeNode(CldrTree tree, CldrTreeNode parent)
         {
-            Tree = tree;
-            Parent = parent;
+            this.Tree = tree;
+            this.Parent = parent;
         }
 
         public string GetValue(CldrLocale locale)
@@ -53,9 +50,9 @@ namespace Onism.Cldr
 
         public override int GetHashCode()
         {
-            return PropertyChildren.GetHashCode()
-                ^ ArrayChildren.GetHashCode()
-                ^ LocaleValues.GetHashCode();
+            return this.PropertyChildren.GetHashCode()
+                ^ this.ArrayChildren.GetHashCode()
+                ^ this.LocaleValues.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -65,9 +62,9 @@ namespace Onism.Cldr
             if (other == null)
                 return false;
 
-            var keyedChildrenEqual = PropertyChildren.IsSameAs(other.PropertyChildren);
-            var indexedChildrenEqual = ArrayChildren.IsSameAs(other.ArrayChildren);
-            var localeValuesEqual = LocaleValues.IsSameAs(other.LocaleValues);
+            var keyedChildrenEqual = this.PropertyChildren.IsSameAs(other.PropertyChildren);
+            var indexedChildrenEqual = this.ArrayChildren.IsEquivalentTo(other.ArrayChildren);
+            var localeValuesEqual = this.LocaleValues.IsSameAs(other.LocaleValues);
 
             return keyedChildrenEqual && indexedChildrenEqual && localeValuesEqual;
         }
@@ -92,7 +89,7 @@ namespace Onism.Cldr
 
         private IEnumerable<CldrTreeNode> GetAncestors(bool self)
         {
-            for (var current = self ? this : Parent; current != null; current = current.Parent)
+            for (var current = self ? this : this.Parent; current != null; current = current.Parent)
             {
                 yield return current;
             }
@@ -105,7 +102,7 @@ namespace Onism.Cldr
         {
             get
             {
-                return Parent
+                return this.Parent
                     ?.PropertyChildren
                     ?.FirstOrDefault(x => ReferenceEquals(x.Value, this))
                     .Key;
@@ -116,7 +113,7 @@ namespace Onism.Cldr
         {
             get
             {
-                var parentArray = Parent?.ArrayChildren;
+                var parentArray = this.Parent?.ArrayChildren;
                 
                 if (parentArray == null)
                     throw new NullReferenceException();
@@ -126,22 +123,6 @@ namespace Onism.Cldr
                         return i;
 
                 throw new NullReferenceException();
-            }
-        }
-
-        /// <summary>
-        /// Gets the path of this node. 
-        /// </summary>
-        public string Path
-        {
-            get
-            {
-                throw new NotImplementedException();
-
-                return AncestorsAndSelf()
-                    .Select(x => x.Key)
-                    .Reverse()
-                    .JoinStrings(".");
             }
         }
 
@@ -166,12 +147,12 @@ namespace Onism.Cldr
 
             if (pathSegment.IsDictionaryKey)
             {
-                if (PropertyChildren.TryGetValue(pathSegment.Key, out child) == false)
+                if (this.PropertyChildren.TryGetValue(pathSegment.Key, out child) == false)
                     return null;
             }
             else
             {
-                if (ArrayChildren.TryGetElement(pathSegment.Index, out child) == false)
+                if (this.ArrayChildren.TryGetElement(pathSegment.Index, out child) == false)
                     return null;
             }
 
@@ -183,7 +164,7 @@ namespace Onism.Cldr
             // that's the node we've been looking for!
             if (path.IsEmpty())
             {
-                LocaleValues.Add(locale, value);
+                this.LocaleValues.Add(locale, value);
                 return;
             }
 
@@ -193,49 +174,22 @@ namespace Onism.Cldr
 
             if (pathSegment.IsDictionaryKey)
             {
-                if (PropertyChildren.TryGetValue(pathSegment.Key, out child) == false)
+                if (this.PropertyChildren.TryGetValue(pathSegment.Key, out child) == false)
                 {
-                    child = new CldrTreeNode(Tree, this);
-                    PropertyChildren.Add(pathSegment.Key, child);
+                    child = new CldrTreeNode(this.Tree, this);
+                    this.PropertyChildren.Add(pathSegment.Key, child);
                 }
             }
             else
             {
-                if (ArrayChildren.TryGetElement(pathSegment.Index, out child) == false)
+                if (this.ArrayChildren.TryGetElement(pathSegment.Index, out child) == false)
                 {
-                    child = new CldrTreeNode(Tree, this);
-                    ArrayChildren.Add(child);
+                    child = new CldrTreeNode(this.Tree, this);
+                    this.ArrayChildren.Add(child);
                 }
             }
 
             child.Add(locale, path, value);
         }
-
-
-
-        /*
-                public int FindMaxDepth(int currentMax)
-        {
-            if (PropertyChildren.IsNotEmpty())
-                return PropertyChildren.Select(x => x.FindMaxDepth(currentMax + 1)).Max();
-            return currentMax;
-        }
-        public IEnumerable<CldrTreeNode> FindVertices()
-        {
-            var vertices = new List<CldrTreeNode>() { this };
-            if (PropertyChildren.IsNotEmpty())
-                vertices.AddRange(PropertyChildren.SelectMany(x => x.FindVertices()));
-            return vertices;
-        }
-        public IEnumerable<CldrTreeNode> FindValues()
-        {
-            var leaves = new List<CldrTreeNode>();
-            if (PropertyChildren.IsEmpty())
-                leaves.Add(this);
-            else
-                leaves.AddRange(PropertyChildren.SelectMany(x => x.FindValues()));
-            return leaves;
-        }
-    */
     }
 }

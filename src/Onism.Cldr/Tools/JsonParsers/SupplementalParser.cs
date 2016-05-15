@@ -1,11 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
-using Onism.Cldr.JsonHandlers.Schemas;
+using Onism.Cldr.Tools.JsonParsers.Schemas;
 
-namespace Onism.Cldr.JsonHandlers
+namespace Onism.Cldr.Tools.JsonParsers
 {
-    public class SupplementalHandler : CldrJsonHandler
+    /// <summary>
+    /// Parses JSONs valid against the "Supplemental" schema.
+    /// </summary>
+    internal sealed class SupplementalParser : CldrJsonParser
     {
-        public SupplementalHandler() : base(CldrJsonSchemas.Supplemental)
+        public SupplementalParser() : base(CldrJsonSchemas.Supplemental)
         {
         }
 
@@ -19,7 +22,7 @@ namespace Onism.Cldr.JsonHandlers
 
         public override void RemoveMetadata(JObject obj)
         {
-            obj.SelectToken("supplemental.version").Parent.Remove();
+            obj.SelectToken("supplemental.version")?.Parent?.Remove();
         }
     }
 }

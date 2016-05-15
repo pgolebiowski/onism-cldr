@@ -3,7 +3,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json.Linq;
 using Onism.Cldr.Extensions;
-using Onism.Cldr.Subsetting;
+using Onism.Cldr.Tools.Subsetting;
 
 namespace Onism.Cldr.Test.Utils
 {

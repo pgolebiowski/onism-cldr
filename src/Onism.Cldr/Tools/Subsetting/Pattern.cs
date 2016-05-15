@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace Onism.Cldr.Subsetting
+namespace Onism.Cldr.Tools.Subsetting
 {
     /// <summary>
     /// Represents a pattern based on a JPath expression.
@@ -52,7 +52,7 @@ namespace Onism.Cldr.Subsetting
 
         public override string ToString()
         {
-            var exclamation = IsNegated ? "!" : "";
+            var exclamation = this.IsNegated ? "!" : "";
             return exclamation + this.Expression;
         }
     }

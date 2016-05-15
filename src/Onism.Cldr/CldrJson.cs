@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace Onism.Cldr
 {
@@ -24,8 +19,8 @@ namespace Onism.Cldr
 
         public CldrJson(CldrLocale locale, JObject data)
         {
-            Locale = locale;
-            Data = data;
+            this.Locale = locale;
+            this.Data = data;
         }
     }
 }
