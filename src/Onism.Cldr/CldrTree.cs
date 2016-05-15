@@ -20,44 +20,32 @@ namespace Onism.Cldr
         internal readonly CldrTreeNode Root;
 
         [ProtoMember(2)]
-        internal readonly List<string> Values;
+        internal readonly IList<string> Values;
 
         [ProtoMember(3)]
-        internal readonly Dictionary<CldrLocale, int> Locales;
+        internal readonly IdentifierDictionary<CldrLocale> Locales;
 
         internal CldrTree()
         {
             this.Root = new CldrTreeNode(this, null);
             this.Values = new List<string>();
-            this.Locales = new Dictionary<CldrLocale, int>();
+            this.Locales = new IdentifierDictionary<CldrLocale>();
         }
 
         public CldrTreeNode SelectNode(string path) => this.Root.SelectNode(path);
 
-        internal void Add(CldrJson cldrJson)
-        {
-            if (cldrJson == null)
-                return;
-
-            foreach (var leaf in cldrJson.Data.Leaves())
-            {
-                Add(cldrJson.Locale, leaf.Path, (string)leaf);
-            }
-        }
-
-        private void Add(CldrLocale locale, string path, string value)
+        public void Add(CldrLocale locale, string path, int valueId)
         {
             var treePath = CldrTreePath.Parse(path);
-            var localeId = Locales.GetOrAddId(locale ?? CldrLocale.None);
-            var valueId = Values.GetOrAddId(value);
+            var localeId = this.Locales.GetId(locale ?? CldrLocale.None);
 
-            Root.Add(localeId, treePath, valueId);
+            this.Root.Add(localeId, treePath, valueId);
         }
 
         [ProtoAfterDeserialization]
         protected void OnDeserialized()
         {
-            SetPropertiesRecursively(this, Root);
+            SetPropertiesRecursively(this, this.Root);
         }
 
         private static void SetPropertiesRecursively(CldrTree tree, CldrTreeNode node)
@@ -78,7 +66,7 @@ namespace Onism.Cldr
 
         public override int GetHashCode()
         {
-            return Values.GetHashCode() ^ Locales.GetHashCode();
+            return this.Values.GetHashCode() ^ this.Locales.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -88,9 +76,9 @@ namespace Onism.Cldr
             if (other == null)
                 return false;
 
-            var valuesEqual = Values.IsSameAs(other.Values);
-            var localesEqual = Locales.IsSameAs(other.Locales);
-            var childrenEqual = Root.Equals(other.Root);
+            var valuesEqual = this.Values.IsSameAs(other.Values);
+            var localesEqual = this.Locales.Equals(other.Locales);
+            var childrenEqual = this.Root.Equals(other.Root);
 
             return valuesEqual && localesEqual && childrenEqual;
         }

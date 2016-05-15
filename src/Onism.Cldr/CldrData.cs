@@ -16,7 +16,7 @@ namespace Onism.Cldr
         /// <summary>
         /// Gets a collection of locales available within this <see cref="CldrData"/> instance.
         /// </summary>
-        public IReadOnlyList<CldrLocale> AvailableLocales => this.Tree.Locales.Keys.ToArray();
+        public IReadOnlyList<CldrLocale> AvailableLocales => this.Tree.Locales.ToArray();
 
         /// <summary>
         /// <see cref="CldrTree"/> object containing CLDR data.

@@ -45,9 +45,9 @@ namespace Onism.Cldr
 
         public string GetValue(CldrLocale locale)
         {
-            var localeId = Tree.Locales[locale];
-            var valueId = LocaleValues[localeId];
-            var value = Tree.Values[valueId];
+            var localeId = this.Tree.Locales.GetId(locale);
+            var valueId = this.LocaleValues[localeId];
+            var value = this.Tree.Values[valueId];
             return value;
         }
 

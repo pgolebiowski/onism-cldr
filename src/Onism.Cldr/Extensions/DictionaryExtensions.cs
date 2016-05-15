@@ -5,7 +5,7 @@ namespace Onism.Cldr.Extensions
 {
     internal static class ListExtensions
     {
-        public static bool IsSameAs<T>(this IList<T> list1, List<T> list2)
+        public static bool IsSameAs<T>(this IList<T> list1, IList<T> list2)
         {
             return list1.Count == list2.Count && list1.Except(list2).IsEmpty();
         }

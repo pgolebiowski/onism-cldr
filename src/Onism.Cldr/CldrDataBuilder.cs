@@ -33,7 +33,7 @@ namespace Onism.Cldr
 
         public CldrData Build(string directory, PatternCollection patterns)
         {
-            var cldrTree = new CldrTree();
+            var cldrTreeBuilder = new CldrTreeBuilder();
             var other = new JObject();
             int done = 0;
 
@@ -56,7 +56,7 @@ namespace Onism.Cldr
                     token.Subset(patterns);
 
                     var toAdd = handler.PrepareForMerging(metadata?.CldrLocale, token);
-                    cldrTree.Add(toAdd);
+                    cldrTreeBuilder.Add(toAdd);
                     
                     wasMatched = true;
                 }
@@ -74,7 +74,7 @@ namespace Onism.Cldr
 
             return new CldrData
             {
-                Tree = cldrTree
+                Tree = cldrTreeBuilder.Tree
             };
         }
     }

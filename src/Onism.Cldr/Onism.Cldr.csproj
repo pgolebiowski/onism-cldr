@@ -62,6 +62,7 @@
     <Compile Include="CldrJsonMetadata.cs" />
     <Compile Include="CldrLocale.cs" />
     <Compile Include="CldrTree.cs" />
+    <Compile Include="CldrTreeBuilder.cs" />
     <Compile Include="CldrTreeNode.cs" />
     <Compile Include="CldrTreePath.cs" />
     <Compile Include="CldrTreePathSegment.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Extensions\MatchExtensions.cs" />
     <Compile Include="Extensions\ReadOnlyListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="IdentifierDictionary.cs" />
     <Compile Include="JsonHandlers\RbnfHandler.cs" />
     <Compile Include="JsonHandlers\ScriptMetadataHandler.cs" />
     <Compile Include="JsonHandlers\MainHandler.cs" />
