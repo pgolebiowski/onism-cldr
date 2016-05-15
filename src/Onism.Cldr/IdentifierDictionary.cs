@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Onism.Cldr.Extensions;
 using ProtoBuf;
 
@@ -9,7 +10,7 @@ namespace Onism.Cldr
     /// Represents a collection of keys and their unique identifiers.
     /// </summary>
     [ProtoContract]
-    internal class IdentifierDictionary<T> : IReadOnlyCollection<T>
+    internal class IdentifierDictionary<T>
     {
         [ProtoMember(1)]
         private readonly Dictionary<T, int> identifiers;
@@ -22,6 +23,12 @@ namespace Onism.Cldr
             this.identifiers = new Dictionary<T, int>();
             this.nextIdentifier = 0;
         }
+
+        /// <summary>
+        /// Determines whether the specified key has already been
+        /// assigned an identifier.
+        /// </summary>
+        public bool HasId(T key) => this.identifiers.ContainsKey(key);
 
         /// <summary>
         /// Gets the id associated with the specified key. If the key is missing,
@@ -41,9 +48,7 @@ namespace Onism.Cldr
 
         public int Count => this.identifiers.Count;
 
-        public IEnumerator<T> GetEnumerator() => this.identifiers.Keys.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IReadOnlyCollection<T> Items => this.identifiers.Keys.ToArray();
 
         public override bool Equals(object obj)
         {

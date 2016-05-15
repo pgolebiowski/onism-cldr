@@ -22,7 +22,18 @@ namespace Onism.Cldr.Tools
             foreach (var leaf in cldrJson.Data.Leaves())
             {
                 var value = (string) leaf;
-                var valueId = this.values.GetId(value);
+                int valueId;
+
+                // TODO refactor this
+                if (this.values.HasId(value))
+                {
+                    valueId = this.values.GetId(value);
+                }
+                else
+                {
+                    valueId = this.values.GetId(value);
+                    this.Tree.Values.Add(value);
+                }
                 
                 this.Tree.Add(cldrJson.Locale, leaf.Path, valueId);
             }

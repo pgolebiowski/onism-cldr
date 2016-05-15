@@ -41,5 +41,11 @@ namespace Onism.Cldr.Tools.Subsetting
 
             return new PatternCollection(collection);
         }
+
+        /// <summary>
+        /// Gets a new empty <see cref="PatternCollection"/>. It will match
+        /// nothing and thus nothing will be removed during subsetting.
+        /// </summary>
+        public static PatternCollection Empty => new PatternCollection(new List<Pattern>());
     }
 }

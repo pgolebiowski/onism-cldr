@@ -9,19 +9,24 @@ namespace Onism.Cldr
     /// </summary>
     internal class CldrTreePath : Queue<CldrTreePathSegment>
     {
-        public static CldrTreePath Parse(string path)
+        private static readonly Regex PathRegex;
+
+        static CldrTreePath()
         {
-            var index = @"\[(?<index>[0-9]+)\]";    // [0]
-            var key = @"(?<key>[a-zA-Z0-9-_%/,$\+\*]+)"; // year
-            var special = @"\['(?<key>[^']+)'\]"; // ['x.x']
+            const string index = @"\[(?<index>[0-9]+)\]";         // [0]
+            const string key = @"(?<key>[a-zA-Z0-9-_%/,$\+\*]+)"; // year
+            const string special = @"\['(?<key>[^']+)'\]";        // ['x.x']
 
             var firstSegment = $@"(({index})|({key})|({special}))";
             var nextSegment = $@"(({index})|(\.{key})|({special}))*";
 
             var pattern = $"^{firstSegment}{nextSegment}$";
+            PathRegex = new Regex(pattern);
+        }
 
-            var match = Regex.Match(path, pattern);
-
+        public static CldrTreePath Parse(string path)
+        {
+            var match = PathRegex.Match(path);
             var keys = match.Groups["key"].Captures.Cast<Capture>().Select(x => new {x.Index, x.Value, IsKey = true});
             var indexes = match.Groups["index"].Captures.Cast<Capture>().Select(x => new {x.Index, x.Value, IsKey = false});
 

@@ -57,7 +57,7 @@ namespace Onism.Cldr.Test
                 dictionary.GetId(item);
             
             // Assert
-            CollectionAssert.AreEqual(items, dictionary);
+            CollectionAssert.AreEqual(items, dictionary.Items);
         }
 
         [Test]
