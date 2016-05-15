@@ -25,14 +25,18 @@ The [wiki][0] is the best place to learn about Onism. It includes, but is not li
 
   * [Getting started][1],
   * [What is CLDR?][2],
-  * [Exemplary use case][3],
-  * [The meaning of Onism][4].
+  * [Subsetting algorithm][3],
+  * [Solving CLDR redundancy][4],
+  * [Exemplary use case][5],
+  * [The meaning of Onism][6].
 
 [0]:https://github.com/pgolebiowski/Onism.Cldr/wiki
 [1]:https://github.com/pgolebiowski/Onism.Cldr/wiki/Getting-started
 [2]:https://github.com/pgolebiowski/onism-cldr/wiki/About-CLDR
-[3]:https://github.com/pgolebiowski/onism-cldr/wiki/Hebrew-month-names
-[4]:https://github.com/pgolebiowski/onism-cldr/wiki/The-meaning-of-Onism
+[3]:https://github.com/pgolebiowski/onism-cldr/wiki/Subsetting-algorithm
+[4]:https://github.com/pgolebiowski/onism-cldr/wiki/Solving-CLDR-redundancy
+[5]:https://github.com/pgolebiowski/onism-cldr/wiki/Hebrew-month-names
+[6]:https://github.com/pgolebiowski/onism-cldr/wiki/The-meaning-of-Onism
 
 
 ## Contributing
