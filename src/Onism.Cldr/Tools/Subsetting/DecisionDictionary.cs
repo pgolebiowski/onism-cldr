@@ -8,7 +8,7 @@ namespace Onism.Cldr.Tools.Subsetting
     /// Represents a dictionary of JSON tokens and decisions to be made
     /// when they're encouneted during post-order traversal.
     /// </summary>
-    public class DecisionDictionary : Dictionary<long, Decision>
+    internal class DecisionDictionary : Dictionary<long, Decision>
     {
         private int time;
         private readonly ObjectIDGenerator objectIdGenerator; // crucial

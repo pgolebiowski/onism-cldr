@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace Onism.Cldr
+namespace Onism.Cldr.Tools
 {
     /// <summary>
     /// Represents a single CLDR JSON file. 
     /// </summary>
-    public sealed class CldrJson
+    internal sealed class CldrJson
     {
         /// <summary>
         /// Gets the locale this file is associated with.

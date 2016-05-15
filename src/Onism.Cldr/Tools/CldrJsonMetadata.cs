@@ -1,6 +1,6 @@
-namespace Onism.Cldr
+namespace Onism.Cldr.Tools
 {
-    public class CldrJsonMetadata
+    internal class CldrJsonMetadata
     {
         public string CldrVersion { get; set; }
         public CldrLocale CldrLocale { get; set; }

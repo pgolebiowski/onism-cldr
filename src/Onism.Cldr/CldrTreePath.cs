@@ -7,7 +7,7 @@ namespace Onism.Cldr
     /// <summary>
     /// Represents a queue of edges to choose while traversing a <see cref="CldrTree"/>.
     /// </summary>
-    public class CldrTreePath : Queue<CldrTreePathSegment>
+    internal class CldrTreePath : Queue<CldrTreePathSegment>
     {
         public static CldrTreePath Parse(string path)
         {

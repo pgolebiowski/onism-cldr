@@ -29,6 +29,10 @@ namespace Onism.Cldr.Tools.Subsetting
             return Parse(linesWithPatterns);
         }
 
+        /// <summary>
+        /// Loads a <see cref="PatternCollection"/> from a collection
+        /// of patterns represented as strings.
+        /// </summary>
         public static PatternCollection Parse(IEnumerable<string> patterns)
         {
             var collection = patterns

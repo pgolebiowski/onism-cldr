@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents an edge to choose while traversing a <see cref="CldrTree"/>.
     /// </summary>
-    public class CldrTreePathSegment
+    internal class CldrTreePathSegment
     {
         /// <summary>
         /// Gets a flag indicating whether this segment is a dictionary key (true)

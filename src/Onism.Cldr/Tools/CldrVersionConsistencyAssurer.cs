@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Onism.Cldr
+namespace Onism.Cldr.Tools
 {
-    public class CldrVersionConsistencyAssurer
+    internal class CldrVersionConsistencyAssurer
     {
         private string version;
         private string jsonPath;

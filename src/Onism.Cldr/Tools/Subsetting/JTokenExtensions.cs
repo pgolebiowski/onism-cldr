@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Onism.Cldr.Tools.Subsetting
 {
-    public static class JTokenExtensions
+    internal static class JTokenExtensions
     {
         /// <summary>
         /// Removes tokens from this JSON token using a collection of patterns.

@@ -58,22 +58,22 @@
     <Compile Include="CldrData.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Tools\CldrDataBuilder.cs" />
-    <Compile Include="CldrJson.cs" />
-    <Compile Include="CldrJsonFileFinder.cs" />
-    <Compile Include="CldrJsonMetadata.cs" />
     <Compile Include="CldrLocale.cs" />
     <Compile Include="CldrTree.cs" />
+    <Compile Include="Tools\CldrJson.cs" />
+    <Compile Include="Tools\CldrJsonFileFinder.cs" />
+    <Compile Include="Tools\CldrJsonMetadata.cs" />
     <Compile Include="Tools\CldrTreeBuilder.cs" />
     <Compile Include="CldrTreeNode.cs" />
     <Compile Include="CldrTreePath.cs" />
     <Compile Include="CldrTreePathSegment.cs" />
-    <Compile Include="CldrVersionConsistencyAssurer.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\JContainerExtensions.cs" />
     <Compile Include="Extensions\MatchExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="IdentifierDictionary.cs" />
+    <Compile Include="Tools\CldrVersionConsistencyAssurer.cs" />
     <Compile Include="Tools\JsonParsers\RbnfParser.cs" />
     <Compile Include="Tools\JsonParsers\Schemas\CldrJsonSchemas.Designer.cs">
       <AutoGen>True</AutoGen>

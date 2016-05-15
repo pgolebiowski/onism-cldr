@@ -2,9 +2,9 @@
 using System.IO;
 using System.Linq;
 
-namespace Onism.Cldr
+namespace Onism.Cldr.Tools
 {
-    public class CldrJsonFileFinder
+    internal class CldrJsonFileFinder
     {
         public IEnumerable<string> FindFiles(string directory)
         {

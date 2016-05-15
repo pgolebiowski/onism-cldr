@@ -5,6 +5,7 @@ namespace Onism.Cldr.Tools
     internal class CldrTreeBuilder
     {
         private readonly IdentifierDictionary<string> values;
+
         public CldrTree Tree { get; }
 
         public CldrTreeBuilder()

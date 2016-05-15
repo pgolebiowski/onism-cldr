@@ -4,7 +4,7 @@ namespace Onism.Cldr.Tools.Subsetting
     /// Represents a decision of how to handle a JSON token when
     /// subsetting is performed (to remove or not to remove).
     /// </summary>
-    public class Decision
+    internal class Decision
     {
         private readonly int time;
         public bool Remove { get; }
