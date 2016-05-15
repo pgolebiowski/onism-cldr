@@ -5,12 +5,12 @@ namespace Onism.Cldr.Extensions
 {
     internal static class ListExtensions
     {
-        public static bool IsSameAs<T>(this List<T> list1, List<T> list2)
+        public static bool IsSameAs<T>(this IList<T> list1, List<T> list2)
         {
             return list1.Count == list2.Count && list1.Except(list2).IsEmpty();
         }
 
-        public static bool TryGetElement<T>(this List<T> list, int index, out T element)
+        public static bool TryGetElement<T>(this IList<T> list, int index, out T element)
         {
             if (index >= 0 && index < list.Count)
             {
@@ -27,6 +27,24 @@ namespace Onism.Cldr.Extensions
 
     internal static class DictionaryExtensions
     {
+        /// <summary>
+        /// Gets the id associated with the specified key. If the key is missing,
+        /// it is added and its new id returned.
+        /// </summary>
+        public static int GetOrAddId<TKey>(this IList<TKey> list, TKey key)
+        {
+            // TODO: this method will be used only while creating the tree.
+            // This process is quite short but can be optimized using a dictionary.
+
+            for (var i = 0; i < list.Count; ++i)
+                if (list[i].Equals(key))
+                    return i;
+
+            var newId = list.Count;
+            list.Add(key);
+            return newId;
+        }
+
         /// <summary>
         /// Gets the id associated with the specified key. If the key is missing,
         /// it is added and its new id returned.

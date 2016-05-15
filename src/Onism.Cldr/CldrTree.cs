@@ -20,24 +20,19 @@ namespace Onism.Cldr
         internal readonly CldrTreeNode Root;
 
         [ProtoMember(2)]
-        internal readonly Dictionary<string, int> Values;
+        internal readonly List<string> Values;
 
         [ProtoMember(3)]
         internal readonly Dictionary<CldrLocale, int> Locales;
 
         internal CldrTree()
         {
-            Root = new CldrTreeNode(this, null);
-            Values = new Dictionary<string, int>();
-            Locales = new Dictionary<CldrLocale, int>();
+            this.Root = new CldrTreeNode(this, null);
+            this.Values = new List<string>();
+            this.Locales = new Dictionary<CldrLocale, int>();
         }
 
-        internal string GetValueById(int id)
-        {
-            return Values.First(x => x.Value == id).Key;
-        }
-
-        public CldrTreeNode SelectNode(string path) => Root.SelectNode(path);
+        public CldrTreeNode SelectNode(string path) => this.Root.SelectNode(path);
 
         internal void Add(CldrJson cldrJson)
         {
